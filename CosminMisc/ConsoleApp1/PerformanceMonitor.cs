@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -13,16 +15,28 @@ namespace ConsoleApp1
         private Stack<MethodCall> _callStack = new Stack<MethodCall>();
         private Dictionary<string, MethodCallStatistic> _callsStats = new Dictionary<string, MethodCallStatistic>();
         private Stopwatch _stopwatch = new Stopwatch();
+        private bool _isEnabled = Settings.IsEnabled();
+        private string _outputFile = Settings.OutputFile();
 
         /// <summary>
         /// Can call it like this: perfMon.StartCall(GetCaller());
         /// </summary>
         public void StartCall(string methodName)
         {
-            if (_callStack.Count == 0)
-                _stopwatch.Start();
+            try
+            {
+                if (!_isEnabled)
+                    return;
 
-            _callStack.Push(new MethodCall { MethodName = methodName, StartTimeMillisec = _stopwatch.ElapsedMilliseconds });
+                if (_callStack.Count == 0)
+                    _stopwatch.Start();
+
+                _callStack.Push(new MethodCall { MethodName = methodName, StartTimeMillisec = _stopwatch.ElapsedMilliseconds });
+            }
+            catch(Exception ex)
+            {
+                Debug.Print("ERROR PerformanceMonitor: " + ex.ToString());
+            }
         }
 
         // Get name of current method
@@ -33,32 +47,53 @@ namespace ConsoleApp1
 
         public void EndCall()
         {
-            if (_callStack.Count == 0)
-                throw new Exception("Mismatched Start/End calls");
-
-            MethodCall call = _callStack.Pop();
-            long callTime = _stopwatch.ElapsedMilliseconds - call.StartTimeMillisec;
-            call.TotalTimeMillisec += callTime;
-
-            foreach (MethodCall callInStack in _callStack)
+            try
             {
-                callInStack.TotalTimeMillisec -= call.TotalTimeMillisec;
+                if (!_isEnabled)
+                    return;
+
+                if (_callStack.Count == 0)
+                    Output("ERROR PerformanceMonitor: Mismatched Start/End calls\n");
+
+                MethodCall call = _callStack.Pop();
+                long callTime = _stopwatch.ElapsedMilliseconds - call.StartTimeMillisec;
+                call.TotalTimeMillisec += callTime;
+
+                foreach (MethodCall callInStack in _callStack)
+                {
+                    callInStack.TotalTimeMillisec -= call.TotalTimeMillisec;
+                }
+
+                AddStatistic(call);
+
+                if (_callStack.Count == 0)
+                    DisplayStats();
             }
+            catch (Exception ex)
+            {
+                Debug.Print("ERROR PerformanceMonitor: " + ex.ToString());
+            }
+        }
 
-            AddStatistic(call);
+        private void Output(string text)
+        {
+            Debug.Print(text);
 
-            if (_callStack.Count == 0)
-                DisplayStats();
+            File.AppendAllText(_outputFile, text);
         }
 
         private void DisplayStats()
         {
             List<MethodCallStatistic> statsList = _callsStats.Select(p => p.Value).OrderByDescending(s => s.TotalTimeMillisec).ToList();
+            StringBuilder sb = new StringBuilder();
+            //sb.AppendLine();
 
             foreach (MethodCallStatistic stat in statsList)
             {
-                Debug.Print($"{stat.MethodName}: {stat.TotalTimeMillisec}ms ({stat.CallCount})");
+                sb.AppendLine($"{DateTime.Now.ToString("G")} {stat.MethodName}: {stat.TotalTimeMillisec}ms ({stat.CallCount})");
             }
+
+            Output(sb.ToString());
         }
 
         private void AddStatistic(MethodCall call)
@@ -74,6 +109,23 @@ namespace ConsoleApp1
 
             stat.CallCount++;
             stat.TotalTimeMillisec += call.TotalTimeMillisec;
+        }
+
+        class Settings
+        {
+            public static bool IsEnabled()
+            {
+                string isEnabledStr = ConfigurationManager.AppSettings["PerformanceMonitor.Enabled"];
+                bool result = false;
+                bool.TryParse(isEnabledStr, out result);
+                return result;
+            }
+
+            public static string OutputFile()
+            {
+                string file = ConfigurationManager.AppSettings["PerformanceMonitor.OutputFile"];
+                return file;
+            }
         }
 
         class MethodCall
