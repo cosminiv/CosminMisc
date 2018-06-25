@@ -15,8 +15,11 @@ namespace ConsoleApp1
         private Stack<MethodCall> _callStack = new Stack<MethodCall>();
         private Dictionary<string, MethodCallStatistic> _callsStats = new Dictionary<string, MethodCallStatistic>();
         private Stopwatch _stopwatch = new Stopwatch();
-        private bool _isEnabled = Settings.IsEnabled();
-        private string _outputFile = Settings.OutputFile();
+
+        private bool _isEnabled = Settings.IsEnabled;
+        private string _logFile = Settings.LogFile;
+        private int _minDurationToLogMs = Settings.MinimumDurationToLogMs;
+        private int _maxFileSize = 1 << 20;
 
         /// <summary>
         /// Can call it like this: perfMon.StartCall(GetCaller());
@@ -33,8 +36,9 @@ namespace ConsoleApp1
 
                 _callStack.Push(new MethodCall { MethodName = methodName, StartTimeMillisec = _stopwatch.ElapsedMilliseconds });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                Debug.Assert(false);
                 Debug.Print("ERROR PerformanceMonitor: " + ex.ToString());
             }
         }
@@ -53,7 +57,7 @@ namespace ConsoleApp1
                     return;
 
                 if (_callStack.Count == 0)
-                    Output("ERROR PerformanceMonitor: Mismatched Start/End calls\n");
+                    Write("ERROR PerformanceMonitor: Mismatched Start/End calls\n");
 
                 MethodCall call = _callStack.Pop();
                 long callTime = _stopwatch.ElapsedMilliseconds - call.StartTimeMillisec;
@@ -71,34 +75,58 @@ namespace ConsoleApp1
             }
             catch (Exception ex)
             {
+                Debug.Assert(false);
                 Debug.Print("ERROR PerformanceMonitor: " + ex.ToString());
             }
         }
 
-        private void Output(string text)
+        public void Write(string text)
         {
-            Debug.Print(text);
+            try
+            {
+                if (_isEnabled && !string.IsNullOrWhiteSpace(_logFile))
+                {
+                    DeleteFileIfTooBig();
+                    File.AppendAllText(_logFile, text);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Debug.Assert(false);
+                Debug.Print("ERROR PerformanceMonitor: " + ex.ToString());
+            }
+        }
 
-            File.AppendAllText(_outputFile, text);
+        private void DeleteFileIfTooBig()
+        {
+            if (File.Exists(_logFile))
+            {
+                FileInfo fi = new FileInfo(_logFile);
+                if (fi.Length > _maxFileSize)
+                    File.Delete(_logFile);
+            }
         }
 
         private void DisplayStats()
         {
             List<MethodCallStatistic> statsList = _callsStats.Select(p => p.Value).OrderByDescending(s => s.TotalTimeMillisec).ToList();
             StringBuilder sb = new StringBuilder();
-            //sb.AppendLine();
 
             foreach (MethodCallStatistic stat in statsList)
             {
-                sb.AppendLine($"{DateTime.Now.ToString("G")} {stat.MethodName}: {stat.TotalTimeMillisec}ms ({stat.CallCount})");
+                if (stat.TotalTimeMillisec >= _minDurationToLogMs)
+                {
+                    sb.AppendLine($"{DateTime.Now.ToString("G")} {stat.MethodName}: {stat.TotalTimeMillisec}ms ({stat.CallCount})");
+                }
             }
 
-            Output(sb.ToString());
+            Write(sb.ToString());
         }
 
         private void AddStatistic(MethodCall call)
         {
-            bool found = _callsStats.TryGetValue(call.MethodName, out MethodCallStatistic stat);
+            MethodCallStatistic stat;
+            bool found = _callsStats.TryGetValue(call.MethodName, out stat);
 
             if (found == false)
             {
@@ -113,18 +141,39 @@ namespace ConsoleApp1
 
         class Settings
         {
-            public static bool IsEnabled()
+            public static bool IsEnabled
             {
-                string isEnabledStr = ConfigurationManager.AppSettings["PerformanceMonitor.Enabled"];
-                bool result = false;
-                bool.TryParse(isEnabledStr, out result);
-                return result;
+                get
+                {
+                    string isEnabledStr = ConfigurationManager.AppSettings["PerformanceMonitor.Enabled"];
+                    bool result = false;
+                    bool.TryParse(isEnabledStr, out result);
+                    return result;
+                }
             }
 
-            public static string OutputFile()
+            public static string LogFile
             {
-                string file = ConfigurationManager.AppSettings["PerformanceMonitor.OutputFile"];
-                return file;
+                get
+                {
+                    string file = ConfigurationManager.AppSettings["PerformanceMonitor.LogFile"] ?? "";
+
+                    if (file.StartsWith("~") && HttpContext.Current != null)
+                        file = HttpContext.Current.Server.MapPath(file);
+
+                    return file;
+                }
+            }
+
+            public static int MinimumDurationToLogMs
+            {
+                get
+                {
+                    string minDurationStr = ConfigurationManager.AppSettings["PerformanceMonitor.MinimumDurationToLogMs"];
+                    int n = 0;
+                    int.TryParse(minDurationStr, out n);
+                    return n;
+                }
             }
         }
 
