@@ -9,6 +9,11 @@ namespace ConsoleApp1
 {
     public class Tools
     {
+        /// <summary>
+        /// GetCaller
+        /// </summary>
+        /// <param name="caller"></param>
+        /// <returns></returns>
         public static string GetCaller([CallerMemberName] string caller = null)
         {
             return caller;
