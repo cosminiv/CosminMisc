@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Algorithms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,8 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            PerformanceMonitorTest.RunTest(); // 
-            // blah blah
+            int[] data = new[] { 5, 1, 3, 10, 4 };
+            MergeSort.Sort(data, out int inversions);
         }
     }
 }
