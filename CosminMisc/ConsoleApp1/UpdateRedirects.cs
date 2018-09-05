@@ -117,9 +117,6 @@ namespace ConsoleApp1
 
         public static void DeleteDuplicateLines(string file, string fileOut)
         {
-            //string file = @"C:\Users\ivanc\Desktop\aaa\xml.xml";
-            //string fileOut = @"C:\Users\ivanc\Desktop\aaa\xml_out.xml";
-
             int i = 0;
             bool isInsideRewrite = false;
             HashSet<string> existingKeys = new HashSet<string>();

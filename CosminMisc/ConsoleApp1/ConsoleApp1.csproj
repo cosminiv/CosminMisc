@@ -45,6 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\MergeSort.cs" />
+    <Compile Include="Eu\Problem_001.cs" />
+    <Compile Include="Eu\Problem_002.cs" />
+    <Compile Include="Eu\Problem_003.cs" />
+    <Compile Include="Eu\Problem_004.cs" />
     <Compile Include="PerformanceMonitor.cs" />
     <Compile Include="PerformanceMonitorTest.cs" />
     <Compile Include="Program.cs" />
