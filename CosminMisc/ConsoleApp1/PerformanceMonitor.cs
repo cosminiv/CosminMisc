@@ -17,10 +17,10 @@ namespace ConsoleApp1
         private Dictionary<string, MethodCallStatistic> _callsStats = new Dictionary<string, MethodCallStatistic>();
         private Stopwatch _stopwatch = new Stopwatch();
 
-        private bool _isEnabled = Settings.IsEnabled;
-        private string _logFile = Settings.LogFile;
-        private int _minDurationToLogMs = Settings.MinimumDurationToLogMs;
-        private int _maxFileSize = 1 << 20;
+        private readonly bool _isEnabled = Settings.IsEnabled;
+        private readonly string _logFile = Settings.LogFile;
+        private readonly int _minDurationToLogMs = Settings.MinimumDurationToLogMs;
+        private readonly int _maxFileSize = 1 << 20;
 
         /// <summary>
         /// Can call it like this: perfMon.StartCall(GetCaller());
@@ -126,13 +126,14 @@ namespace ConsoleApp1
 
         private void AddStatistic(MethodCall call)
         {
-            MethodCallStatistic stat;
-            bool found = _callsStats.TryGetValue(call.MethodName, out stat);
+            bool found = _callsStats.TryGetValue(call.MethodName, out MethodCallStatistic stat);
 
             if (found == false)
             {
-                stat = new MethodCallStatistic();
-                stat.MethodName = call.MethodName;
+                stat = new MethodCallStatistic
+                {
+                    MethodName = call.MethodName
+                };
                 _callsStats.Add(call.MethodName, stat);
             }
 
@@ -147,8 +148,7 @@ namespace ConsoleApp1
                 get
                 {
                     string isEnabledStr = ConfigurationManager.AppSettings["PerformanceMonitor.Enabled"];
-                    bool result = false;
-                    bool.TryParse(isEnabledStr, out result);
+                    bool.TryParse(isEnabledStr, out bool result);
                     return result;
                 }
             }
@@ -171,8 +171,7 @@ namespace ConsoleApp1
                 get
                 {
                     string minDurationStr = ConfigurationManager.AppSettings["PerformanceMonitor.MinimumDurationToLogMs"];
-                    int n = 0;
-                    int.TryParse(minDurationStr, out n);
+                    int.TryParse(minDurationStr, out int n);
                     return n;
                 }
             }
