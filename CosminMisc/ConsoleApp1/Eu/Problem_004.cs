@@ -9,79 +9,131 @@ namespace ConsoleApp1.Eu
 {
     class Problem_004
     {
-        public static int Solve()
+        public static long Solve()
         {
-            int max = 9999;
-            int min = 1000;
-
-            int result = SolveBruteForce(min, max);
-            return result;
-
+            int min = 100; //100000;
+            int max = 999; //999999;
             
-            int count = max - min + 1;
-            int prevProduct = 0;
-
-            for (int i = 0; i < count; i++)
-            {
-                for (int j = 0; j <= i; j++)
-                {
-                    Debug.Print($"{i} {j}");
-
-                    int n1 = max - i;
-                    int n2 = max - j;
-                    int n = n1 * n2;
-
-                    if (prevProduct > 0)
-                        Debug.Assert(n < prevProduct);
-
-                    prevProduct = n;
-
-                    if (IsPalindrome(n))
-                        return n;
-                }
-            }
-
-            return 0;
+            long result = SolveGeneratePalindromesFirst(min, max);
+            
+            return result;
         }
 
-        static int SolveGeneratePalindromesFirst(int min, int max)
+        static long SolveGeneratePalindromesFirst(long min, long max)
         {
-            int minProduct = min * min;
-            int maxProduct = max * max;
+            Debug.Assert(CountDigits(min) == CountDigits(max));
+
+            long minProduct = min * min;
+            long maxProduct = max * max;
             int minProductDigits = CountDigits(minProduct);
             int maxProductDigits = CountDigits(maxProduct);
+            int factorsDigits = CountDigits(min);
+            int iter = 1;
 
-            for (int i = minProductDigits; i <= maxProductDigits; i++)
+            for (int i = maxProductDigits; i >= minProductDigits; i--)
             {
-                List<int> palindromes = GeneratePalindromes(i);
+                IEnumerable<long> palindromes = GeneratePalindromes(i);
+                long prevPal = -1;
+
+                foreach (long pal in palindromes)
+                {
+                    if (prevPal > 0)
+                        Debug.Assert(pal < prevPal);
+
+                    bool canFactorize = TryFactorize(pal, min, max, out Tuple<long, long> factors);
+
+                    if (canFactorize)
+                    {
+                        Debug.Print($"{iter} iterations");
+                        Debug.Print($"{pal} = {factors.Item1} x {factors.Item2}");
+                        return pal;
+                    }
+
+                    prevPal = pal;
+                    iter++;
+                }
             }
 
             return -1;
         }
 
-        private static List<int> GeneratePalindromes(int digits)
+        private static bool TryFactorize(long n, long minFactor, long maxFactor, out Tuple<long, long> factors)
         {
-            List<int> result = new List<int>();
-
-            for (int i = 0; i < digits / 2; i++)
+            for (long factor1 = maxFactor; factor1 >= minFactor; factor1--)
             {
-                for (int digit = 9; digit >= 0; digit--)
-                {
-                    if (i == 0 && digit == 0)
-                        continue;
+                long factor2 = n / factor1;
+                long r = n % factor1;
 
-                    //int n = digit
+                if (r == 0 && factor2 >= minFactor && factor2 <= maxFactor)
+                {
+                    factors = new Tuple<long, long>(factor2, factor1);
+                    return true;
                 }
+            }
+
+            factors = new Tuple<long, long>(0, 0);
+            return false;
+        }
+
+        static IEnumerable<long> GeneratePalindromes(int digits)
+        {
+            long maxNumberHalf = 1;
+
+            for (long i = 1; i <= digits / 2; i++)
+            {
+                maxNumberHalf *= 10;
+            }
+
+            long minNumberHalf = maxNumberHalf / 10;
+            maxNumberHalf--;
+
+            if (digits % 2 == 0)
+            { 
+                for (long i = maxNumberHalf; i >= minNumberHalf; i--)
+                {
+                    long mirrorNumber = RevertDigits(i);
+                    long palindrome = i * (maxNumberHalf + 1) + mirrorNumber;
+                    yield return palindrome;
+                }
+            }
+            else
+            {
+                for (long i = maxNumberHalf; i >= minNumberHalf; i--)
+                {
+                    for (int middleDigit = 9; middleDigit >= 0; middleDigit--)
+                    {
+                        long mirrorNumber = RevertDigits(i);
+                        long palindrome =
+                            i * (maxNumberHalf + 1) * 10 +
+                            middleDigit * (maxNumberHalf + 1) +
+                            mirrorNumber;
+                        yield return palindrome;
+                    }
+                }
+            }
+
+            //Debug.Print($"Generated {result.Count} palindromes of length {digits}");
+            //return result;
+        }
+
+        private static long RevertDigits(long n)
+        {
+            long result = 0;
+
+            for (long i = n; i > 0; i = i / 10)
+            {
+                int digit = (int)(i % 10);
+                result = result * 10 + digit;
             }
 
             return result;
         }
 
-        private static int CountDigits(int n)
+        private static int CountDigits(long n)
         {
             int result = 0;
 
-            for (int i = n; i > 0; i = i / 10)
+            for (long i = n; i > 0; i = i / 10)
                 result++;
 
             return result;
