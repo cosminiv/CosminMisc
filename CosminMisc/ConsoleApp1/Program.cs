@@ -15,7 +15,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            var p = Problem_004.Solve();
+            var a = Problem_011.Solve();
 
             var duration = sw.ElapsedMilliseconds;
             Debug.Print($"Took {duration}ms");
