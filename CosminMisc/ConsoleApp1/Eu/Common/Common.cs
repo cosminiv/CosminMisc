@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.Eu
 {
-    public class Common
+    public class Tools
     {
         public static bool IsOddNumberPrime(long n)
         {
@@ -62,6 +62,25 @@ namespace ConsoleApp1.Eu
             }
 
             return maxProduct;
+        }
+
+        public static int GetDivisorCount(long n)
+        {
+            int result = 0;
+            long n2 = n;
+
+            for (int i = 1; i < n / 2 + 1; i++)
+            {
+                if (n2 % i == 0)
+                {
+                    result++;
+                    //n2 = n2 / i;
+                }
+            }
+
+            result++;
+
+            return result;
         }
     }
 }

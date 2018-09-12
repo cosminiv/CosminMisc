@@ -40,27 +40,25 @@ namespace ConsoleApp1.Eu
             byte[][] data = ReadDataFromString(_dataStr);
 
             long maxProduct = 0;
-            long lineMaxProduct = ComputeLineMaxProduct(data, ref maxProduct);
-            long columnMaxProduct = ComputeColumnMaxProduct(data, ref maxProduct);
-            long diagSWNEMaxProduct = ComputeDiagSWNEMaxProduct(data, ref maxProduct);
-            long diagNWSEMaxProduct = ComputeDiagNWSEMaxProduct(data, ref maxProduct);
+            ComputeLineMaxProduct(data, ref maxProduct);
+            ComputeColumnMaxProduct(data, ref maxProduct);
+            ComputeDiagSWNEMaxProduct(data, ref maxProduct);
+            ComputeDiagNWSEMaxProduct(data, ref maxProduct);
 
             return maxProduct;
         }
 
-        private static long ComputeLineMaxProduct(byte[][] data, ref long maxProduct)
+        private static void ComputeLineMaxProduct(byte[][] data, ref long maxProduct)
         {
             for (int i = 0; i < data.Length; i++)
             {
-                long crtProduct = Common.MaxProduct(data[i], _factorCount);
+                long crtProduct = Tools.MaxProduct(data[i], _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
-
-            return maxProduct;
         }
 
-        private static long ComputeColumnMaxProduct(byte[][] data, ref long maxProduct)
+        private static void ComputeColumnMaxProduct(byte[][] data, ref long maxProduct)
         {
             for (int j = 0; j < data.Length; j++)
             {
@@ -68,15 +66,13 @@ namespace ConsoleApp1.Eu
                 for (int i = 0; i < data.Length; i++)
                     columnData[i] = data[i][j];
 
-                long crtProduct = Common.MaxProduct(columnData, _factorCount);
+                long crtProduct = Tools.MaxProduct(columnData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
-
-            return maxProduct;
         }
 
-        private static long ComputeDiagNWSEMaxProduct(byte[][] data, ref long maxProduct)
+        private static void ComputeDiagNWSEMaxProduct(byte[][] data, ref long maxProduct)
         {
             // bottom left half, including diagonal
             for (int i = 0; i < data.Length - _factorCount; i++)
@@ -88,7 +84,7 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2++][j++];
 
-                long crtProduct = Common.MaxProduct(diagData, _factorCount);
+                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
@@ -105,15 +101,13 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2++][j2++];
 
-                long crtProduct = Common.MaxProduct(diagData, _factorCount);
+                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
-
-            return maxProduct;
         }
 
-        private static long ComputeDiagSWNEMaxProduct(byte[][] data, ref long maxProduct)
+        private static void ComputeDiagSWNEMaxProduct(byte[][] data, ref long maxProduct)
         {
             // top left half, including diagonal
             for (int i = _factorCount - 1; i < data.Length; i++)
@@ -125,7 +119,7 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2--][j++];
 
-                long crtProduct = Common.MaxProduct(diagData, _factorCount);
+                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
@@ -142,12 +136,10 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2--][j2++];
 
-                long crtProduct = Common.MaxProduct(diagData, _factorCount);
+                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
-
-            return maxProduct;
         }
 
         private static byte[][] ReadDataFromString(string dataStr)

@@ -15,7 +15,7 @@ namespace ConsoleApp1.Eu
             int factorCount = 13;
             byte[] data = _data.Where(d => char.IsDigit(d)).Select(d => byte.Parse(d.ToString())).ToArray();
 
-            return Common.MaxProduct(data, factorCount);
+            return Tools.MaxProduct(data, factorCount);
         }
     }
 }
