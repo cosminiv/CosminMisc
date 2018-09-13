@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Eu.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -68,19 +69,44 @@ namespace ConsoleApp1.Eu
         {
             int result = 0;
             long n2 = n;
-
+            
             for (int i = 1; i < n / 2 + 1; i++)
             {
                 if (n2 % i == 0)
                 {
                     result++;
-                    //n2 = n2 / i;
                 }
             }
 
             result++;
 
             return result;
+        }
+
+        public static int GetDivisorCount(LargeNumber n)
+        {
+            LargeNumber n2 = n;
+            LargeNumber half = n / 2 + 1;
+            HashSet<LargeNumber> divisors = new HashSet<LargeNumber>();
+
+            for (LargeNumber i = 1; i < half; i += 1)
+            {
+                LargeNumber.Divide(n2, i, out LargeNumber remainder);
+
+                if (remainder == 0)
+                {
+                    foreach (LargeNumber divisor in divisors)
+                    {
+                        if (divisor != 1)
+                            divisors.Add(divisor * i);
+                    }
+
+                    if (!divisors.Contains(i))
+                        divisors.Add(i);
+                }
+            }
+
+            return divisors.Count + 1;
         }
     }
 }

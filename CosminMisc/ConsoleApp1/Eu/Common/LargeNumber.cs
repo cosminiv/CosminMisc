@@ -19,6 +19,16 @@ namespace ConsoleApp1.Eu.Common
             _digits = new List<byte>() { 0 };
         }
 
+        public LargeNumber(int number)
+        {
+            InitFromLong(number);
+        }
+
+        public LargeNumber(long number)
+        {
+            InitFromLong(number);
+        }
+
         public LargeNumber(LargeNumber n)
         {
             _digits = new List<byte>(n._digits);
@@ -50,9 +60,9 @@ namespace ConsoleApp1.Eu.Common
             return result;
         }
 
-        public LargeNumber(long number)
+        public LargeNumber(IEnumerable<byte> digits)
         {
-            InitFromLong(number);
+            _digits = new List<byte>(digits);
         }
 
         public void InitFromLong(long number)
@@ -70,12 +80,6 @@ namespace ConsoleApp1.Eu.Common
                 _digits.Insert(0, (byte)(n % 10));
             }
         }
-
-        public LargeNumber(int number)
-        {
-            InitFromLong(number);
-        }
-
         #endregion
 
         #region operators
@@ -125,12 +129,18 @@ namespace ConsoleApp1.Eu.Common
 
         public static LargeNumber operator *(LargeNumber n1, int n2)
         {
-            return n1.Multiply(n2);
+            return Multiply(n1, n2);
         }
 
         public static LargeNumber operator /(LargeNumber n1, LargeNumber n2)
         {
-            return n1.Divide(n2);
+            return Divide(n1, n2, out LargeNumber remainder);
+        }
+
+        public static LargeNumber operator %(LargeNumber n1, LargeNumber n2)
+        {
+            LargeNumber n = Divide(n1, n2, out LargeNumber remainder);
+            return remainder;
         }
 
         public static bool operator >(LargeNumber n1, LargeNumber n2)
@@ -286,18 +296,24 @@ namespace ConsoleApp1.Eu.Common
             return result;
         }
 
-        public LargeNumber Multiply(int other)
+        public static LargeNumber Multiply(LargeNumber x, LargeNumber y)
         {
-            if (other > 9 || other < 0)
-                throw new ArgumentOutOfRangeException();
+            if (IsZero(x) || IsZero(y))
+                return 0;
+
+            if (x == 1)
+                return y;
+
+            if (y == 1)
+                return x;
 
             LargeNumber result = new LargeNumber();
-            result._digits = new List<byte>(_digits.Count + 1);
+            result._digits = new List<byte>(x._digits.Count + 1);
             int carry = 0;
 
-            for (int i = 0; i < _digits.Count; i++)
+            for (int i = 0; i < x._digits.Count; i++)
             {
-                int prod = _digits[_digits.Count - i - 1] * other + carry;
+                int prod = x._digits[x._digits.Count - i - 1] * y + carry;
                 result._digits.Insert(0, (byte)(prod % 10));
                 carry = prod / 10;
             }
@@ -308,45 +324,62 @@ namespace ConsoleApp1.Eu.Common
             return result;
         }
 
-        public LargeNumber Divide(LargeNumber divisor)
+        public static LargeNumber Divide(LargeNumber dividend, LargeNumber divisor, out LargeNumber remainder)
         {
             if (divisor == 0)
                 throw new DivideByZeroException();
 
-            if (this == 0 || divisor == 1)
-                return new LargeNumber(this);
-
-            LargeNumber result = new LargeNumber { _sign = this._sign * divisor._sign };
-            int divisorLength = divisor._digits.Count;
-
-            for (int i = 0; i < _digits.Count; i++)
+            if (dividend == 0 || divisor == 1)
             {
-                LargeNumber partialDividend = new LargeNumber(){
-                    _digits = _digits.Skip(i).Take(divisorLength).ToList() };
+                remainder = 0;
+                return new LargeNumber(dividend);
+            }
 
-                if (partialDividend < divisor)
-                {
-                    partialDividend = new LargeNumber {
-                        _digits = _digits.Skip(i).Take(divisorLength + 1).ToList() };
+            if (dividend < divisor)
+            {
+                remainder = dividend;
+                return 0;
+            }
 
-                    if (partialDividend < divisor)
-                        return result;
-                }
+            LargeNumber result = new LargeNumber { _sign = dividend._sign * divisor._sign };
+            LargeNumber partialDividend = GetFirstDividend(dividend, divisor);
+            int digit = GetLargestMultiplier(partialDividend, divisor, out remainder);
+            result._digits.Add((byte)digit);
 
-                for (int multiplier = 9; multiplier >= 1; multiplier--)
-                {
-                    LargeNumber multResult = divisor.Multiply(multiplier);
-                    LargeNumber partialDiff = partialDividend - multResult;
-
-                    if (partialDiff >= 0)
-                    {
-                        result._digits.Add((byte)multiplier);
-                        break;
-                    }
-                }
+            for (int i = partialDividend._digits.Count; i < dividend._digits.Count; i++)
+            {
+                partialDividend = new LargeNumber(remainder._digits.Concat(dividend._digits.Skip(i).Take(1)));
+                digit = GetLargestMultiplier(partialDividend, divisor, out remainder);
+                result._digits.Add((byte)digit);
             }
 
             return result;
+        }
+
+        private static LargeNumber GetFirstDividend(LargeNumber dividend, LargeNumber divisor)
+        {
+            int divisorLength = divisor._digits.Count;
+            LargeNumber result = new LargeNumber(dividend._digits.Take(divisorLength));
+
+            if (result < divisor)
+                result = new LargeNumber(dividend._digits.Take(divisorLength + 1));
+
+            return result;
+        }
+
+        private static int GetLargestMultiplier(LargeNumber dividend, LargeNumber divisor, out LargeNumber remainder)
+        {
+            for (int multiplier = 9; multiplier >= 1; multiplier--)
+            {
+                LargeNumber multResult = Multiply(divisor, multiplier);
+                remainder = dividend - multResult;
+
+                if (remainder >= 0)
+                    return multiplier;
+            }
+
+            remainder = dividend;
+            return 0;
         }
 
         public override string ToString()
@@ -369,6 +402,8 @@ namespace ConsoleApp1.Eu.Common
             Debug.Assert(zero + zero == zero);
             Debug.Assert(-zero == zero);
             Debug.Assert(n1 + zero == n1);
+            Debug.Assert(n3 + zero == n3);
+            Debug.Assert(n3 - zero == n3);
             Debug.Assert(n1 + n2 == 2591);
             Debug.Assert(zero - n2 == -2);
             Debug.Assert(n2 - n3 == 12);
@@ -378,12 +413,32 @@ namespace ConsoleApp1.Eu.Common
             Debug.Assert(n3 - n2 == -12);
             Debug.Assert(n3 - n3 == 0);
             Debug.Assert(n3 + n3 == -20);
+
             Debug.Assert(n1 * 2 == 5178);
+            Debug.Assert(n1 * 1 == n1);
+
             Debug.Assert(n3 < 0);
             Debug.Assert(n2 > 0);
             Debug.Assert(n1 > n3);
             Debug.Assert(n2 > n3);
             Debug.Assert(n2 == 2);
+
+            Debug.Assert(zero / 13 == 0);
+            Debug.Assert(zero / 1 == 0);
+            Debug.Assert(n1 / 1 == n1);
+            Debug.Assert(n1 / n1 == 1);
+            Debug.Assert(n1 / 1 == n1);
+            Debug.Assert(n1 / n2 == (2589 / 2));
+            Debug.Assert(n1 / n3 == (2589 / -10));
+            Debug.Assert((LargeNumber)1000 / 10 == 100);
+            Debug.Assert((LargeNumber)1000 / 20 == 50);
+            Debug.Assert((LargeNumber)1689 / 20 == (1689 / 20));
+            Debug.Assert((LargeNumber)3689900342 / 4591 == (3689900342 / 4591));
+            Debug.Assert((LargeNumber)"969696969696969696969696969696" / 3 == (LargeNumber)"323232323232323232323232323232");
+
+            Debug.Assert((LargeNumber)9487235 % 2 == 1);
+            Debug.Assert((LargeNumber)"8349438234943823293578234654239452348558" % 2 == 0);
+            Debug.Assert((LargeNumber)9487235648 % 782 == (9487235648 % 782));
         }
 
         private static bool IsZero(LargeNumber n)
@@ -403,6 +458,22 @@ namespace ConsoleApp1.Eu.Common
                 result._sign = 1;
 
             return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var number = obj as LargeNumber;
+            return number != null &&
+                   EqualityComparer<List<byte>>.Default.Equals(_digits, number._digits) &&
+                   _sign == number._sign;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 624245939;
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<byte>>.Default.GetHashCode(_digits);
+            hashCode = hashCode * -1521134295 + _sign.GetHashCode();
+            return hashCode;
         }
     }
 }
