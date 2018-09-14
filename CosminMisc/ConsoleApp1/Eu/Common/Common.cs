@@ -1,6 +1,7 @@
 ﻿using ConsoleApp1.Eu.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,30 +84,38 @@ namespace ConsoleApp1.Eu
             return result;
         }
 
-        public static int GetDivisorCount(LargeNumber n)
+        public static int GetDivisorCountLarge(LargeNumber n)
         {
-            LargeNumber n2 = n;
             LargeNumber half = n / 2 + 1;
             HashSet<LargeNumber> divisors = new HashSet<LargeNumber>();
-
-            for (LargeNumber i = 1; i < half; i += 1)
+            
+            for (LargeNumber i = 2; n > 1; )
             {
-                LargeNumber.Divide(n2, i, out LargeNumber remainder);
+                LargeNumber quotient = LargeNumber.Divide(n, i, out LargeNumber remainder);
 
                 if (remainder == 0)
                 {
-                    foreach (LargeNumber divisor in divisors)
+                    Debug.Write(i.ToString() + " ");
+                    LargeNumber[] divisorsToAdd = divisors.Select(d => d * i).ToArray();
+
+                    foreach (LargeNumber divisorToAdd in divisorsToAdd)
                     {
-                        if (divisor != 1)
-                            divisors.Add(divisor * i);
+                        //Debug.Write(divisorToAdd.ToString() + " ");
+                        divisors.Add(divisorToAdd);
                     }
 
-                    if (!divisors.Contains(i))
-                        divisors.Add(i);
+                    divisors.Add(i);
+                    n = quotient;
                 }
+                else
+                    i = i + 1;
             }
 
-            return divisors.Count + 1;
+            divisors.Add(1);
+
+            Debug.Print("");
+            Debug.Print(string.Join(", ", divisors.OrderBy(d => d).Select(d => d.ToString())));
+            return divisors.Count;
         }
     }
 }
