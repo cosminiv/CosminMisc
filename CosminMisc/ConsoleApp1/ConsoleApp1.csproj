@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
     <Compile Include="Eu\Common\Common.cs" />
     <Compile Include="Eu\Common\LargeNumber.cs" />

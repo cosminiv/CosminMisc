@@ -16,7 +16,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            //var a = Problem_012.Solve();
+            MaxSubarray.TestSpeed();
 
             var duration = sw.ElapsedMilliseconds;
             Debug.Print($"Took {duration}ms");
