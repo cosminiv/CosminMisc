@@ -10,25 +10,26 @@ namespace ConsoleApp1.Eu
 {
     public class Problem_012
     {
-        public static LargeNumber Solve()
+        public static long Solve()
         {
-            LargeNumber triangle = 0;
+            int targetDivisorCount = 500;   // 1800: 15s with 100k primes
+            int primesToPrecompute = 10000;
+            long n = 0;
+            HashSet<long> primes = Tools.GetPrimes(primesToPrecompute);
 
-            for (LargeNumber i = 1; ; i = i + 1)
+            for (long i = 1; ; i++)
             {
-                triangle += i;
-                int divisors = Tools.GetDivisorCountLarge(triangle);
+                n += i;
 
-                if (divisors > 400)
-                    Debug.Print($"400 - {triangle.ToString().Length} digits: {triangle.ToString()}");
-                else if (divisors > 300)
-                    Debug.Print($"300 - {triangle.ToString().Length} digits");
-                //else if (divisors > 200)
-                //    Debug.Print($"200 - {triangle.ToString().Length} digits");
-
-
-                if (divisors > 500)
-                    return triangle;
+                int count = Tools.GetDivisorCount(n, primes);
+                
+                if (count > targetDivisorCount)
+                {
+                    Console.Write($"{n}   ");
+                    Console.Write($"  Count = {count}  ");
+                    Console.WriteLine();
+                    return n;
+                }
             }
         }
     }

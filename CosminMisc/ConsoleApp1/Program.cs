@@ -15,10 +15,14 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
-
-            MaxSubarray.TestSpeed();
+            
+            decimal a = Problem_015.Solve();
 
             var duration = sw.ElapsedMilliseconds;
+
+            Console.WriteLine(a);
+            Console.WriteLine($"Took {duration}ms");
+            Console.ReadLine();
             Debug.Print($"Took {duration}ms");
         }
     }
