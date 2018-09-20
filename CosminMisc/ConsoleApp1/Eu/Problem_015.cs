@@ -12,9 +12,59 @@ namespace ConsoleApp1.Eu
         public static decimal Solve()
         {
             Dictionary<string, decimal> cache = new Dictionary<string, decimal>();
-            decimal result = PathCountRecursiveWithCache(20, 20, cache);
-            //decimal result = PathCountRecursive(45, 45);
+            int side = 4;
+            decimal result = PathCountRecursiveWithCache(side, side, cache);
+            //decimal result2 = PathCountNonRecursive(side);
+            //Debug.Assert(result == result2);
+            //decimal result = PathCountRecursive(side, side);
             return result;
+        }
+
+        
+        private static decimal PathCountNonRecursive(int side)
+        {
+            Dictionary<string, decimal> cache = new Dictionary<string, decimal>()
+            {
+                { "1_0", 1 },
+                { "1_1", 2 }
+            };
+
+            for (int crtSide = 2; crtSide <= side; crtSide++)
+            {
+                int prevSide = crtSide - 1;
+                decimal prevSquare = cache[$"{prevSide}_{prevSide}"];
+                decimal rect = 0;
+
+                decimal prevSumValue = 1;
+                AddToCache(cache, $"{crtSide}_0", 1);
+                rect += 1;
+
+                for (int j = 1; j <= crtSide - 1; j++)
+                {
+                    decimal crtSumValue = cache[$"{prevSide}_{j}"];
+                    rect += crtSumValue;
+
+                    string newKey = $"{crtSide}_{j}";
+                    AddToCache(cache, newKey, prevSumValue + crtSumValue);
+
+                    prevSumValue = crtSumValue;
+                }
+
+                decimal square = 2 * rect;
+                AddToCache(cache, $"{crtSide}_{crtSide}", square);
+            }
+
+            decimal lastSquare = cache[$"{side}_{side}"];
+            return lastSquare;
+        }
+
+        private static void AddToCache(Dictionary<string, decimal> cache, string key, decimal value)
+        {
+            if (!cache.ContainsKey(key))
+            {
+                Debug.Print($"Adding {key}: {value}");
+                cache.Add(key, value);
+            }
         }
 
         private static decimal PathCountRecursive(int width, int height)
