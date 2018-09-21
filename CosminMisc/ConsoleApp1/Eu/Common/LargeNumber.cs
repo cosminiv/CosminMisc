@@ -512,11 +512,6 @@ namespace ConsoleApp1.Eu.Common
         public override int GetHashCode()
         {
             return this.ToString().GetHashCode();
-
-            //var hashCode = 624245939;
-            //hashCode = hashCode * -1521134295 + EqualityComparer<List<byte>>.Default.GetHashCode(_digits);
-            //hashCode = hashCode * -1521134295 + _sign.GetHashCode();
-            //return hashCode;
         }
 
         public int CompareTo(object obj)
