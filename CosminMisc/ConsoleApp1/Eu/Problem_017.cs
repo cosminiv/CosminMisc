@@ -14,7 +14,6 @@ namespace ConsoleApp1.Eu
 
         public static int Solve()
         {
-            
             int length = 0;
 
             for (int i = 1; i <= 1000; i++)
