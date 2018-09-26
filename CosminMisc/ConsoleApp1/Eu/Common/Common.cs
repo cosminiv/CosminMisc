@@ -86,10 +86,10 @@ namespace ConsoleApp1.Eu
             return maxProduct;
         }
 
-        public static int GetDivisorCount(long n, HashSet<long> primes)
+        public static HashSet<long> GetDivisors(long n, HashSet<long> primes)
         {
             if (n == 1)
-                return 1;
+                return new HashSet<long> { 1 };
 
             long n2 = n;
             HashSet<long> divisors = new HashSet<long>();
@@ -117,7 +117,12 @@ namespace ConsoleApp1.Eu
 
             divisors.Add(1);
 
-            return divisors.Count;
+            return divisors;
+        }
+
+        public static long GetDivisorCount(long n, HashSet<long> primes)
+        {
+            return GetDivisors(n, primes).Count;
         }
 
         public static int GetDivisorCountLarge(LargeNumber n)

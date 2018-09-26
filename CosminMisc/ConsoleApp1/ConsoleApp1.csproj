@@ -68,6 +68,9 @@
     <Compile Include="Eu\Problem_018.cs" />
     <Compile Include="Eu\Problem_019.cs" />
     <Compile Include="Eu\Problem_020.cs" />
+    <Compile Include="Eu\Problem_021.cs" />
+    <Compile Include="Eu\Problem_022.cs" />
+    <Compile Include="Eu\Problem_023.cs" />
     <Compile Include="Eu\Problem_025.cs" />
     <Compile Include="PerformanceMonitor.cs" />
     <Compile Include="PerformanceMonitorTest.cs" />

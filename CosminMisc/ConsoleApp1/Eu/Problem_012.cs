@@ -21,7 +21,7 @@ namespace ConsoleApp1.Eu
             {
                 n += i;
 
-                int count = Tools.GetDivisorCount(n, primes);
+                long count = Tools.GetDivisorCount(n, primes);
                 
                 if (count > targetDivisorCount)
                 {
