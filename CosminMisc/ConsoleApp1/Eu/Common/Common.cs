@@ -10,8 +10,11 @@ namespace ConsoleApp1.Eu
 {
     public class Tools
     {
-        public static bool IsOddNumberPrime(long n)
+        public static bool IsNumberPrime(long n)
         {
+            if (n == 2) return true;
+            if (n % 2 == 0) return false;
+
             int max = (int)(Math.Sqrt(n) + 1);
 
             for (long i = 3; i <= max; i += 2)
@@ -38,11 +41,29 @@ namespace ConsoleApp1.Eu
 
             for (long i = 3; ; i+=2)
             {
-                if (IsOddNumberPrime(i))
+                if (IsNumberPrime(i))
                     primes.Add(i);
 
                 if (primes.Count == count)
                     return primes;
+            }
+        }
+
+        public static HashSet<long> GetPrimesUpTo(int max)
+        {
+            HashSet<long> primes = new HashSet<long>();
+            if (max <= 0) return primes;
+
+            primes.Add(2);
+            if (max == 1) return primes;
+
+            for (long i = 3; ; i += 2)
+            {
+                if (IsNumberPrime(i))
+                {
+                    if (i <= max) primes.Add(i);
+                    else return primes;
+                }
             }
         }
 

@@ -17,7 +17,7 @@ namespace ConsoleApp1.Eu
 
             for (int i = 3; i <= max; i += 2)
             {
-                if (Tools.IsOddNumberPrime(i))
+                if (Tools.IsNumberPrime(i))
                 {
                     sum += i;
 

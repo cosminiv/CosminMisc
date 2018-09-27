@@ -16,7 +16,7 @@ namespace ConsoleApp1.Eu
  
             for (long i = 3; ; i += 2)
             {
-                if (Tools.IsOddNumberPrime(i))
+                if (Tools.IsNumberPrime(i))
                     primesFound++;
 
                 if (primesFound == target)
