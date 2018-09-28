@@ -523,5 +523,17 @@ namespace ConsoleApp1.Eu.Common
             else
                 return 0;
         }
+
+        public static LargeNumber Power(LargeNumber @base, int exp)
+        {
+            LargeNumber result = 1;
+
+            for (int i = 0; i < exp; i++)
+            {
+                result = result * @base;
+            }
+
+            return result;
+        }
     }
 }

@@ -13,16 +13,14 @@ namespace ConsoleApp1.Eu
 
         public static long Solve()
         {
-            //return SolveBruteForce();
-
             string chars = "0123456789";
-            List<string> permutations = GeneratePermutationsRecursive(chars);
+            List<string> permutations = GeneratePermutations(chars);
 
             permutations = permutations.OrderBy(c => c).ToList();
             return Convert.ToInt64(permutations[999999]);
         }
 
-        public static List<string> GeneratePermutationsRecursive(string chars)
+        public static List<string> GeneratePermutations(string chars)
         {
             List<string> result = new List<string>();
 
@@ -34,7 +32,7 @@ namespace ConsoleApp1.Eu
 
             result = new List<string>(chars.Length * (chars.Length - 1));
             string firstElem = chars[0].ToString();
-            List<string> smallerPermutations = GeneratePermutationsRecursive(chars.Substring(1));
+            List<string> smallerPermutations = GeneratePermutations(chars.Substring(1));
 
             for (int j = 0; j <= chars.Length - 1; j++)
             {

@@ -51,20 +51,26 @@ namespace ConsoleApp1.Eu
 
         public static HashSet<long> GetPrimesUpTo(int max)
         {
-            HashSet<long> primes = new HashSet<long>();
-            if (max <= 0) return primes;
+            // false = prime, true = non-prime
+            bool[] candidates = new bool[max + 1];
+            candidates[0] = candidates[1] = true;
 
-            primes.Add(2);
-            if (max == 1) return primes;
-
-            for (long i = 3; ; i += 2)
+            for (int i = 2; i < max / 2; i++)
             {
-                if (IsNumberPrime(i))
-                {
-                    if (i <= max) primes.Add(i);
-                    else return primes;
-                }
+                if (candidates[i] == true)
+                    continue;
+
+                for (int j = i + i; j <= max; j = j + i)
+                    candidates[j] = true;
             }
+
+            var result = new HashSet<long>();
+
+            for (int i = 2; i < candidates.Length; i++)
+                if (candidates[i] == false)
+                    result.Add(i);
+
+            return result;
         }
 
         public static long MaxProduct(byte[] data, int factorCount)
