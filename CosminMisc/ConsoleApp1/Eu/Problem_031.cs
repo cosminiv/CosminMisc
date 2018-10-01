@@ -21,6 +21,7 @@ namespace ConsoleApp1.Eu
             List<int> numbers = new List<int> { 1, 2, 5, 10, 20, 50, 100, 200 };
             int targetSum = 200;
             int ways = 1;   // for taking 200 once
+            long totalChecks = 0;
 
             for (int i1 = 0; i1 <= 200; i1++)
             {
@@ -54,6 +55,7 @@ namespace ConsoleApp1.Eu
                                     for (int i7 = 0; i7 <= 2; i7++)
                                     {
                                         int sum7 = sum6 + i7 * 100;
+                                        totalChecks++;
 
                                         if (sum7 == targetSum) { ways++; break; }
                                         if (sum7 > targetSum) break;

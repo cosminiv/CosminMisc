@@ -30,8 +30,8 @@ namespace ConsoleApp1.Eu
 
         public static long Solve()
         {
-            int[][] data = //ParseData(File.ReadAllText(@"C:\Temp\p067_triangle.txt")); 
-                           ParseData(_dataStr);
+            int[][] data = ParseData(File.ReadAllText(@"C:\Temp\p067_triangle.txt")); 
+                           //ParseData(_dataStr);
             GeneratePaths(data, data.Length - 1);
             long result = _paths.Select(p => p.Sum).Max();
             return result;
