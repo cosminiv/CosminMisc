@@ -8,7 +8,7 @@ namespace ConsoleApp1.Eu
 {
     public class Problem_036
     {
-        static int[] _digits = new int[25];
+        static readonly int[] _digits = new int[25];
 
         public static long Solve()
         {
