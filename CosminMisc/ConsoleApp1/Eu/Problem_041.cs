@@ -53,7 +53,7 @@ namespace ConsoleApp1.Eu
             end: return result;
         }
 
-        public static long InsertDigit(long number, int numberLength, int digit, int pos)
+        private static long InsertDigit(long number, int numberLength, int digit, int pos)
         {
             long multOfTen = (long)Math.Pow(10, numberLength - pos);
 
