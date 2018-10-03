@@ -19,7 +19,8 @@ namespace ConsoleApp1.Eu
                 for (int b = a; b < 1001; b++)
                 {
                     var c = Math.Sqrt(a * a + b * b);
-                    if (c > 1000)
+                    int perim = a + b + (int)c;
+                    if (perim > 1000)
                     {
                         if (b == a) goto outOfTheLoops;
                         else break;
@@ -27,7 +28,6 @@ namespace ConsoleApp1.Eu
 
                     if (Math.Ceiling(c) == Math.Floor(c))
                     {
-                        int perim = a + b + (int)c;
                         bool found = perimAndTriangles.TryGetValue(perim, out List<Triangle> triangles);
                         Triangle triangle = new Triangle { A = a, B = b, C = (int)c };
                         if (found)

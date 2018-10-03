@@ -10,7 +10,7 @@ namespace ConsoleApp1.Eu
 {
     public class Tools
     {
-        public static bool IsNumberPrime(long n)
+        public static bool IsPrime(long n)
         {
             if (n == 2) return true;
             if (n % 2 == 0) return false;
@@ -41,12 +41,20 @@ namespace ConsoleApp1.Eu
 
             for (long i = 3; ; i+=2)
             {
-                if (IsNumberPrime(i))
+                if (IsPrime(i))
                     primes.Add(i);
 
                 if (primes.Count == count)
                     return primes;
             }
+        }
+
+        public static int GetDigitCount(long n)
+        {
+            int count = 0;
+            for (long i = n; i > 0; i = i / 10)
+                count++;
+            return count;
         }
 
         public static HashSet<long> GetPrimesUpTo(int max)
