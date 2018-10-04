@@ -49,6 +49,7 @@
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
     <Compile Include="Eu\Common\Common.cs" />
+    <Compile Include="Eu\Common\PrimeFactor.cs" />
     <Compile Include="Eu\Common\LargeNumber.cs" />
     <Compile Include="Eu\Problem_001.cs" />
     <Compile Include="Eu\Problem_002.cs" />
@@ -88,7 +89,12 @@
     <Compile Include="Eu\Problem_041.cs" />
     <Compile Include="Eu\Problem_042.cs" />
     <Compile Include="Eu\Problem_043.cs" />
+    <Compile Include="Eu\Problem_045.cs" />
+    <Compile Include="Eu\Problem_046.cs" />
+    <Compile Include="Eu\Problem_047.cs" />
+    <Compile Include="Eu\Problem_048.cs" />
     <Compile Include="Eu\Problem_049.cs" />
+    <Compile Include="Eu\Problem_050.cs" />
     <Compile Include="PerformanceMonitor.cs" />
     <Compile Include="PerformanceMonitorTest.cs" />
     <Compile Include="Program.cs" />

@@ -9,6 +9,7 @@ namespace ConsoleApp1.Eu
 {
     public class Problem_043
     {
+        // TODO: Takes 3.3s, perhaps make it faster
         public static long Solve()
         {
             var numbers = Problem_041.GeneratePermutations(1234567890);

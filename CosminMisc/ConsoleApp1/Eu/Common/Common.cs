@@ -155,6 +155,31 @@ namespace ConsoleApp1.Eu
             return divisors;
         }
 
+        public static List<PrimeFactor> GetPrimeFactors(long n, List<long> primes) {
+            List<PrimeFactor> primeFactors = new List<PrimeFactor>();
+            int primeIndex = 0;
+            PrimeFactor prevFactor = null;
+
+            for (long n2 = n; n2 > 1 && primeIndex < primes.Count; ) 
+            {
+                long prime = primes[primeIndex];
+                long quot = Math.DivRem(n2, prime, out long rem);
+                if (rem == 0) {
+                    if (prevFactor == null || prevFactor.Factor != prime) {
+                        prevFactor = new PrimeFactor { Factor = prime, Exponent = 1 };
+                        primeFactors.Add(prevFactor);
+                    }
+                    else
+                        prevFactor.Exponent++;
+                    n2 = quot;
+                }
+                else
+                    primeIndex++;
+            }
+
+            return primeFactors;
+        }
+
         public static long GetDivisorCount(long n, HashSet<long> primes)
         {
             return GetDivisors(n, primes).Count;
