@@ -74,6 +74,7 @@
     <Compile Include="Eu\Problem_023.cs" />
     <Compile Include="Eu\Problem_024.cs" />
     <Compile Include="Eu\Problem_025.cs" />
+    <Compile Include="Eu\Problem_026.cs" />
     <Compile Include="Eu\Problem_027.cs" />
     <Compile Include="Eu\Problem_028.cs" />
     <Compile Include="Eu\Problem_029.cs" />
