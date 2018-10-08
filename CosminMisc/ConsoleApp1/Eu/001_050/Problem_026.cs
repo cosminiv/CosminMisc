@@ -18,19 +18,19 @@ namespace ConsoleApp1.Eu
             int maxLenFound = 6;
             int numberForMaxRun = 7;
 
-            for (int divisor = 8; divisor < MAX; divisor++) {
-                LargeNumber q = LargeNumber.Divide(N, divisor, out LargeNumber remainder);
-                string digits = q.ToString();
+            //for (int divisor = 8; divisor < MAX; divisor++) {
+            //    LargeNumber q = LargeNumber.Divide(N, divisor, out LargeNumber remainder);
+            //    string digits = q.ToString();
 
-                for (int skip = 0; skip < MAX_SKIP; skip++) {
-                    int maxLenToCheck = (MAX_DIGITS - skip) / 2;
-                    for (int len = maxLenFound + 1; len < length; len++) {
-                        string candidate1 = digits.Substring(skip, len)
-                    }
-                }
+            //    for (int skip = 0; skip < MAX_SKIP; skip++) {
+            //        int maxLenToCheck = (MAX_DIGITS - skip) / 2;
+            //        for (int len = maxLenFound + 1; len < length; len++) {
+            //            string candidate1 = digits.Substring(skip, len)
+            //        }
+            //    }
 
-                //Console.WriteLine($"\t{i}:\t{q}");
-            }
+            //    //Console.WriteLine($"\t{i}:\t{q}");
+            //}
 
             return 0;
         }

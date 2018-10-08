@@ -1,5 +1,6 @@
 ﻿using ConsoleApp1.Algorithms;
 using ConsoleApp1.Eu;
+using ConsoleApp1.Eu._051_100;
 using ConsoleApp1.Eu.Common;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            var a = Problem_026.Solve();
+            var a = Problem_060.Solve();
 
             var duration = sw.ElapsedMilliseconds;
 

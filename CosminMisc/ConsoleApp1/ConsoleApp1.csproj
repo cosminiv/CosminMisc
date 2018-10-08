@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
+    <Compile Include="Eu\051_100\Problem_051.cs" />
+    <Compile Include="Eu\051_100\Problem_060.cs" />
+    <Compile Include="Eu\051_100\Problem_077.cs" />
     <Compile Include="Eu\_Common\Common.cs" />
     <Compile Include="Eu\_Common\PrimeFactor.cs" />
     <Compile Include="Eu\_Common\LargeNumber.cs" />
