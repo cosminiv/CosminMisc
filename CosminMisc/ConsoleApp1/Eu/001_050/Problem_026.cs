@@ -18,19 +18,28 @@ namespace ConsoleApp1.Eu
             int maxLenFound = 6;
             int numberForMaxRun = 7;
 
-            //for (int divisor = 8; divisor < MAX; divisor++) {
-            //    LargeNumber q = LargeNumber.Divide(N, divisor, out LargeNumber remainder);
-            //    string digits = q.ToString();
+            Console.Title = "Problem 26";
 
-            //    for (int skip = 0; skip < MAX_SKIP; skip++) {
-            //        int maxLenToCheck = (MAX_DIGITS - skip) / 2;
-            //        for (int len = maxLenFound + 1; len < length; len++) {
-            //            string candidate1 = digits.Substring(skip, len)
-            //        }
-            //    }
+            for (int divisor = 8; divisor < MAX; divisor++) {
+                LargeNumber q = LargeNumber.Divide(N, divisor, out LargeNumber remainder);
+                string digits = q.ToString();
 
-            //    //Console.WriteLine($"\t{i}:\t{q}");
-            //}
+                for (int skip = 0; skip < MAX_SKIP; skip++) {
+                    int maxLenToCheck = (MAX_DIGITS - skip) / 2;
+                    for (int len = maxLenFound + 1; len <= maxLenToCheck; len++) {
+                        string candidate1 = digits.Substring(skip, len);
+                        string candidate2 = digits.Substring(skip + len, len);
+
+                        if (candidate1 == candidate2) {
+                            Console.WriteLine($"\t{divisor}:\t{digits.Substring(0, skip)}\t{candidate1}\t{candidate1.Length} digits");
+                            goto nextDivisor;
+                        }
+                    }
+                }
+
+                nextDivisor:
+                ;
+            }
 
             return 0;
         }

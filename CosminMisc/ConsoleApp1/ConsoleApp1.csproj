@@ -51,7 +51,9 @@
     <Compile Include="Eu\051_100\Problem_051.cs" />
     <Compile Include="Eu\051_100\Problem_060.cs" />
     <Compile Include="Eu\051_100\Problem_077.cs" />
-    <Compile Include="Eu\_Common\Common.cs" />
+    <Compile Include="Eu\_Common\Combination.cs" />
+    <Compile Include="Eu\_Common\Primes.cs" />
+    <Compile Include="Eu\_Common\Tools.cs" />
     <Compile Include="Eu\_Common\PrimeFactor.cs" />
     <Compile Include="Eu\_Common\LargeNumber.cs" />
     <Compile Include="Eu\001_050\Problem_001.cs" />

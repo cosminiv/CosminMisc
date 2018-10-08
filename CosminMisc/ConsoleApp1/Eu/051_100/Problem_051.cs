@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Eu._Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,47 +10,45 @@ namespace ConsoleApp1.Eu._051_100
 {
     public class Problem_051
     {
-        static Dictionary<int, Combinations> _cache =
-         new Dictionary<int, Combinations>();
+        static Primes _primes;
+
+        static Dictionary<int, Combinations> _cache = new Dictionary<int, Combinations>();
         static long[] _multOfTen = new long[] { 1, 10, 100, 1000, 10000,
          (long)1E+5, (long)1E+6, (long)1E+7, (long)1E+8, (long)1E+9 };
         static long[] _primesFound = new long[15];
+
 
         public static int Solve() {
             int MAX = 1000000;
             int TARGET_COUNT = 8;
 
-            Stopwatch sw = Stopwatch.StartNew();
-
             for (int digits = 1; digits <= 5; digits++) {
                 GenerateCombinations(digits);
                 //	PrintCombinations(digits);
             }
-            //return 0;  	
 
-            HashSet<long> primesSet = GetPrimesUpTo(MAX);
-            List<long> primesList = primesSet.OrderBy(a => a).ToList();
+            _primes = new Primes(MAX);
+            List<long> primesList = _primes.ToList();
 
             // start at prime > 10
             for (int i = 5; i < primesList.Count; i++) {
                 long p = primesList[i];
-                if (HasPrimesAfterSubstitutions(p, TARGET_COUNT, primesSet)) {
+                if (HasPrimesAfterSubstitutions(p, TARGET_COUNT)) {
                     Console.WriteLine($"Found: {_primesFound[0]}");
                     break;
                 }
             }
 
-            Console.WriteLine($"Took {sw.ElapsedMilliseconds}ms");
             return (int)_primesFound[0];
         }
 
         static bool HasPrimesAfterSubstitutions(
-            long prime, int targetCount, HashSet<long> primes) {
+            long prime, int targetCount) {
 
             int digits = (int)Math.Log10(prime);
 
             // We don't want to substitute the first digit 
-            // to the right (it would be even eventually => non prime)
+            // to the right (it would eventually be even => non prime)
             long trimmedPrime = prime / 10;
             long lastDigit = prime % 10;
 
@@ -69,7 +68,7 @@ namespace ConsoleApp1.Eu._051_100
                     long subst = GenerateSubstitution(trimmedPrime, digit, config, false);
                     long candidate = subst * 10 + lastDigit;
 
-                    if (primes.Contains(candidate) && (int)Math.Log10(candidate) == digits) {
+                    if (_primes.IsPrime(candidate) && (int)Math.Log10(candidate) == digits) {
                         _primesFound[primesFound] = candidate;
                         if (++primesFound >= targetCount) {
                             Console.WriteLine($"{string.Join(", ", _primesFound)}");
@@ -134,7 +133,6 @@ namespace ConsoleApp1.Eu._051_100
             Console.WriteLine(comb.ToString());
         }
 
-
         class Combinations
         {
             public List<Config> Configs = new List<Config>();
@@ -145,7 +143,6 @@ namespace ConsoleApp1.Eu._051_100
             }
         }
 
-
         class Config
         {
             public List<int> Positions = new List<int>();
@@ -154,28 +151,6 @@ namespace ConsoleApp1.Eu._051_100
                 string result = string.Join("", Positions);
                 return result;
             }
-        }
-
-        public static HashSet<long> GetPrimesUpTo(int max) {
-            // false = prime, true = non-prime
-            bool[] candidates = new bool[max + 1];
-            candidates[0] = candidates[1] = true;
-
-            for (int i = 2; i < max / 2; i++) {
-                if (candidates[i] == true)
-                    continue;
-
-                for (int j = i + i; j <= max; j = j + i)
-                    candidates[j] = true;
-            }
-
-            var result = new HashSet<long>();
-
-            for (int i = 2; i < candidates.Length; i++)
-                if (candidates[i] == false)
-                    result.Add(i);
-
-            return result;
         }
     }
 }

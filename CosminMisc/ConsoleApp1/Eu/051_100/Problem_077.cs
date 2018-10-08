@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ConsoleApp1.Eu._Common;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,20 +11,20 @@ namespace ConsoleApp1.Eu._051_100
 {
     public class Problem_077
     {
-        static bool[] _sieve;
+        static Primes _primes;
         static List<long> _primesList;
         static readonly int MAX_PRIME = (int)1000;
-        static int[] _waysCache = new int[1000];
+        static Dictionary<long, Solution> _solutions = new Dictionary<long, Solution>();
 
         public static long Solve() {
             Stopwatch sw = Stopwatch.StartNew();
 
-            _sieve = GetPrimesUpTo(MAX_PRIME);
-            _primesList = MakePrimeList();
+            _primes = new Primes(MAX_PRIME);
+            _primesList = _primes.ToList();
             long result = 0;
 
             for (long n = 2; ; n++) {
-                int ways = CountWaysToSplit(n);
+                int ways = GenerateWaysToSplit(n);
                 Console.WriteLine($"{n}: {ways}");
                 if (ways >= 5000) {
                     result = n;
@@ -33,47 +35,32 @@ namespace ConsoleApp1.Eu._051_100
             return result;
         }
 
-        static int CountWaysToSplit(long n) {
-            int result = 0;
-            if (IsPrime(n)) result++;
+        static int GenerateWaysToSplit(long n) {
+            Solution solution = new Solution();
+            if (_primes.IsPrime(n)) 
+                solution.Combinations.Add(new Combination(n));
 
             for (int i = 0; i < _primesList.Count; i++) {
                 long prime = _primesList[i];
                 if (prime > n / 2) break;
                 long dif = n - prime;
-                result += _waysCache[dif];
+                Solution smallerSolution = _solutions[dif];
+
+                foreach (Combination smallerComb in smallerSolution.Combinations) {
+                    Combination newComb = new Combination(smallerComb.Items, prime);
+                    solution.Combinations.Add(newComb);
+                }
             }
 
-            _waysCache[n] = result;
-            return result;
+            _solutions.Add(n, solution);
+            return solution.Combinations.Count;
         }
 
-        static List<long> MakePrimeList() {
-            List<long> result = new List<long>();
-            for (int i = 2; i < _sieve.Length; i++)
-                if (_sieve[i] == false)
-                    result.Add(i);
-            return result;
+        class Solution
+        {
+            public HashSet<Combination> Combinations = new HashSet<Combination>();
         }
 
-        static bool IsPrime(long n) {
-            return false == _sieve[n];
-        }
 
-        static bool[] GetPrimesUpTo(int max) {
-            // false = prime, true = non-prime
-            bool[] candidates = new bool[max + 1];
-            candidates[0] = candidates[1] = true;
-
-            for (int i = 2; i < max / 2; i++) {
-                if (candidates[i] == true)
-                    continue;
-
-                for (int j = i + i; j <= max; j = j + i)
-                    candidates[j] = true;
-            }
-
-            return candidates;
-        }
     }
 }
