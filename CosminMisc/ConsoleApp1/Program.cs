@@ -16,8 +16,14 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
+            long a = 0;
 
-            var a = Problem_026.Solve();
+            //try {
+                a = Problem_053.Solve();
+            //}
+            //catch (Exception ex) {
+            //    Console.WriteLine(ex);
+            //}
 
             var duration = sw.ElapsedMilliseconds;
 

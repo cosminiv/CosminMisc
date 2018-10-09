@@ -1,6 +1,5 @@
 ﻿using ConsoleApp1.Eu._Common;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,24 +8,23 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.Eu._051_100
 {
-    public class Problem_077
+    public class Problem_078
     {
-        static Primes _primes;
-        static List<long> _primesList;
-        static readonly int MAX_PRIME = (int)1000;
+        static readonly int TARGET = (int)1E+6;
         static Dictionary<long, Solution> _solutions = new Dictionary<long, Solution>();
 
         public static long Solve() {
             Stopwatch sw = Stopwatch.StartNew();
 
-            _primes = new Primes(MAX_PRIME);
-            _primesList = _primes.ToList();
-            long result = 0;
+            _solutions.Add(1, new Solution());
+            _solutions[1].Combinations.Add(new Combination(1));
 
+            long result = 0;
             for (long n = 2; ; n++) {
                 int ways = GenerateWaysToSplit(n);
                 Console.WriteLine($"{n}: {ways}");
-                if (ways >= 5000) {
+                //if (ways < 100) PrintWaysToSplit(n);
+                if (ways % TARGET == 0) {
                     result = n;
                     break;
                 }
@@ -35,19 +33,22 @@ namespace ConsoleApp1.Eu._051_100
             return result;
         }
 
+        private static void PrintWaysToSplit(long n) {
+            string txt = string.Join("\n", _solutions[n].Combinations);
+            Console.WriteLine(txt);
+            Console.WriteLine();
+        }
+
         static int GenerateWaysToSplit(long n) {
             Solution solution = new Solution();
-            if (_primes.IsPrime(n)) 
-                solution.Combinations.Add(new Combination(n));
+            solution.Combinations.Add(new Combination(n));
 
-            for (int i = 0; i < _primesList.Count; i++) {
-                long prime = _primesList[i];
-                if (prime > n / 2) break;
-                long dif = n - prime;
+            for (int i = 1; i <= n / 2; i++) {
+                long dif = n - i;
                 Solution smallerSolution = _solutions[dif];
 
                 foreach (Combination smallerComb in smallerSolution.Combinations) {
-                    Combination newComb = new Combination(smallerComb.Items, prime);
+                    Combination newComb = new Combination(smallerComb.Items, i);
                     solution.Combinations.Add(newComb);
                 }
             }
