@@ -218,5 +218,20 @@ namespace ConsoleApp1.Eu
             Debug.Print(string.Join(", ", divisors.OrderBy(d => d).Select(d => d.ToString())));
             return divisors.Count;
         }
+
+        static readonly int[] _palindromeDigitCache = new int[50];
+
+        public static bool IsPalindrome(long n, int @base = 10) {
+            int j = 0;
+
+            for (long i = n; i > 0; i = i / @base)
+                _palindromeDigitCache[j++] = (int)(i % @base);
+
+            for (long i = 0; i < j / 2; i++)
+                if (_palindromeDigitCache[i] != _palindromeDigitCache[j - i - 1])
+                    return false;
+
+            return true;
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace ConsoleApp1
             long a = 0;
 
             //try {
-                a = Problem_053.Solve();
+                a = Problem_059.Solve();
             //}
             //catch (Exception ex) {
             //    Console.WriteLine(ex);

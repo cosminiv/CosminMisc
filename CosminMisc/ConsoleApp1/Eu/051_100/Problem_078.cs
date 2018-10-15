@@ -20,9 +20,10 @@ namespace ConsoleApp1.Eu._051_100
             _solutions[1].Combinations.Add(new Combination(1));
 
             long result = 0;
-            for (long n = 2; ; n++) {
+            for (long n = 2; n < 50; n++) {
                 int ways = GenerateWaysToSplit(n);
-                Console.WriteLine($"{n}: {ways}");
+                Console.WriteLine($"{n}\t{ways}");
+                Debug.Print($"{n}\t{ways}");
                 //if (ways < 100) PrintWaysToSplit(n);
                 if (ways % TARGET == 0) {
                     result = n;

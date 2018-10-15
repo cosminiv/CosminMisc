@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ConsoleApp1</RootNamespace>
     <AssemblyName>ConsoleApp1</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,7 +52,12 @@
     <Compile Include="Eu\051_100\Problem_051.cs" />
     <Compile Include="Eu\051_100\Problem_052.cs" />
     <Compile Include="Eu\051_100\Problem_053.cs" />
+    <Compile Include="Eu\051_100\Problem_054.cs" />
+    <Compile Include="Eu\051_100\Problem_055.cs" />
+    <Compile Include="Eu\051_100\Problem_056.cs" />
+    <Compile Include="Eu\051_100\Problem_057.cs" />
     <Compile Include="Eu\051_100\Problem_058.cs" />
+    <Compile Include="Eu\051_100\Problem_059.cs" />
     <Compile Include="Eu\051_100\Problem_060.cs" />
     <Compile Include="Eu\051_100\Problem_077.cs" />
     <Compile Include="Eu\051_100\Problem_078.cs" />

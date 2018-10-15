@@ -535,5 +535,9 @@ namespace ConsoleApp1.Eu.Common
 
             return result;
         }
+
+        public int DigitCount {
+            get { return _digits.Count; }
+        }
     }
 }
