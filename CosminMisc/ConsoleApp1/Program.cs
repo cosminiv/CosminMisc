@@ -19,7 +19,7 @@ namespace ConsoleApp1
             long a = 0;
 
             //try {
-                a = Problem_059.Solve();
+                a = Problem_061.Solve();
             //}
             //catch (Exception ex) {
             //    Console.WriteLine(ex);
@@ -27,7 +27,8 @@ namespace ConsoleApp1
 
             var duration = sw.ElapsedMilliseconds;
 
-            Console.WriteLine(a);
+            Console.WriteLine();
+            Console.WriteLine($"Result: {a}");
             Console.WriteLine($"Took {duration}ms");
             Console.ReadLine();
             Debug.Print($"Took {duration}ms");

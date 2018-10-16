@@ -13,13 +13,26 @@ namespace ConsoleApp1.Eu._051_100
         static readonly string DICTIONARY_FILE = @"C:\Temp\p042_words.txt";
         static HashSet<string> DICTIONARY;
         static readonly int PWD_LENGTH = 3;
-        static readonly byte[] DECRYPTED_BYTES = new byte[50];
+        static readonly byte[] DECRYPTED_BYTES = new byte[70];
 
         public static int Solve() {
             byte[] values = File.ReadAllText(CYPHER_FILE).Split(',').Select(v => byte.Parse(v)).ToArray();
             DICTIONARY = File.ReadAllText(DICTIONARY_FILE).Split(',').Select(v => v.Trim('"').ToLower()).ToHashSet();
-            byte[] password = new byte[3];
+            
+            int result = 0;
 
+            foreach (byte[] password in GeneratePasswords()) {
+                result = Decrypt(values, password);
+
+                if (result > 0)
+                    return result;
+            }
+
+            return result;
+        }
+
+        static IEnumerable<byte[]> GeneratePasswords() {
+            byte[] password = new byte[3];
             for (byte i1 = (byte)'a'; i1 <= (byte)'z'; i1++) {
                 password[0] = i1;
 
@@ -29,7 +42,31 @@ namespace ConsoleApp1.Eu._051_100
                     for (byte i3 = (byte)'a'; i3 <= (byte)'z'; i3++) {
                         password[2] = i3;
 
-                        bool foundWords = Decrypt(values, password);
+                        yield return password;
+                    }
+                }
+            }
+        }
+
+        private static int Decrypt(byte[] encrypted, byte[] password) {
+            // Did some trial and error to get these:
+            int START = 51;
+            int MAX_LEN = 15;
+
+            for (int i = 0; i < DECRYPTED_BYTES.Length; i++) {
+                DECRYPTED_BYTES[i] = (byte)(encrypted[START + i] ^ password[i % PWD_LENGTH]);
+            }
+
+            string decryptedText = new string(DECRYPTED_BYTES.Select(b => (char)b).ToArray()).ToLower();
+
+            // Look for (longer) words
+            for (int start = 0; start <= decryptedText.Length - MAX_LEN; start++) {
+                for (int length = 5; length < MAX_LEN; length++) {
+                    string word = decryptedText.Substring(start, length);
+                    
+                    if (DICTIONARY.Contains(word)) {
+                        Console.WriteLine($"Found word: {word}");
+                        return DecryptAll(encrypted, password);
                     }
                 }
             }
@@ -37,35 +74,19 @@ namespace ConsoleApp1.Eu._051_100
             return 0;
         }
 
-
-        private static bool Decrypt(byte[] encrypted, byte[] password) {
-            for (int i = 0; i < DECRYPTED_BYTES.Length; i++) {
-                DECRYPTED_BYTES[i] = (byte)(encrypted[i] ^ password[i % PWD_LENGTH]);
+        static int DecryptAll(byte[] encrypted, byte[] password) {
+            int sum = 0;
+            byte[] decrypted_bytes_full = new byte[encrypted.Length];
+            for (int i = 0; i < encrypted.Length; i++) {
+                decrypted_bytes_full[i] = (byte)(encrypted[i] ^ password[i % PWD_LENGTH]);
+                sum += decrypted_bytes_full[i];
             }
 
-            string decryptedText = new string(DECRYPTED_BYTES.Select(b => (char)b).ToArray()).ToLower();
-            for (int i = 3; i < 30; i++) {
-                string word = decryptedText.Substring(0, i);
-                string word2 = decryptedText.Substring(1, i);
-                string word3 = decryptedText.Substring(2, i);
+            string decryptedTextFull = new string(decrypted_bytes_full.Select(b => (char)b).ToArray()).ToLower();
+            Console.WriteLine(decryptedTextFull);
+            Console.WriteLine($"Password: {(char)password[0]}{(char)password[1]}{(char)password[2]}");
 
-                if (DICTIONARY.Contains(word)) {
-                    Console.WriteLine(word);
-                    //for (int j = 1; j < 20; j++) {
-                    //    if (DICTIONARY.Contains(decryptedText.Substring(0, i)))
-                    //}
-                }
-
-                if (DICTIONARY.Contains(word2)) {
-                    Console.WriteLine($"{decryptedText[0]}{word2}");
-                }
-
-                if (DICTIONARY.Contains(word3)) {
-                    Console.WriteLine($"{decryptedText[0]}{decryptedText[1]}{word3}");
-                }
-            }
-
-            return false;
+            return sum;
         }
     }
 }
