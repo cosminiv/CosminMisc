@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
+    <Compile Include="Algorithms\Parallel.cs" />
     <Compile Include="Eu\051_100\Problem_051.cs" />
     <Compile Include="Eu\051_100\Problem_052.cs" />
     <Compile Include="Eu\051_100\Problem_053.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="Eu\051_100\Problem_059.cs" />
     <Compile Include="Eu\051_100\Problem_060.cs" />
     <Compile Include="Eu\051_100\Problem_061.cs" />
+    <Compile Include="Eu\051_100\Problem_062.cs" />
+    <Compile Include="Eu\051_100\Problem_063.cs" />
     <Compile Include="Eu\051_100\Problem_077.cs" />
     <Compile Include="Eu\051_100\Problem_078.cs" />
     <Compile Include="Eu\_Common\Combination.cs" />

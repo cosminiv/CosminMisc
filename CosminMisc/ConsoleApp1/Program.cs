@@ -1,6 +1,7 @@
 ﻿using ConsoleApp1.Algorithms;
 using ConsoleApp1.Eu;
 using ConsoleApp1.Eu._051_100;
+using ConsoleApp1.Eu._Common;
 using ConsoleApp1.Eu.Common;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,10 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            long a = 0;
+            //long a = 0;
 
-            //try {
-                a = Problem_061.Solve();
-            //}
-            //catch (Exception ex) {
-            //    Console.WriteLine(ex);
-            //}
+            Primes primes = new Primes((long)1E+9);
+            var a = primes.ToList().Count;
 
             var duration = sw.ElapsedMilliseconds;
 
