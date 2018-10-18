@@ -3,6 +3,7 @@ using ConsoleApp1.Eu;
 using ConsoleApp1.Eu._051_100;
 using ConsoleApp1.Eu._Common;
 using ConsoleApp1.Eu.Common;
+using ConsoleApp1.GCJ;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,10 +18,10 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            //long a = 0;
 
-            Primes primes = new Primes((long)1E+9);
-            var a = primes.ToList().Count;
+            var a = new Year_2017_Qualif_A().Solve(
+                @"C:\Temp\GCJ - 2017\A-large-practice.in", 
+                @"C:\Temp\GCJ - 2017\A-large-practice.out");
 
             var duration = sw.ElapsedMilliseconds;
 
