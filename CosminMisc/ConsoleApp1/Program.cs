@@ -19,9 +19,9 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            var a = new Year_2017_Qualif_A().Solve(
-                @"C:\Temp\GCJ - 2017\A-large-practice.in", 
-                @"C:\Temp\GCJ - 2017\A-large-practice.out");
+            var a = new Year_2017_Qualif_B().Solve(
+                @"C:\Temp\GCJ - 2017\B-large-practice.in",
+                @"C:\Temp\GCJ - 2017\B-large-practice.out");
 
             var duration = sw.ElapsedMilliseconds;
 
