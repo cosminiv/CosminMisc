@@ -18,10 +18,11 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
+            int a = 0;
 
-            var a = new Year_2017_Qualif_B().Solve(
-                @"C:\Temp\GCJ - 2017\B-large-practice.in",
-                @"C:\Temp\GCJ - 2017\B-large-practice.out");
+            ConsoleApp1.GCJ.Common.SolveTestCases(new Year_2017_Qualif_B().Solve,
+                @"C:\Temp\GCJ - 2017\B-small-practice.in",
+                @"C:\Temp\GCJ - 2017\B-small-practice.out");
 
             var duration = sw.ElapsedMilliseconds;
 

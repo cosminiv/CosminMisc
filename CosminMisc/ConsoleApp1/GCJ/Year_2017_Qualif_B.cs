@@ -10,28 +10,7 @@ namespace ConsoleApp1.GCJ
 {
     class Year_2017_Qualif_B
     {
-        public int Solve(string inputFile, string outputFile) {
-            Year_2017_Qualif_B solver = new Year_2017_Qualif_B();
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
-
-            foreach (string line in File.ReadLines(inputFile)) {
-                if (i > 0 && line.Length > 0) {
-                    string result = solver.Solve(line);
-                    string outputLine = $"Case #{i}: {result}";
-
-                    sb.AppendLine(outputLine);
-                    Console.WriteLine(outputLine);
-                }
-
-                i++;
-            }
-
-            File.WriteAllText(outputFile, sb.ToString());
-            return 0;
-        }
-
-        private string Solve(string inputNumber) {
+        public string Solve(string inputNumber) {
             StringBuilder sb = new StringBuilder(inputNumber);
             return Solve(sb, 1, inputNumber.Length);
         }

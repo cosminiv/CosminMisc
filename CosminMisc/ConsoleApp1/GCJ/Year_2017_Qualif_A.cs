@@ -12,58 +12,14 @@ namespace ConsoleApp1.GCJ
     {
         HashSet<PancakeState> _allStatesExplored;
 
-        public int Solve(string inputFile, string outputFile) {
-            Year_2017_Qualif_A solver = new Year_2017_Qualif_A();
-            StringBuilder sb = new StringBuilder();
-            int i = 1;
-
-            foreach (string line in File.ReadLines(inputFile)) {
-                if (line.Length == 0 || int.TryParse(line, out int n)) continue;
-
-                int result = solver.Solve(new TestCase(line.Split(' ')[0], int.Parse(line.Split(' ')[1]), -1));
-                string resultStr = result >= 0 ? result.ToString() : "IMPOSSIBLE";
-                string outputLine = $"Case #{i++}: {resultStr}";
-
-                sb.AppendLine(outputLine);
-                Console.WriteLine(outputLine);
-            }
-
-            File.WriteAllText(outputFile, sb.ToString());
-            return 0;
-        }
-
-        public static int BasicTest() {
-            var tests = new[] {
-                new TestCase("++++++", 2, 0),
-                new TestCase("--++++", 2, 1),
-                new TestCase("+--+++", 2, 1),
-                new TestCase("---", 3, 1),
-                new TestCase("+++++++++---", 3, 1),
-                new TestCase("+--+--", 2, 2),
-                new TestCase("---+-++-", 3, 3),
-                new TestCase("+++++", 4, 0),
-                new TestCase("-+-+-", 4, -1),
-            };
-
-            var solver = new Year_2017_Qualif_A();
-
-            foreach (var test in tests) {
-                Console.Write(test.InitialState);
-                int result = solver.Solve(test);
-                Debug.Assert(result == test.ExpectedResult);
-                Console.WriteLine("   OK");
-            }
-
-            return 0;
-        }
-
-        public int Solve(TestCase testCase) {
+        public string Solve(string line) {
             ResetState();
+            TestCase testCase = new TestCase(line.Split(' ')[0], int.Parse(line.Split(' ')[1]), "");
 
             PancakeState initialState = testCase.InitialState;
             int problemSize = initialState.Size;
             int flipperSize = testCase.FlipperSize;
-            if (IsFinal(initialState)) return 0;
+            if (IsFinal(initialState)) return "0";
 
             PancakeState prevState = initialState;
             _allStatesExplored.Add(initialState);
@@ -71,14 +27,13 @@ namespace ConsoleApp1.GCJ
             int moves = 1;
 
             // Move to the first pancake which needs to be flipped
-            for (int flipperPos = Math.Min(prevState.FirstMinusPos, problemSize - flipperSize); 
+            for (int flipperPos = Math.Min(prevState.FirstMinusPos, problemSize - flipperSize);
                 foundNewMove;
-                flipperPos = Math.Min(prevState.FirstMinusPos, problemSize - flipperSize)) 
-            {
+                flipperPos = Math.Min(prevState.FirstMinusPos, problemSize - flipperSize)) {
                 foundNewMove = false;
                 PancakeState state = prevState.NextState(flipperPos, flipperSize);
                 if (IsFinal(state)) {
-                    return moves;
+                    return moves.ToString();
                 }
                 if (!WasAlreadyExplored(state)) {
                     _allStatesExplored.Add(state);
@@ -88,7 +43,32 @@ namespace ConsoleApp1.GCJ
                 moves++;
             }
 
-            return -1;  // no solution found
+            return "IMPOSSIBLE";
+        }
+
+        public static int BasicTest() {
+            var tests = new[] {
+                new TestCase("++++++", 2, "0"),
+                new TestCase("--++++", 2, "1"),
+                new TestCase("+--+++", 2, "1"),
+                new TestCase("---", 3, "1"),
+                new TestCase("+++++++++---", 3, "1"),
+                new TestCase("+--+--", 2, "2"),
+                new TestCase("---+-++-", 3, "3"),
+                new TestCase("+++++", 4, "0"),
+                new TestCase("-+-+-", 4, "-1"),
+            };
+
+            var solver = new Year_2017_Qualif_A();
+
+            foreach (var test in tests) {
+                Console.Write(test.InitialState);
+                string result = solver.Solve($"{test.InitialState} {test.FlipperSize}");
+                Debug.Assert(result == test.ExpectedResult);
+                Console.WriteLine("   OK");
+            }
+
+            return 0;
         }
 
         void ResetState() {
@@ -146,9 +126,9 @@ namespace ConsoleApp1.GCJ
         {
             public PancakeState InitialState;
             public int FlipperSize;
-            public int ExpectedResult;
+            public string ExpectedResult;
 
-            public TestCase(string initialState, int flipperSize, int expectedResult) {
+            public TestCase(string initialState, int flipperSize, string expectedResult) {
                 InitialState = new PancakeState(initialState);
                 FlipperSize = flipperSize;
                 ExpectedResult = expectedResult;
