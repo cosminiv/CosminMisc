@@ -11,7 +11,6 @@ namespace ConsoleApp1.GCJ
     class Year_2017_Qualif_A
     {
         HashSet<PancakeState> _allStatesExplored;
-        HashSet<PancakeState> _previousStepStates;
 
         public int Solve(string inputFile, string outputFile) {
             Year_2017_Qualif_A solver = new Year_2017_Qualif_A();
@@ -65,29 +64,28 @@ namespace ConsoleApp1.GCJ
             int problemSize = initialState.Size;
             int flipperSize = testCase.FlipperSize;
             if (IsFinal(initialState)) return 0;
-            
-            _previousStepStates.Add(initialState);
+
+            PancakeState prevState = initialState;
             _allStatesExplored.Add(initialState);
             bool foundNewMove = true;  // so we can enter the loop
+            int moves = 1;
 
-            for (int moves = 1; foundNewMove; moves++) {
-                HashSet<PancakeState> currentStates = new HashSet<PancakeState>();
+            // Move to the first pancake which needs to be flipped
+            for (int flipperPos = Math.Min(prevState.FirstMinusPos, problemSize - flipperSize); 
+                foundNewMove;
+                flipperPos = Math.Min(prevState.FirstMinusPos, problemSize - flipperSize)) 
+            {
                 foundNewMove = false;
-
-                foreach (PancakeState prevState in _previousStepStates) {
-                    for (int flipperPos = 0; flipperPos <= problemSize - flipperSize; flipperPos++) {
-                        PancakeState state = prevState.NextState(flipperPos, flipperSize);
-                        if (IsFinal(state))
-                            return moves;
-                        if (!WasAlreadyExplored(state)) {
-                            currentStates.Add(state);
-                            _allStatesExplored.Add(state);
-                            foundNewMove = true;
-                        }
-                    }
+                PancakeState state = prevState.NextState(flipperPos, flipperSize);
+                if (IsFinal(state)) {
+                    return moves;
                 }
-
-                _previousStepStates = currentStates;
+                if (!WasAlreadyExplored(state)) {
+                    _allStatesExplored.Add(state);
+                    foundNewMove = true;
+                    prevState = state;
+                }
+                moves++;
             }
 
             return -1;  // no solution found
@@ -95,7 +93,6 @@ namespace ConsoleApp1.GCJ
 
         void ResetState() {
             _allStatesExplored = new HashSet<PancakeState>();
-            _previousStepStates = new HashSet<PancakeState>();
         }
 
         private bool WasAlreadyExplored(PancakeState state) {
@@ -141,6 +138,7 @@ namespace ConsoleApp1.GCJ
             }
 
             public int Size { get { return Config.Length; } }
+            public int FirstMinusPos { get { return Config.IndexOf('-'); } }
             //public string InputFlipperPos { get { return string.Join(" ", InputFlipperPositions); } }
         }
 
