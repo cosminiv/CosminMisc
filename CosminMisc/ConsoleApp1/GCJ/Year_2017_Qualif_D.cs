@@ -13,8 +13,9 @@ namespace ConsoleApp1.GCJ
         public string Solve(string line) {
 
             List<Stage> stages = StageGenerator.GenerateValidStages(4);
-            
-            foreach (var stage in stages.OrderByDescending(s=>s.Score).Take(5)) {
+            List<Stage> topStages = stages.OrderByDescending(s => s.Score).Take(5).ToList();
+
+            foreach (var stage in topStages) {
                 Console.WriteLine(stage);
             }
             Console.WriteLine($"{stages.Count} stages");
@@ -25,12 +26,16 @@ namespace ConsoleApp1.GCJ
         class StageGenerator
         {
             public static List<Stage> GenerateValidStages(int size) {
+                Stopwatch sw = Stopwatch.StartNew();
                 List<Stage> validStages = new List<Stage>();
 
                 List<string> validRows = GenerateValidRows(size);
+                long t1 = sw.ElapsedMilliseconds;
                 Dictionary<int, string> validRowsMap = validRows.ToDictionary(r => r.GetHashCode());
+                long t2 = sw.ElapsedMilliseconds;
 
                 List<List<int>> rowPermutations = GeneratePermutations(validRowsMap.Keys.ToList(), size);
+                long t3 = sw.ElapsedMilliseconds;
 
                 foreach (List<int> rowPerm in rowPermutations) {
                     string rowPermAsString = string.Join("\n", rowPerm.Select(rowId => validRowsMap[rowId]));
@@ -38,6 +43,13 @@ namespace ConsoleApp1.GCJ
                     if (stage.IsValid())
                         validStages.Add(stage);
                 }
+                long t4 = sw.ElapsedMilliseconds;
+
+                Console.WriteLine($"GenerateValidRows: {t1}ms ({validRows.Count} rows)");
+                Console.WriteLine($"ToDictionary: {t2 - t1}ms");
+                Console.WriteLine($"GeneratePermutations: {t3 - t2}ms ({rowPermutations.Count} permutations)");
+                Console.WriteLine($"Get valid stages: {t4 - t3}ms ({validStages.Count} stages)");
+                Console.WriteLine();
 
                 return validStages;
             }
@@ -75,7 +87,6 @@ namespace ConsoleApp1.GCJ
                 goto end;
             }
 
-            result = new List<List<T>>();
             List<List<T>> smallerPermutations = GeneratePermutations(elements, take - 1);
 
             for (int j = 0; j <= elements.Count - 1; j++) {
