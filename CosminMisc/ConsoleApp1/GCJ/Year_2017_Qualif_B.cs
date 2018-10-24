@@ -10,9 +10,16 @@ namespace ConsoleApp1.GCJ
 {
     class Year_2017_Qualif_B
     {
-        public string Solve(string inputNumber) {
-            StringBuilder sb = new StringBuilder(inputNumber);
-            return Solve(sb, 1, inputNumber.Length);
+        int _testCases = 0;
+
+        public string Solve(string line) {
+            if (_testCases == 0) {
+                _testCases = int.Parse(line);
+                return null;
+            }
+
+            StringBuilder sb = new StringBuilder(line);
+            return Solve(sb, 1, line.Length);
         }
 
         private string Solve(StringBuilder sb, int startIndex, int endIndex) {

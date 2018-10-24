@@ -8,9 +8,19 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.GCJ
 {
+    /// <summary>
+    /// Bathroom stalls
+    /// </summary>
     class Year_2017_Qualif_C
     {
+        static int _testCases = 0;
+
         public static string Solve(string line) {
+            if (_testCases == 0) {
+                _testCases = int.Parse(line);
+                return null;
+            }
+
             long[] t = line.Split(' ').Select(x => long.Parse(x)).ToArray();
             Solution sol = Solve(t[0], t[1], true);
             string res = $"{sol.Max} {sol.Min}";

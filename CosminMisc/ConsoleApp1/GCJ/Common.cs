@@ -11,18 +11,19 @@ namespace ConsoleApp1.GCJ
     {
         public static void SolveTestCases(Func<string, string> solver, string inputFile, string outputFile) {
             StringBuilder sb = new StringBuilder();
-            int i = 0;
+            int i = 1;
 
             foreach (string line in File.ReadLines(inputFile)) {
-                if (i > 0 && line.Length > 0) {
+                if (line.Length > 0) {
                     string result = solver(line);
-                    string outputLine = $"Case #{i}: {result}";
 
-                    sb.AppendLine(outputLine);
-                    Console.WriteLine(outputLine);
+                    if (result != null) {
+                        string outputLine = $"Case #{i}: {result}";
+                        sb.AppendLine(outputLine);
+                        Console.WriteLine(outputLine);
+                        i++;
+                    }
                 }
-
-                i++;
             }
 
             File.WriteAllText(outputFile, sb.ToString());

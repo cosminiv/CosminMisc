@@ -11,8 +11,14 @@ namespace ConsoleApp1.GCJ
     class Year_2017_Qualif_A
     {
         HashSet<PancakeState> _allStatesExplored;
+        int _testCaseCount;
 
         public string Solve(string line) {
+            if (_testCaseCount == 0) {
+                _testCaseCount = int.Parse(line);
+                return null;
+            }
+
             ResetState();
             TestCase testCase = new TestCase(line.Split(' ')[0], int.Parse(line.Split(' ')[1]), "");
 
@@ -73,6 +79,7 @@ namespace ConsoleApp1.GCJ
 
         void ResetState() {
             _allStatesExplored = new HashSet<PancakeState>();
+            _testCaseCount = 0;
         }
 
         private bool WasAlreadyExplored(PancakeState state) {
