@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.GCJ
 {
+    // Cake!
     public class Year_2017_1A_A
     {
         TestCaseBuilder _testCaseBuilder = new TestCaseBuilder();
@@ -25,7 +26,6 @@ namespace ConsoleApp1.GCJ
         private string Solve() {
             List<Coords> letterCoords = ReadLettersCoords();
             bool reachedRightSide = false;
-            //int topmostModifiedRow = -1;
             char[][] data = _testCase.Data;
 
             foreach (Coords letterCoord in letterCoords) {
@@ -63,10 +63,30 @@ namespace ConsoleApp1.GCJ
                 }
 
                 // Go down
-                int bottommostModifiedRow = letterCoord.Row;
                 
+                // 1. First find how far we can go.
+                int bottommostCandidateRow = letterCoord.Row;
+                for (int row = letterCoord.Row + 1; row < _testCase.RowCount; row++) {
+                    bottommostCandidateRow++;
+                    for (int col = leftmostModifiedColumn; col <= rightmostModifiedColumn; col++) {
+                        if (data[row][col] != '?') {
+                            bottommostCandidateRow--;    // Current row not good
+                            goto afterLoops;
+                        }
+                    }
+                }
 
-                reachedRightSide = reachedRightSide || rightmostModifiedColumn == _testCase.ColumnCount - 1;
+                afterLoops:
+
+                // 2. Then write letters.
+                for (int row = letterCoord.Row + 1; row <= bottommostCandidateRow; row++) {
+                    for (int col = leftmostModifiedColumn; col <= rightmostModifiedColumn; col++) {
+                        data[row][col] = letter;
+                    }
+                }
+
+                if (rightmostModifiedColumn == _testCase.ColumnCount - 1)
+                    reachedRightSide = true;
             }
 
             return "\n" + string.Join("\n", _testCase.Data.Select(d => new string(d)));

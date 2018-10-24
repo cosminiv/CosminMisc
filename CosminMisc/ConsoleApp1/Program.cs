@@ -21,8 +21,8 @@ namespace ConsoleApp1
             int a = 0;
 
             ConsoleApp1.GCJ.Common.SolveTestCases(new Year_2017_1A_A().Solve,
-                @"C:\Temp\GCJ - 2017\1A\A-small-practice.in",
-                @"C:\Temp\GCJ - 2017\1A\A-small-practice.out");
+                @"C:\Temp\GCJ - 2017\1A\A-large-practice.in",
+                @"C:\Temp\GCJ - 2017\1A\A-large-practice.out");
 
             var duration = sw.ElapsedMilliseconds;
 
