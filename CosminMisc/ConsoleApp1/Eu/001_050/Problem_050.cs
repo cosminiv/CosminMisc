@@ -21,7 +21,6 @@ namespace ConsoleApp1.Eu
             int maxLength = 0;
             long sumForMaxLength = 0;
             List<long> maxList = new List<long>();
-            long checks = 0;
             int start = 0;
             int end = start + 1;
             long sum = primesInOrder[start] + primesInOrder[end];

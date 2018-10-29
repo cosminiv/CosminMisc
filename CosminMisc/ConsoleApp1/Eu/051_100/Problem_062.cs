@@ -27,8 +27,6 @@ namespace ConsoleApp1.Eu._051_100
                     return cubes.Min();
                 }
             }
-
-            return 0;
         }
 
         private static ulong NormalizeDigits(ulong n) {

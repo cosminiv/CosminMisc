@@ -17,7 +17,7 @@ namespace ConsoleApp1.Eu
             int MAX = 1000;
             int MAX_DIGITS = 2000;
             LargeNumber N = LargeNumber.Power(10, MAX_DIGITS);
-            int MAX_SKIP = 20;
+            //int MAX_SKIP = 20;
             var primes = new Primes(MAX).ToList();
 
             Stopwatch sw = Stopwatch.StartNew();

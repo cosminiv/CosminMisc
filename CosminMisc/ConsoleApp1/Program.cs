@@ -15,7 +15,7 @@ namespace ConsoleApp1
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main222(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
             int a = 0;
