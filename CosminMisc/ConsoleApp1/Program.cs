@@ -15,14 +15,15 @@ namespace ConsoleApp1
 {
     class Program
     {
-        static void Main222(string[] args)
+        static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
             int a = 0;
 
-            ConsoleApp1.GCJ.Common.SolveTestCases(new Year_2017_1A_A().Solve,
+            new Year_2017_1A_C().SolveTestCases(
                 @"C:\Temp\GCJ - 2017\1A\A-large-practice.in",
-                @"C:\Temp\GCJ - 2017\1A\A-large-practice.out");
+                @"C:\Temp\GCJ - 2017\1A\A-large-practice.out"
+            );
 
             var duration = sw.ElapsedMilliseconds;
 

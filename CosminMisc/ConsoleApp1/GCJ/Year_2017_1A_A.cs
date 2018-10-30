@@ -7,26 +7,13 @@ using System.Threading.Tasks;
 namespace ConsoleApp1.GCJ
 {
     // Cake!
-    public class Year_2017_1A_A
+    public class Year_2017_1A_A : GCJBase
     {
-        TestCaseBuilder _testCaseBuilder = new TestCaseBuilder();
-        TestCase _testCase;
-
-        public string Solve(string line) {
-            _testCase = _testCaseBuilder.ParseInputLine(line);
-
-            if (_testCase != null) {
-                string result = Solve();
-                return result;
-            }
-            else
-                return null;
-        }
-
-        private string Solve() {
-            List<Coords> letterCoords = ReadLettersCoords();
+        protected override string Solve(ITestCase testCase2) {
+            TestCase testCase = (TestCase)testCase2;
+            List<Coords> letterCoords = ReadLettersCoords(testCase);
             bool reachedRightSide = false;
-            char[][] data = _testCase.Data;
+            char[][] data = testCase.Data;
 
             foreach (Coords letterCoord in letterCoords) {
                 char letter = data[letterCoord.Row][letterCoord.Column];
@@ -44,7 +31,7 @@ namespace ConsoleApp1.GCJ
 
                 // Go right
                 int rightmostModifiedColumn = letterCoord.Column;
-                for (int col = letterCoord.Column + 1; col < _testCase.ColumnCount; col++) {
+                for (int col = letterCoord.Column + 1; col < testCase.ColumnCount; col++) {
                     if (data[letterCoord.Row][col] == '?') {
                         data[letterCoord.Row][col] = letter;
                         rightmostModifiedColumn = col;
@@ -66,7 +53,7 @@ namespace ConsoleApp1.GCJ
                 
                 // 1. First find how far we can go.
                 int bottommostCandidateRow = letterCoord.Row;
-                for (int row = letterCoord.Row + 1; row < _testCase.RowCount; row++) {
+                for (int row = letterCoord.Row + 1; row < testCase.RowCount; row++) {
                     bottommostCandidateRow++;
                     for (int col = leftmostModifiedColumn; col <= rightmostModifiedColumn; col++) {
                         if (data[row][col] != '?') {
@@ -85,19 +72,23 @@ namespace ConsoleApp1.GCJ
                     }
                 }
 
-                if (rightmostModifiedColumn == _testCase.ColumnCount - 1)
+                if (rightmostModifiedColumn == testCase.ColumnCount - 1)
                     reachedRightSide = true;
             }
 
-            return "\n" + string.Join("\n", _testCase.Data.Select(d => new string(d)));
+            return "\n" + string.Join("\n", testCase.Data.Select(d => new string(d)));
         }
 
-        List<Coords> ReadLettersCoords() {
+        protected override ITestCaseBuilder MakeTestCaseBuilder() {
+            return new TestCaseBuilder();
+        }
+
+        List<Coords> ReadLettersCoords(TestCase testCase) {
             List<Coords> result = new List<Coords>();
 
-            for (int i = 0; i < _testCase.RowCount; i++) {
-                for (int j = 0; j < _testCase.ColumnCount; j++) {
-                    if (_testCase.Data[i][j] != '?')
+            for (int i = 0; i < testCase.RowCount; i++) {
+                for (int j = 0; j < testCase.ColumnCount; j++) {
+                    if (testCase.Data[i][j] != '?')
                         result.Add(new Coords { Row = i, Column = j });
                 }
             }
@@ -111,14 +102,14 @@ namespace ConsoleApp1.GCJ
             public int Column;
         }
 
-        class TestCase
+        class TestCase : ITestCase
         {
             public int RowCount = 0;
             public int ColumnCount = 0;
             public char[][] Data = new char[0][];
         }
 
-        class TestCaseBuilder
+        class TestCaseBuilder : ITestCaseBuilder
         {
             int _testCases;
             int _rowsRead;
@@ -133,7 +124,7 @@ namespace ConsoleApp1.GCJ
                 _testCase = new TestCase();
             }
 
-            public TestCase ParseInputLine(string line) {
+            public ITestCase ParseInputLine(string line) {
                 if (_testCases == 0) {
                     _testCases = int.Parse(line);
                     return null;

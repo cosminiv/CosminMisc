@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\AStar.cs" />
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
     <Compile Include="Algorithms\Parallel.cs" />
@@ -115,7 +116,8 @@
     <Compile Include="Eu\001_050\Problem_048.cs" />
     <Compile Include="Eu\001_050\Problem_049.cs" />
     <Compile Include="Eu\001_050\Problem_050.cs" />
-    <Compile Include="GCJ\Common.cs" />
+    <Compile Include="GCJ\GCJBase.cs" />
+    <Compile Include="GCJ\Year_2017_1A_C.cs" />
     <Compile Include="GCJ\Year_2017_1A_B.cs" />
     <Compile Include="GCJ\Year_2017_1A_A.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_D.cs" />
