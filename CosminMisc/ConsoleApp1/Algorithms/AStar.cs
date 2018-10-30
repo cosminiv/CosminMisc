@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ConsoleApp1.Algorithms
 {
@@ -12,14 +8,16 @@ namespace ConsoleApp1.Algorithms
 
         public List<AStarNode> FindShortestPath(AStarNode start) {
             // Will be sorted and iterated by increasing total distance.
+            start.ComputeDistanceToGoal();
+            start.TotalDist = start.DistToGoal;
             List<AStarNode> nodesToExplore = new List<AStarNode> { start };
 
             HashSet<AStarNode> exploredNodesHash = new HashSet<AStarNode>();
 
             while (nodesToExplore.Count > 0) {
                 AStarNode node = PopNode(nodesToExplore, exploredNodesHash);
-
-                if (GetDistanceToGoal(node) <= 0)
+                
+                if (node.ComputeDistanceToGoal() <= 0)
                     return MakePathFromStartToEnd(node, exploredNodesHash);
 
                 foreach (AStarNode neighbor in GetNeighbors(node)) {
@@ -33,9 +31,12 @@ namespace ConsoleApp1.Algorithms
             return null;
         }
 
-        public abstract double GetDistanceToGoal(AStarNode node);
 
-        public abstract IEnumerable<AStarNode> GetNeighbors(AStarNode node);
+        // Abstract methods
+        protected abstract IEnumerable<AStarNode> GetNeighbors(AStarNode node);
+
+
+        // Private methods
 
         private List<AStarNode> MakePathFromStartToEnd(AStarNode endNode, HashSet<AStarNode> exploredNodesHash) {
             List<AStarNode> result = new List<AStarNode>();
@@ -68,16 +69,26 @@ namespace ConsoleApp1.Algorithms
         public double DistToGoal;
         public double TotalDist;
         public AStarNode PreviousNode;
+        public string PreviousAction;
 
-        public AStarNode(double distFromStart, double distToGoal, double totalDist, AStarNode prevNode) {
+        public AStarNode() {
+        }
+
+        public AStarNode(double distFromStart, AStarNode prevNode) {
             DistFromStart = distFromStart;
-            DistToGoal = distToGoal;
-            TotalDist = totalDist;
             PreviousNode = prevNode;
         }
 
         public abstract override int GetHashCode();
         public abstract override bool Equals(object obj);
+        public abstract double ComputeDistanceToGoal();
+
+        protected static void Copy(AStarNode source, AStarNode dest) {
+            dest.DistFromPrevious = source.DistFromPrevious;
+            dest.DistFromStart = source.DistFromStart;
+            dest.DistToGoal = source.DistToGoal;
+            dest.TotalDist = dest.DistFromStart + dest.DistToGoal;
+        }
     }
 
     class AStarNodeTotalDistComparer : IComparer<AStarNode>

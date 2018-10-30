@@ -217,5 +217,9 @@ namespace ConsoleApp1.Algorithms
 
             return this.MaxSum == otherResult.MaxSum;
         }
+
+        public override int GetHashCode() {
+            return MaxSum ?? 0;
+        }
     }
 }

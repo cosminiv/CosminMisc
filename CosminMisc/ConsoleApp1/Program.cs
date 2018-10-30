@@ -20,9 +20,22 @@ namespace ConsoleApp1
             Stopwatch sw = Stopwatch.StartNew();
             int a = 0;
 
-            new Year_2017_1A_C().SolveTestCases(
-                @"C:\Temp\GCJ - 2017\1A\A-large-practice.in",
-                @"C:\Temp\GCJ - 2017\1A\A-large-practice.out"
+//            string input = 
+//@"4
+//11 5 16 5 0 0
+//3 1 3 2 2 0
+//3 1 3 2 1 0
+//2 1 5 1 1 1
+//";
+
+//            IEnumerable<string> output = new Year_2017_1A_C().Solve(input.Split('\n'));
+//            foreach (string line in output) {
+//                Console.WriteLine(line);
+//            }
+
+            new Year_2017_1A_C().Solve(
+                @"C:\Temp\GCJ - 2017\1A\C-small-practice.in",
+                @"C:\Temp\GCJ - 2017\1A\C-small-practice.out"
             );
 
             var duration = sw.ElapsedMilliseconds;

@@ -11,25 +11,43 @@ namespace ConsoleApp1.GCJ
     {
         ITestCaseBuilder _testCaseBuilder;
 
-        public void SolveTestCases(string inputFile, string outputFile) {
+        public void Solve(string inputFile, string outputFile) {
             StringBuilder sb = new StringBuilder();
-            int i = 1;
+            IEnumerable<string> inputLines = File.ReadLines(inputFile);
+            IEnumerable<string> outputLines = Solve(inputLines);
 
-            foreach (string line in File.ReadLines(inputFile)) {
-                if (line.Length > 0) {
-                    string result = Solve(line);
-
-                    if (result != null) {
-                        string outputLine = $"Case #{i}: {result}";
-                        sb.AppendLine(outputLine);
-                        Console.WriteLine(outputLine);
-                        i++;
-                    }
-                }
-            }
+            foreach (string line in outputLines)
+                sb.AppendLine(line);
 
             File.WriteAllText(outputFile, sb.ToString());
         }
+
+        public IEnumerable<string> Solve(IEnumerable<string> lines) {
+            int i = 1;
+
+            foreach (string line in lines.Select(l => l.Trim())) {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
+                string result = Solve(line);
+
+                if (result != null) {
+                    string outputLine = $"Case #{i}: {result}";
+                    yield return outputLine;
+                    i++;
+                }
+            }
+        }
+
+
+        // Abstract methods
+
+        protected abstract string Solve(ITestCase testCase);
+
+        protected abstract ITestCaseBuilder MakeTestCaseBuilder();
+
+
+        // Private methods
 
         private string Solve(string line) {
             ITestCaseBuilder testCaseBuilder = GetTestCaseBuilder();
@@ -45,7 +63,7 @@ namespace ConsoleApp1.GCJ
             return _testCaseBuilder;
         }
 
-        protected string Solve(string line, ITestCaseBuilder testCaseBuilder) {
+        private string Solve(string line, ITestCaseBuilder testCaseBuilder) {
             ITestCase testCase = testCaseBuilder.ParseInputLine(line);
 
             if (testCase != null) {
@@ -55,9 +73,6 @@ namespace ConsoleApp1.GCJ
             else
                 return null;
         }
-
-        protected abstract string Solve(ITestCase testCase);
-        protected abstract ITestCaseBuilder MakeTestCaseBuilder();
     }
 
     public interface ITestCaseBuilder
