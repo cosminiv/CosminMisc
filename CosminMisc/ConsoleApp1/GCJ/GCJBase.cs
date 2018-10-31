@@ -16,8 +16,10 @@ namespace ConsoleApp1.GCJ
             IEnumerable<string> inputLines = File.ReadLines(inputFile);
             IEnumerable<string> outputLines = Solve(inputLines);
 
-            foreach (string line in outputLines)
+            foreach (string line in outputLines) {
                 sb.AppendLine(line);
+                Console.WriteLine(line);
+            }
 
             File.WriteAllText(outputFile, sb.ToString());
         }

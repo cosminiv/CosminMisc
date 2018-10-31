@@ -20,11 +20,11 @@ namespace ConsoleApp1.GCJ
             if (path == null)
                 return "IMPOSSIBLE";
             else {
-                Console.WriteLine("\n=============================\n");
+                //Console.WriteLine("\n=============================\n");
                 foreach (AStarNode node2 in path) {
                     DragonAStarNode node = (DragonAStarNode)node2;
-                    node.Print();
-                    Console.WriteLine();
+                    //node.Print();
+                    //Console.WriteLine();
                 }
                 return (path.Count - 1).ToString();
             }
@@ -69,7 +69,7 @@ namespace ConsoleApp1.GCJ
             public override void Print() {
                 PrintPreviousAction();
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Write($"\t({ DragonHealth}, {DragonAttack}, { KnightHealth}, { KnightAttack}) ({TotalDist})");
+                Console.Write($"\t({ DragonHealth}, {DragonAttack}, { KnightHealth}, { KnightAttack}) ({TotalDist}, {DistToGoal})");
             }
 
             private void PrintPreviousAction() {
@@ -86,7 +86,7 @@ namespace ConsoleApp1.GCJ
             }
 
             public override string ToString() {
-                return $"{PreviousAction}\n({DragonHealth}, {DragonAttack}, {KnightHealth}, {KnightAttack}) ({TotalDist})\n";
+                return $"{PreviousAction}\n({DragonHealth}, {DragonAttack}, {KnightHealth}, {KnightAttack}) ({TotalDist}, {DistToGoal})\n";
             }
 
             public override IEnumerable<AStarNode> GetNeighbors() {
@@ -172,19 +172,44 @@ namespace ConsoleApp1.GCJ
             public override double ComputeDistanceToGoal() {
                 DragonAStarNode node = this;
 
-                if (node.KnightHealth <= 0) { node.DistToGoal = 0; return 0; }
-                if (node.DragonHealth <= 0) { node.DistToGoal = double.MaxValue; return double.MaxValue; }
+                if (node.KnightHealth <= 0) {
+                    node.DistToGoal = 0;
+                    return 0;
+                }
+
+                if (node.DragonHealth <= 0 || node.KnightAttack > _testCase.DragonHealth) {
+                    node.DistToGoal = double.MaxValue;
+                    return double.MaxValue;
+                }
 
                 long turnsUntilKill = node.KnightHealth / node.DragonAttack;
                 if (node.KnightHealth % node.DragonAttack > 0)
                     turnsUntilKill++;
 
-                long totalHealthLost = turnsUntilKill * node.KnightAttack;
-                long healTurnsNeeded = (totalHealthLost - node.DragonHealth) / _testCase.DragonHealth + 1;
+                long healTurnsNeeded = ComputeHealTurnsNeeded(turnsUntilKill, node.DragonHealth, node.KnightAttack, _testCase.DragonHealth);
 
                 node.DistToGoal = turnsUntilKill + healTurnsNeeded;
 
                 return node.DistToGoal;
+            }
+
+            long ComputeHealTurnsNeeded(long turnsUntilKill, long initialDragonHealth, long knightAttack, long maxDragonHealth) {
+                long dragonHealth = initialDragonHealth;
+                long result = 0;
+                long turnsWithStrike = 0;
+
+                while (true) {
+                    if (dragonHealth <= knightAttack) {
+                        dragonHealth = maxDragonHealth;
+                        result++;
+                    }
+                    else {
+                        dragonHealth -= knightAttack;
+                        turnsWithStrike++;
+                        if (turnsWithStrike == turnsUntilKill)
+                            return result;
+                    }
+                }
             }
         }
 

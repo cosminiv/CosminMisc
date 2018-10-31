@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace ConsoleApp1.Algorithms
 {
     public class AStar
     {
         static AStarNodeTotalDistComparer _nodeDistComparer = new AStarNodeTotalDistComparer();
+        static readonly int MAX_LIST_LEN = 4;
 
         public List<AStarNode> FindShortestPath(AStarNode start) {
             // Will be sorted and iterated by increasing total distance.
@@ -16,21 +19,25 @@ namespace ConsoleApp1.Algorithms
             while (nodesToExplore.Count > 0) {
                 AStarNode node = PopNode(nodesToExplore, exploredNodesHash);
 
-                if (node.DistToGoal <= 0)
+                if (node.DistToGoal <= 0) {
+                    //Console.WriteLine($"Explored nodes: {exploredNodesHash.Count}");
                     return MakePathFromStartToEnd(node, exploredNodesHash);
+                }
 
-                node.Print();
-                Console.Write(";\t\t");
+                //node.Print();
+                //Console.Write("\t\t");
 
                 foreach (AStarNode neighbor in node.GetNeighbors()) {
                     if (exploredNodesHash.Contains(neighbor))
                         continue;
 
-                    neighbor.Print();
-                    Console.Write("\t\t");
+                    //neighbor.Print();
+                    //Console.Write("\t\t");
+
                     InsertNodeInSortedList(nodesToExplore, neighbor);
+                    TrimNodeList(nodesToExplore, exploredNodesHash);
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
             }
 
             return null;
@@ -59,6 +66,15 @@ namespace ConsoleApp1.Algorithms
                 nodeList.Insert(index, nodeToInsert);
             else
                 nodeList.Insert(~index, nodeToInsert);
+        }
+
+        private static void TrimNodeList(List<AStarNode> nodeList, HashSet<AStarNode> exploredNodesHash) {
+            if (nodeList.Count > MAX_LIST_LEN) {
+                for (int i = MAX_LIST_LEN; i < nodeList.Count; i++) {
+                    exploredNodesHash.Add(nodeList[i]);
+                }
+                nodeList = nodeList.Take(MAX_LIST_LEN).ToList();
+            }
         }
     }
 
@@ -98,7 +114,12 @@ namespace ConsoleApp1.Algorithms
     class AStarNodeTotalDistComparer : IComparer<AStarNode>
     {
         public int Compare(AStarNode x, AStarNode y) {
-            return x.TotalDist.CompareTo(y.TotalDist);
+            int n = x.TotalDist.CompareTo(y.TotalDist);
+            if (n != 0)
+                return n;
+
+            int n2 = x.DistToGoal.CompareTo(y.DistToGoal);
+            return n2;
         }
     }
 }
