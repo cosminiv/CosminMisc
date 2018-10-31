@@ -1,40 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp1.Algorithms
 {
-    public abstract class AStar
+    public class AStar
     {
         static AStarNodeTotalDistComparer _nodeDistComparer = new AStarNodeTotalDistComparer();
 
         public List<AStarNode> FindShortestPath(AStarNode start) {
             // Will be sorted and iterated by increasing total distance.
-            start.ComputeDistanceToGoal();
-            start.TotalDist = start.DistToGoal;
             List<AStarNode> nodesToExplore = new List<AStarNode> { start };
 
             HashSet<AStarNode> exploredNodesHash = new HashSet<AStarNode>();
-
+            
             while (nodesToExplore.Count > 0) {
                 AStarNode node = PopNode(nodesToExplore, exploredNodesHash);
-                
-                if (node.ComputeDistanceToGoal() <= 0)
+
+                if (node.DistToGoal <= 0)
                     return MakePathFromStartToEnd(node, exploredNodesHash);
 
-                foreach (AStarNode neighbor in GetNeighbors(node)) {
+                node.Print();
+                Console.Write(";\t\t");
+
+                foreach (AStarNode neighbor in node.GetNeighbors()) {
                     if (exploredNodesHash.Contains(neighbor))
                         continue;
 
+                    neighbor.Print();
+                    Console.Write("\t\t");
                     InsertNodeInSortedList(nodesToExplore, neighbor);
                 }
+                Console.WriteLine();
             }
 
             return null;
         }
-
-
-        // Abstract methods
-        protected abstract IEnumerable<AStarNode> GetNeighbors(AStarNode node);
-
 
         // Private methods
 
@@ -82,6 +82,10 @@ namespace ConsoleApp1.Algorithms
         public abstract override int GetHashCode();
         public abstract override bool Equals(object obj);
         public abstract double ComputeDistanceToGoal();
+        public abstract IEnumerable<AStarNode> GetNeighbors();
+
+        public virtual void Print() {
+        }
 
         protected static void Copy(AStarNode source, AStarNode dest) {
             dest.DistFromPrevious = source.DistFromPrevious;
