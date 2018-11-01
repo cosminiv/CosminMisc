@@ -51,6 +51,9 @@
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
     <Compile Include="Algorithms\Parallel.cs" />
+    <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStar.cs" />
+    <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStarNode.cs" />
+    <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathTestCase.cs" />
     <Compile Include="Eu\051_100\Problem_051.cs" />
     <Compile Include="Eu\051_100\Problem_052.cs" />
     <Compile Include="Eu\051_100\Problem_053.cs" />
@@ -124,15 +127,15 @@
     <Compile Include="GCJ\Year_2017_Qualif_C.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_B.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_A.cs" />
-    <Compile Include="PerformanceMonitor.cs" />
-    <Compile Include="PerformanceMonitorTest.cs" />
+    <Compile Include="PerformanceMonitor\PerformanceMonitor.cs" />
+    <Compile Include="PerformanceMonitor\PerformanceMonitorTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="UpdateRedirects.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

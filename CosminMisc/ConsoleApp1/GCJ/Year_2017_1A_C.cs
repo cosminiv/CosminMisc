@@ -23,8 +23,8 @@ namespace ConsoleApp1.GCJ
                 //Console.WriteLine("\n=============================\n");
                 foreach (AStarNode node2 in path) {
                     DragonAStarNode node = (DragonAStarNode)node2;
-                    //node.Print();
-                    //Console.WriteLine();
+                    node.Print();
+                    Console.WriteLine();
                 }
                 return (path.Count - 1).ToString();
             }
@@ -36,18 +36,18 @@ namespace ConsoleApp1.GCJ
 
         class DragonAStarNode : AStarNode
         {
-            public long DragonHealth;
-            public long DragonAttack;
-            public long KnightHealth;
-            public long KnightAttack;
-            TestCase _testCase;
+            long DragonHealth;
+            long DragonAttack;
+            long KnightHealth;
+            long KnightAttack;
+            TestCase TestCase;
 
             public DragonAStarNode(TestCase testCase) {
                 DragonHealth = testCase.DragonHealth;
                 DragonAttack = testCase.DragonAttack;
                 KnightHealth = testCase.KnightHealth;
                 KnightAttack = testCase.KnightAttack;
-                _testCase = testCase;
+                TestCase = testCase;
                 ComputeDistances();
             }
 
@@ -58,12 +58,14 @@ namespace ConsoleApp1.GCJ
             }
 
             public override int GetHashCode() {
-                long hash = 23;
-                hash = hash * 31 + DragonHealth;
-                hash = hash * 31 + DragonAttack;
-                hash = hash * 31 + KnightHealth;
-                hash = hash * 31 + KnightAttack;
-                return (int)hash;
+                unchecked {
+                    long hash = 23;
+                    hash = hash * 31 + DragonHealth;
+                    hash = hash * 31 + DragonAttack;
+                    hash = hash * 31 + KnightHealth;
+                    hash = hash * 31 + KnightAttack;
+                    return (int)hash;
+                }
             }
 
             public override void Print() {
@@ -98,7 +100,7 @@ namespace ConsoleApp1.GCJ
                 DragonAStarNode n1 = node.MakeNeighbor(DragonAStarNode.Attack);
                 if (n1 != null) yield return n1;
 
-                if (_testCase.Buff > 0) {
+                if (TestCase.Buff > 0) {
                     DragonAStarNode n2 = node.MakeNeighbor(DragonAStarNode.Buff);
                     if (n2 != null) yield return n2;
                 }
@@ -106,14 +108,14 @@ namespace ConsoleApp1.GCJ
                 DragonAStarNode n3 = node.MakeNeighbor(DragonAStarNode.Cure);
                 if (n3 != null) yield return n3;
 
-                if (_testCase.Debuff > 0 && node.KnightAttack > 0) {
+                if (TestCase.Debuff > 0 && node.KnightAttack > 0) {
                     DragonAStarNode n4 = node.MakeNeighbor(DragonAStarNode.Debuff);
                     if (n4 != null) yield return n4;
                 }
             }
 
             internal DragonAStarNode MakeNeighbor(Action<DragonAStarNode> Action) {
-                DragonAStarNode neighbor = new DragonAStarNode(_testCase);
+                DragonAStarNode neighbor = new DragonAStarNode(TestCase);
                 Copy(this, neighbor);
                 neighbor.PreviousNode = this;
 
@@ -137,17 +139,17 @@ namespace ConsoleApp1.GCJ
             }
 
             internal static void Buff(DragonAStarNode node) {
-                node.DragonAttack += node._testCase.Buff;
+                node.DragonAttack += node.TestCase.Buff;
                 node.PreviousAction = "Buff";
             }
 
             internal static void Cure(DragonAStarNode node) {
-                node.DragonHealth = node._testCase.DragonHealth;
+                node.DragonHealth = node.TestCase.DragonHealth;
                 node.PreviousAction = "Cure";
             }
 
             internal static void Debuff(DragonAStarNode node) {
-                node.KnightAttack -= node._testCase.Debuff;
+                node.KnightAttack -= node.TestCase.Debuff;
                 if (node.KnightAttack < 0)
                     node.KnightAttack = 0;
                 node.PreviousAction = "Debuff";
@@ -167,30 +169,27 @@ namespace ConsoleApp1.GCJ
                 dest.DragonAttack = source.DragonAttack;
                 dest.KnightHealth = source.KnightHealth;
                 dest.KnightAttack = source.KnightAttack;
+                dest.TestCase = source.TestCase;
             }
 
-            public override double ComputeDistanceToGoal() {
+            public override void ComputeDistanceToGoal() {
                 DragonAStarNode node = this;
 
                 if (node.KnightHealth <= 0) {
                     node.DistToGoal = 0;
-                    return 0;
                 }
 
-                if (node.DragonHealth <= 0 || node.KnightAttack > _testCase.DragonHealth) {
+                if (node.DragonHealth <= 0 || node.KnightAttack > TestCase.DragonHealth) {
                     node.DistToGoal = double.MaxValue;
-                    return double.MaxValue;
                 }
 
                 long turnsUntilKill = node.KnightHealth / node.DragonAttack;
                 if (node.KnightHealth % node.DragonAttack > 0)
                     turnsUntilKill++;
 
-                long healTurnsNeeded = ComputeHealTurnsNeeded(turnsUntilKill, node.DragonHealth, node.KnightAttack, _testCase.DragonHealth);
+                long healTurnsNeeded = ComputeHealTurnsNeeded(turnsUntilKill, node.DragonHealth, node.KnightAttack, TestCase.DragonHealth);
 
                 node.DistToGoal = turnsUntilKill + healTurnsNeeded;
-
-                return node.DistToGoal;
             }
 
             long ComputeHealTurnsNeeded(long turnsUntilKill, long initialDragonHealth, long knightAttack, long maxDragonHealth) {

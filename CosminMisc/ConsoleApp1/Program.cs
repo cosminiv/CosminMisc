@@ -20,14 +20,16 @@ namespace ConsoleApp1
             Stopwatch sw = Stopwatch.StartNew();
             int a = 0;
 
-            string input =
-//@"1
-//46 1 46 22 0 1
-//";
+            AppliedAlgorithms.PathFinding.GeometricPathAStar.Solve();
 
-@"1
-93 1 92 48 1 7
-";
+            //            string input =
+            //@"1
+            //100 3 46 51 1 2
+            //";
+
+            //@"1
+            //93 1 92 48 1 7
+            //";
 
             //@"4
             //11 5 16 5 0 0
@@ -40,10 +42,10 @@ namespace ConsoleApp1
             //    Console.WriteLine(line);
             //}
 
-            new Year_2017_1A_C().Solve(
-                @"C:\Temp\GCJ - 2017\1A\C-small-practice.in",
-                @"C:\Temp\GCJ - 2017\1A\C-small-practice.out"
-            );
+            //new Year_2017_1A_C().Solve(
+            //    @"C:\Temp\GCJ - 2017\1A\C-small-practice.in",
+            //    @"C:\Temp\GCJ - 2017\1A\C-small-practice.out"
+            //);
 
             var duration = sw.ElapsedMilliseconds;
 

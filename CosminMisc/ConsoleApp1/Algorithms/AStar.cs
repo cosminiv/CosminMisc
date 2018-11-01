@@ -8,34 +8,34 @@ namespace ConsoleApp1.Algorithms
     public class AStar
     {
         static AStarNodeTotalDistComparer _nodeDistComparer = new AStarNodeTotalDistComparer();
-        static readonly int MAX_LIST_LEN = 4;
+        static readonly int MAX_LIST_LEN = 8;
 
         public List<AStarNode> FindShortestPath(AStarNode start) {
             // Will be sorted and iterated by increasing total distance.
-            List<AStarNode> nodesToExplore = new List<AStarNode> { start };
+            List<AStarNode> openNodes = new List<AStarNode> { start };
 
-            HashSet<AStarNode> exploredNodesHash = new HashSet<AStarNode>();
+            HashSet<AStarNode> closedNodes = new HashSet<AStarNode>();
             
-            while (nodesToExplore.Count > 0) {
-                AStarNode node = PopNode(nodesToExplore, exploredNodesHash);
+            while (openNodes.Count > 0) {
+                AStarNode node = PopNode(openNodes, closedNodes);
 
                 if (node.DistToGoal <= 0) {
                     //Console.WriteLine($"Explored nodes: {exploredNodesHash.Count}");
-                    return MakePathFromStartToEnd(node, exploredNodesHash);
+                    return MakePathFromStartToEnd(node);
                 }
 
                 //node.Print();
                 //Console.Write("\t\t");
 
                 foreach (AStarNode neighbor in node.GetNeighbors()) {
-                    if (exploredNodesHash.Contains(neighbor))
+                    if (closedNodes.Contains(neighbor))
                         continue;
 
                     //neighbor.Print();
                     //Console.Write("\t\t");
 
-                    InsertNodeInSortedList(nodesToExplore, neighbor);
-                    TrimNodeList(nodesToExplore, exploredNodesHash);
+                    InsertNodeInSortedList(openNodes, neighbor);
+                    TrimNodeList(openNodes, closedNodes);
                 }
                 //Console.WriteLine();
             }
@@ -45,35 +45,38 @@ namespace ConsoleApp1.Algorithms
 
         // Private methods
 
-        private List<AStarNode> MakePathFromStartToEnd(AStarNode endNode, HashSet<AStarNode> exploredNodesHash) {
+        private List<AStarNode> MakePathFromStartToEnd(AStarNode endNode) {
             List<AStarNode> result = new List<AStarNode>();
-            for (AStarNode crtNode = endNode; crtNode != null; crtNode = crtNode.PreviousNode) 
-                result.Add(crtNode);
-            result.Reverse();
+            for (AStarNode crtNode = endNode; crtNode != null; crtNode = crtNode.PreviousNode) {
+                if (result.Count == 0) result.Add(crtNode);
+                else result.Insert(0, crtNode);
+            }
+
+            //result.Reverse();
             return result;
         }
 
-        private static AStarNode PopNode(List<AStarNode> nodesToExplore, HashSet<AStarNode> exploredNodesHash) {
-            AStarNode node = nodesToExplore[0];
-            exploredNodesHash.Add(node);
-            nodesToExplore.RemoveAt(0);
+        private static AStarNode PopNode(List<AStarNode> openNodes, HashSet<AStarNode> closedNodes) {
+            AStarNode node = openNodes[0];
+            closedNodes.Add(node);
+            openNodes.RemoveAt(0);
             return node;
         }
 
-        private static void InsertNodeInSortedList(List<AStarNode> nodeList, AStarNode nodeToInsert) {
-            int index = nodeList.BinarySearch(nodeToInsert, _nodeDistComparer);
+        private static void InsertNodeInSortedList(List<AStarNode> openNodes, AStarNode nodeToInsert) {
+            int index = openNodes.BinarySearch(nodeToInsert, _nodeDistComparer);
             if (index >= 0)
-                nodeList.Insert(index, nodeToInsert);
+                openNodes.Insert(index, nodeToInsert);
             else
-                nodeList.Insert(~index, nodeToInsert);
+                openNodes.Insert(~index, nodeToInsert);
         }
 
-        private static void TrimNodeList(List<AStarNode> nodeList, HashSet<AStarNode> exploredNodesHash) {
-            if (nodeList.Count > MAX_LIST_LEN) {
-                for (int i = MAX_LIST_LEN; i < nodeList.Count; i++) {
-                    exploredNodesHash.Add(nodeList[i]);
+        private static void TrimNodeList(List<AStarNode> openNodes, HashSet<AStarNode> closedNodes) {
+            if (openNodes.Count > MAX_LIST_LEN) {
+                for (int i = MAX_LIST_LEN; i < openNodes.Count; i++) {
+                    closedNodes.Add(openNodes[i]);
                 }
-                nodeList = nodeList.Take(MAX_LIST_LEN).ToList();
+                openNodes = openNodes.Take(MAX_LIST_LEN).ToList();
             }
         }
     }
@@ -97,7 +100,7 @@ namespace ConsoleApp1.Algorithms
 
         public abstract override int GetHashCode();
         public abstract override bool Equals(object obj);
-        public abstract double ComputeDistanceToGoal();
+        public abstract void ComputeDistanceToGoal();
         public abstract IEnumerable<AStarNode> GetNeighbors();
 
         public virtual void Print() {
