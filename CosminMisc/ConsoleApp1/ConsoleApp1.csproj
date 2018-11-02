@@ -51,6 +51,7 @@
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
     <Compile Include="Algorithms\Parallel.cs" />
+    <Compile Include="AppliedAlgorithms\Graphs.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStar.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStarNode.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathTestCase.cs" />

@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.Algorithms;
+using ConsoleApp1.AppliedAlgorithms;
 using ConsoleApp1.Eu;
 using ConsoleApp1.Eu._051_100;
 using ConsoleApp1.Eu._Common;
@@ -20,16 +21,18 @@ namespace ConsoleApp1
             Stopwatch sw = Stopwatch.StartNew();
             int a = 0;
 
-            AppliedAlgorithms.PathFinding.GeometricPathAStar.Solve();
+            new Graphs().Solve();
 
-            //            string input =
+            //AppliedAlgorithms.PathFinding.GeometricPathAStar.Solve();
+
+            string input =
             //@"1
             //100 3 46 51 1 2
             //";
 
-            //@"1
-            //93 1 92 48 1 7
-            //";
+@"1
+96 1 94 47 2 1
+";
 
             //@"4
             //11 5 16 5 0 0
@@ -50,7 +53,7 @@ namespace ConsoleApp1
             var duration = sw.ElapsedMilliseconds;
 
             Console.WriteLine();
-            Console.WriteLine($"Result: {a}");
+            //Console.WriteLine($"Result: {a}");
             Console.WriteLine($"Took {duration}ms");
             Console.ReadLine();
             Debug.Print($"Took {duration}ms");

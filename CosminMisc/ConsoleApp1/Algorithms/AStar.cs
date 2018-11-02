@@ -20,7 +20,7 @@ namespace ConsoleApp1.Algorithms
                 AStarNode node = PopNode(openNodes, closedNodes);
 
                 if (node.DistToGoal <= 0) {
-                    //Console.WriteLine($"Explored nodes: {exploredNodesHash.Count}");
+                    Console.WriteLine($"Explored nodes: {closedNodes.Count}");
                     return MakePathFromStartToEnd(node);
                 }
 

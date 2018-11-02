@@ -97,8 +97,10 @@ namespace ConsoleApp1.GCJ
                 if (node.DragonHealth <= 0 || node.KnightHealth <= 0)
                     yield break;
 
-                DragonAStarNode n1 = node.MakeNeighbor(DragonAStarNode.Attack);
-                if (n1 != null) yield return n1;
+                //if (node.KnightAttack == 0) {
+                    DragonAStarNode n1 = node.MakeNeighbor(DragonAStarNode.Attack);
+                    if (n1 != null) yield return n1;
+                //}
 
                 if (TestCase.Buff > 0) {
                     DragonAStarNode n2 = node.MakeNeighbor(DragonAStarNode.Buff);
@@ -173,26 +175,35 @@ namespace ConsoleApp1.GCJ
             }
 
             public override void ComputeDistanceToGoal() {
-                DragonAStarNode node = this;
-
-                if (node.KnightHealth <= 0) {
-                    node.DistToGoal = 0;
+                if (KnightHealth <= 0) {
+                    DistToGoal = 0;
+                    return;
                 }
 
-                if (node.DragonHealth <= 0 || node.KnightAttack > TestCase.DragonHealth) {
-                    node.DistToGoal = double.MaxValue;
+                if (DragonHealth <= 0 || KnightAttack > TestCase.DragonHealth) {
+                    DistToGoal = double.MaxValue;
+                    return;
                 }
 
-                long turnsUntilKill = node.KnightHealth / node.DragonAttack;
-                if (node.KnightHealth % node.DragonAttack > 0)
+                long turnsUntilKill = KnightHealth / DragonAttack;
+                if (KnightHealth % DragonAttack > 0)
                     turnsUntilKill++;
 
-                long healTurnsNeeded = ComputeHealTurnsNeeded(turnsUntilKill, node.DragonHealth, node.KnightAttack, TestCase.DragonHealth);
+                long healTurnsNeeded = ComputeHealTurnsNeeded(turnsUntilKill, DragonHealth, KnightAttack, TestCase.DragonHealth);
 
-                node.DistToGoal = turnsUntilKill + healTurnsNeeded;
+                if (healTurnsNeeded < long.MaxValue)
+                    DistToGoal = turnsUntilKill + healTurnsNeeded;
+                else
+                    DistToGoal = long.MaxValue;
             }
 
             long ComputeHealTurnsNeeded(long turnsUntilKill, long initialDragonHealth, long knightAttack, long maxDragonHealth) {
+                if (turnsUntilKill == 0)
+                    return 0;
+
+                if (knightAttack >= maxDragonHealth)
+                    return long.MaxValue;
+
                 long dragonHealth = initialDragonHealth;
                 long result = 0;
                 long turnsWithStrike = 0;
