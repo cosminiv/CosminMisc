@@ -8,7 +8,7 @@ namespace ConsoleApp1.Algorithms
     public class AStar
     {
         static AStarNodeTotalDistComparer _nodeDistComparer = new AStarNodeTotalDistComparer();
-        static readonly int MAX_LIST_LEN = 8;
+        static readonly int MAX_LIST_LEN = 20;
 
         public List<AStarNode> FindShortestPath(AStarNode start) {
             // Will be sorted and iterated by increasing total distance.

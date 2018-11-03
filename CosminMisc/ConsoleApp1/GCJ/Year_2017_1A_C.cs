@@ -88,7 +88,8 @@ namespace ConsoleApp1.GCJ
             }
 
             public override string ToString() {
-                return $"{PreviousAction}\n({DragonHealth}, {DragonAttack}, {KnightHealth}, {KnightAttack}) ({TotalDist}, {DistToGoal})\n";
+                return $"{PreviousAction}\n({DragonHealth}, {DragonAttack}, {KnightHealth}, {KnightAttack}) "+
+                    $"({TotalDist}, {DistToGoal})\n";
             }
 
             public override IEnumerable<AStarNode> GetNeighbors() {
@@ -185,16 +186,53 @@ namespace ConsoleApp1.GCJ
                     return;
                 }
 
-                long turnsUntilKill = KnightHealth / DragonAttack;
-                if (KnightHealth % DragonAttack > 0)
-                    turnsUntilKill++;
+                //if (KnightAttack >= TestCase.DragonHealth / 2.0) {
+                //    DistToGoal = long.MaxValue;
+                //    return;
+                //}
 
-                long healTurnsNeeded = ComputeHealTurnsNeeded(turnsUntilKill, DragonHealth, KnightAttack, TestCase.DragonHealth);
+                DistToGoal = 0;
+                long knightHealthTemp = KnightHealth;
+                long knightAttackTemp = KnightAttack;
+                long dragonHealthTemp = DragonHealth;
+                long dragonAttackTemp = DragonAttack;
+                bool wasPreviousStepCure = false;
 
-                if (healTurnsNeeded < long.MaxValue)
-                    DistToGoal = turnsUntilKill + healTurnsNeeded;
-                else
-                    DistToGoal = long.MaxValue;
+                while (true) {
+                    DistToGoal++;
+
+                    bool needCure = dragonHealthTemp <= knightAttackTemp;
+                    bool canKillKnight = dragonAttackTemp >= knightHealthTemp;
+
+                    if (needCure && !canKillKnight) {
+                        if (wasPreviousStepCure) {
+                            DistToGoal = long.MaxValue;
+                            return;
+                        }
+                        dragonHealthTemp = TestCase.DragonHealth;
+                        wasPreviousStepCure = true;
+                    }
+                    else {
+                        knightAttackTemp -= TestCase.Debuff;
+                        dragonAttackTemp += TestCase.Buff;
+                        knightHealthTemp -= dragonAttackTemp;
+                        wasPreviousStepCure = false;
+                    }
+                    dragonHealthTemp -= knightAttackTemp;
+                    if (knightHealthTemp <= 0) 
+                        return;
+                }
+
+                //long turnsUntilKill = KnightHealth / DragonAttack;
+                //if (KnightHealth % DragonAttack > 0)
+                //    turnsUntilKill++;
+                
+                //long healTurnsNeeded = ComputeHealTurnsNeeded(turnsUntilKill, DragonHealth, KnightAttack, TestCase.DragonHealth);
+
+                //if (healTurnsNeeded < long.MaxValue)
+                //    DistToGoal = turnsUntilKill + healTurnsNeeded;
+                //else
+                //    DistToGoal = long.MaxValue;
             }
 
             long ComputeHealTurnsNeeded(long turnsUntilKill, long initialDragonHealth, long knightAttack, long maxDragonHealth) {
