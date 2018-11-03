@@ -128,6 +128,7 @@
     <Compile Include="GCJ\Year_2017_Qualif_C.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_B.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_A.cs" />
+    <Compile Include="Leet\Leet_032.cs" />
     <Compile Include="PerformanceMonitor\PerformanceMonitor.cs" />
     <Compile Include="PerformanceMonitor\PerformanceMonitorTest.cs" />
     <Compile Include="Program.cs" />

@@ -19,43 +19,15 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            int a = 0;
-
-            //new Graphs().Solve();
-
-            //AppliedAlgorithms.PathFinding.GeometricPathAStar.Solve();
-
-            string input =
-            //@"1
-            //100 3 46 51 1 2
-            //";
-
-            //@"1
-            //96 1 94 47 0 1
-            //";
-
-@"4
-11 5 16 5 0 0
-3 1 3 2 2 0
-3 1 3 2 1 0
-2 1 5 1 1 1";
-
-            IEnumerable<string> output = new Year_2017_1A_C().Solve(input.Split('\n'));
-            foreach (string line in output) {
-                Console.WriteLine(line);
-            }
-
-            new Year_2017_1A_C().Solve(
-                @"C:\Temp\GCJ - 2017\1A\C-small-practice.in",
-                @"C:\Temp\GCJ - 2017\1A\C-small-practice.out"
-            );
+            
+            new Leet.Leet_032().Solve();
 
             var duration = sw.ElapsedMilliseconds;
 
             Console.WriteLine();
             //Console.WriteLine($"Result: {a}");
             Console.WriteLine($"Took {duration}ms");
-            Console.ReadLine();
+            //Console.ReadLine();
             Debug.Print($"Took {duration}ms");
         }
     }
