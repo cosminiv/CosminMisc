@@ -10,8 +10,6 @@ namespace ConsoleApp1.Leet
     public class Leet_032
     {
         public int Solve() {
-            Solve("(()");
-
             var testCases = new[] {
                 ("", 0),
                 ("(", 0),
@@ -42,38 +40,64 @@ namespace ConsoleApp1.Leet
         }
 
         public int Solve(string input) {
-            int openParen = 0;
-            int candidateLen = 0;
+            int[] parenPairs = ReadParenPairs(input);
+            int maxLen = ComputeMaxLength(parenPairs, input);
+            return maxLen;
+        }
+
+        private int ComputeMaxLength(int[] parenPairs, string input) {
             int maxLen = 0;
+            int crtAdditiveLen = 0;
+            int prevParenEndIndex = -1;
+
+            for (int i = 0; i < parenPairs.Length; i++) {
+                int parenStartIndex = i;
+                int parenEndIndex = parenPairs[i];
+                if ((parenStartIndex == 0 && parenEndIndex == -1) || 
+                    (parenStartIndex > 0 && parenEndIndex == 0))
+                    continue;
+
+                int crtLen = (parenEndIndex - parenStartIndex + 1);
+
+                if (prevParenEndIndex < 0 || prevParenEndIndex == i - 1)
+                    crtAdditiveLen += crtLen;
+                else {
+                    if (crtAdditiveLen > maxLen)
+                        maxLen = crtAdditiveLen;
+                    crtAdditiveLen = crtLen;
+                }
+
+                prevParenEndIndex = parenEndIndex;
+                i = parenEndIndex;
+            }
+
+            if (crtAdditiveLen > maxLen)
+                maxLen = crtAdditiveLen;
+
+            return maxLen;
+        }
+
+        int[] ReadParenPairs(string input) {
+            List<int> parenStack = new List<int>();
+            int[] parenPairs = new int[input.Length];
+            if (parenPairs.Length > 0)
+                parenPairs[0] = -1; 
 
             for (int i = 0; i < input.Length; i++) {
                 char c = input[i];
                 if (c == '(') {
-                    openParen++;
-                    candidateLen++;
+                    parenStack.Add(i);
                 }
-                else if (c == ')') {
-                    if (openParen > 0) {
-                        openParen--;
-                        candidateLen++;
-                    }
-
-                    if (i == input.Length - 1) {
-                        candidateLen -= openParen;
-                        if (candidateLen > maxLen)
-                            maxLen = candidateLen;
-                    }
-
-                    if (openParen == 0) {
-                        if (candidateLen > maxLen)
-                            maxLen = candidateLen;
-
-                        candidateLen = 0;
+                else {
+                    if (parenStack.Count > 0) {
+                        int startParenIndex = parenStack[parenStack.Count - 1];
+                        parenPairs[startParenIndex] = i;
+                        parenStack.RemoveAt(parenStack.Count - 1);
                     }
                 }
             }
 
-            return maxLen;
+            return parenPairs;
         }
     }
 }
