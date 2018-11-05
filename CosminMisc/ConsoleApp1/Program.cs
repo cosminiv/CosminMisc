@@ -20,12 +20,12 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
             
-            new Leet.Leet_032().Solve();
+            var a = new Leet.Leet_015().Solve();
 
             var duration = sw.ElapsedMilliseconds;
 
             Console.WriteLine();
-            //Console.WriteLine($"Result: {a}");
+            Console.WriteLine($"Result: {a}");
             Console.WriteLine($"Took {duration}ms");
             //Console.ReadLine();
             Debug.Print($"Took {duration}ms");
