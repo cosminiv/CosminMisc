@@ -21,31 +21,21 @@ namespace ConsoleApp1.Leet
             List<char>[] texts = Enumerable.Range(1, numRows)
                 .Select(n => new List<char>()).ToArray();
             int row = 0;
-            int col = 0;
             int rowDelta = 1;
-            int colDelta = 0;
             int idx = 0;
 
             while (idx < s.Length) {
                 char ch = s[idx];
 
-                if (texts[row] == null)
-                    texts[row] = new List<char>();
-
                 texts[row].Add(ch);
                 
-                if (row == numRows - 1 && rowDelta == 1) {
+                if (row == numRows - 1 && rowDelta == 1) 
                     rowDelta = -1;
-                    colDelta = 1;
-                }
-                else if (row == 0 && rowDelta == -1) {
+                else if (row == 0 && rowDelta == -1) 
                     rowDelta = 1;
-                    colDelta = 0;
-                }
 
                 idx++;
                 row += rowDelta;
-                col += colDelta;
             }
 
             StringBuilder sb = new StringBuilder();
