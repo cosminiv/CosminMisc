@@ -132,6 +132,7 @@
     <Compile Include="Leet\Leet_003.cs" />
     <Compile Include="Leet\Leet_004.cs" />
     <Compile Include="Leet\Leet_005.cs" />
+    <Compile Include="Leet\Leet_006.cs" />
     <Compile Include="Leet\Leet_015.cs" />
     <Compile Include="Leet\Leet_032.cs" />
     <Compile Include="PerformanceMonitor\PerformanceMonitor.cs" />
