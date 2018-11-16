@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\AStar.cs" />
+    <Compile Include="Algorithms\HeapSort.cs" />
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
     <Compile Include="Algorithms\Parallel.cs" />

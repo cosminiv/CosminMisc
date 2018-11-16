@@ -9,6 +9,7 @@ namespace ConsoleApp1.Leet
 {
     class Leet_010
     {
+        // TODO: Does not work - not general enough
         public int Solve() {
             var tests = new[] {
                 //("", "", true),
@@ -24,7 +25,7 @@ namespace ConsoleApp1.Leet
                 //("a", "a*", true),
                 //("aaa", "a*", true),
                 //("aaa", "a*c", false),
-                ("ab", "a*b", true),
+                //("ab", "a*b", true),
                 //("aaab", "a*b", true),
                 //("caaab", "a*b", false),
                 //("a", ".", true),
@@ -40,7 +41,8 @@ namespace ConsoleApp1.Leet
                 //("aaaa", "a*aa", true),
                 //("aaaab", "a*aab", true),
                 //("ab", ".*c", false),
-                //("aaa", "ab*a", false),
+                //("aaa", "ab*a", false),  // ♠, ♣, ♦, and ♥)
+                ("aaa", "ab*a*c*a", true),
             };
 
             foreach (var test in tests) {
@@ -68,19 +70,17 @@ namespace ConsoleApp1.Leet
                         bool isCharMatch = IsCharMatch(ch, regexPart.Character);
                         bool advanceInInput = true;
 
+
                         if (regexPart.MinCount > 0 && !isCharMatch)         // did not match
                             return false;
                         else if (isCharMatch && regexPart.MaxCount == 1)    //   exactly one char matched
                             regexTokenIndex++;
-                        else if (!isCharMatch && regexPart.MinCount == 0) {   // optional char did not match
+                        else if (!isCharMatch && (regexPart.MinCount == 0 || matchedInfinityChar)) {   // optional char did not match
                             regexTokenIndex++;
                             advanceInInput = false;
                         }
 
-                        bool matchedInfinityCharNow = (isCharMatch && regexPart.MaxCount == int.MaxValue);
-                        if (!isCharMatch && matchedInfinityChar)            // end of infinity match
-                            regexTokenIndex++;
-                        matchedInfinityChar = matchedInfinityCharNow;
+                        matchedInfinityChar = (isCharMatch && regexPart.MaxCount == int.MaxValue);
 
                         if (advanceInInput)
                             stringIndex++;
@@ -149,7 +149,7 @@ namespace ConsoleApp1.Leet
             public int MaxCount;
 
             public override string ToString() {
-                return $"{Character}({MinCount}, {MaxCount})";
+                return $"{Character} ({MinCount},{MaxCount})";
             }
         }
     }

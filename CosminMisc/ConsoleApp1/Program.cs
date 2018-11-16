@@ -19,8 +19,11 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            
-            var a = new Leet.Leet_010().Solve();
+            int a = 0;
+
+            int[] numbers = new[] { 80, 4, 10, 1, 2, 7 };
+            new HeapSort().Test();
+            //MergeSort.Sort(numbers, out int inv);
 
             var duration = sw.ElapsedMilliseconds;
 
