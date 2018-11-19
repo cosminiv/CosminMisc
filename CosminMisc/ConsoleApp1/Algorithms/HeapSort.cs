@@ -10,6 +10,7 @@ namespace ConsoleApp1.Algorithms
     {
         public void Test() {
             int[] data = { 3, 21, 6, 9, 2, 17, 5, 0 };
+
             Sort(data);
 
             //MaxHeapify(data, data.Length, 1);

@@ -22,7 +22,7 @@ namespace ConsoleApp1
             int a = 0;
 
             int[] numbers = new[] { 80, 4, 10, 1, 2, 7 };
-            new HeapSort().Test();
+            new List().Test();
             //MergeSort.Sort(numbers, out int inv);
 
             var duration = sw.ElapsedMilliseconds;
