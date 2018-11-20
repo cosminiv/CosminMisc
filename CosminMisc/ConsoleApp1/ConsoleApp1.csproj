@@ -49,12 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\AStar.cs" />
+    <Compile Include="Algorithms\CountingSort.cs" />
     <Compile Include="Algorithms\HeapSort.cs" />
     <Compile Include="Algorithms\List.cs" />
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
     <Compile Include="Algorithms\Parallel.cs" />
     <Compile Include="Algorithms\QuickSort.cs" />
+    <Compile Include="Algorithms\RadixSort.cs" />
     <Compile Include="AppliedAlgorithms\Graphs.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStar.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStarNode.cs" />

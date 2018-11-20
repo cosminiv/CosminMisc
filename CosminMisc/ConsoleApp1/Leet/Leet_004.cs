@@ -46,7 +46,7 @@ namespace ConsoleApp1.Leet
         private int[] Merge(int[] nums1, int[] nums2) {
             int[] result = new int[nums1.Length + nums2.Length];
 
-            unsafe {
+            //unsafe {
                 int i1 = 0;
                 int i2 = 0;
                 int i = 0;
@@ -72,7 +72,7 @@ namespace ConsoleApp1.Leet
                         i2++;
                     }
                 }
-            }
+            //}
 
             return result;
         }
