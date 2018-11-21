@@ -1,10 +1,4 @@
 ﻿using ConsoleApp1.Algorithms;
-using ConsoleApp1.AppliedAlgorithms;
-using ConsoleApp1.Eu;
-using ConsoleApp1.Eu._051_100;
-using ConsoleApp1.Eu._Common;
-using ConsoleApp1.Eu.Common;
-using ConsoleApp1.GCJ;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,32 +13,38 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            int a = 0;
 
-            int maxDigits = 4;
-            int[] numbers = MakeNumbers(0, (int)Math.Pow(10, maxDigits) - 1, (int)1E+7);
-            //int[] numbersCopy = numbers.ToArray();
-            int[] numbers1 = new int[0];
-            int[] numbers2 = new int[0];
+            int min = 0;
+            int max = (int)1E+7;
+            int howMany = max;
+            int[] numbers = MakeRandomNumbers(min, max, howMany);
+
+            //int[] numbers = { 7, 1, 2, 9, 5, 0, 4, 6, 15, 8};
+            //howMany = numbers.Length;
+            //min = numbers.Min();
+            //max = numbers.Max() + 1;
 
             sw.Restart();
+            int[] bucketSortResult = new BucketSort().Sort(numbers, numbers.Min(), numbers.Max() + 1);
+            long timeBucketSort = sw.ElapsedMilliseconds;
 
-            new QuickSort().Sort(numbers);
-            numbers1 = numbers;
+            sw.Restart();
+            new QuickSort().Sort(numbers);  // sort in-place
+            long timeQuickSort = sw.ElapsedMilliseconds;
 
-            //numbers2 = new RadixSort().Sort(numbers, maxDigits); // running time: d*(n+b)
-            
-            //new RadixSort().Test();
+            Console.WriteLine($"QuickSort: {timeQuickSort}ms");
+            Console.WriteLine($"BucketSort: {timeBucketSort}ms");
 
-            var duration = sw.ElapsedMilliseconds;
+            Debug.Assert(bucketSortResult.Length == howMany);
+            Debug.Assert(numbers.Length == howMany);
+            VerifyNumbersAreSorted(bucketSortResult);
+            VerifyNumbersAreSorted(numbers);
 
-            VerifyNumbersAreSorted(numbers1);
-            VerifyNumbersAreSorted(numbers2);
-
+            long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
-            Console.WriteLine($"Result: {a}");
+            //Console.WriteLine($"Result: {a}");
             Console.WriteLine($"Took {duration}ms");
-            //Console.ReadLine();
+            Console.ReadLine();
             Debug.Print($"Took {duration}ms");
         }
 
@@ -55,7 +55,7 @@ namespace ConsoleApp1
             }
         }
 
-        private static int[] MakeNumbers(int min, int max, int howMany) {
+        private static int[] MakeRandomNumbers(int min, int max, int howMany) {
             int[] result = new int[howMany];
             Random rnd = new Random();
             for (int i = 0; i < howMany; i++) {

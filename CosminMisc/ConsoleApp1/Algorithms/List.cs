@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.Algorithms
 {
-    class List
+    public class List
     {
         public void Test() {
             Node list = new Node(1, new Node(2, new Node(3, new Node(4, null))));
@@ -26,18 +26,18 @@ namespace ConsoleApp1.Algorithms
             return prev;
         }
 
-        class Node
+        public class Node
         {
-            public int Data;
+            public int Value;
             public Node Next;
 
             public Node(int data, Node next) {
-                Data = data;
+                Value = data;
                 Next = next;
             }
 
             public override string ToString() {
-                return $"{Data}";
+                return $"{Value}";
             }
         }
     }
