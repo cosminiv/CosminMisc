@@ -25,7 +25,7 @@ namespace ConsoleApp1
             //max = numbers.Max() + 1;
 
             sw.Restart();
-            int[] bucketSortResult = new BucketSort().Sort(numbers, numbers.Min(), numbers.Max() + 1);
+            int[] bucketSortResult = new BucketSort().Sort(numbers, max);
             long timeBucketSort = sw.ElapsedMilliseconds;
 
             sw.Restart();
