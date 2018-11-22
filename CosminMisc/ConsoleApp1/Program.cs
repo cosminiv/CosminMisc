@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.Algorithms;
+using ConsoleApp1.Leet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,31 +15,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            int min = 0;
-            int max = (int)1E+7;
-            int howMany = max;
-            int[] numbers = MakeRandomNumbers(min, max, howMany);
-
-            //int[] numbers = { 7, 1, 2, 9, 5, 0, 4, 6, 15, 8};
-            //howMany = numbers.Length;
-            //min = numbers.Min();
-            //max = numbers.Max() + 1;
-
-            sw.Restart();
-            int[] bucketSortResult = new BucketSort().Sort(numbers, max);
-            long timeBucketSort = sw.ElapsedMilliseconds;
-
-            sw.Restart();
-            new QuickSort().Sort(numbers);  // sort in-place
-            long timeQuickSort = sw.ElapsedMilliseconds;
-
-            Console.WriteLine($"QuickSort: {timeQuickSort}ms");
-            Console.WriteLine($"BucketSort: {timeBucketSort}ms");
-
-            Debug.Assert(bucketSortResult.Length == howMany);
-            Debug.Assert(numbers.Length == howMany);
-            VerifyNumbersAreSorted(bucketSortResult);
-            VerifyNumbersAreSorted(numbers);
+            new Leet_019().Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
