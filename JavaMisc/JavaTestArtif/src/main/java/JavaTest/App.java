@@ -6,7 +6,9 @@ public final class App {
     }
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+
+        new Leet_007().test();
+        //System.out.println(String.format("result = %d", n));
         
     }
 }
