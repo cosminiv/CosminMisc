@@ -6,9 +6,13 @@ public final class App {
     }
 
     public static void main(String[] args) {
-
-        new Leet_013().test();
+        new DCP_003().test();
+        //new Leet_013().test();
         //System.out.println(String.format("result = %d", n));
         
+    }
+
+    static <T> void Print(T a){
+        System.out.println(a);
     }
 }
