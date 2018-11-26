@@ -7,7 +7,6 @@ public final class App {
 
     public static void main(String[] args) {
         new DCP_003().test();
-        //new Leet_013().test();
         //System.out.println(String.format("result = %d", n));
         
     }

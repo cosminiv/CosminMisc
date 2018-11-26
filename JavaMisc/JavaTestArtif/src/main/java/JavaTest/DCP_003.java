@@ -28,7 +28,7 @@ class DCP_003 {
         //System.out.println(node3);
     }
 
-     String serialize(Node treeRoot) {
+    private String serialize(Node treeRoot) {
         StringBuilder sb = new StringBuilder();
         serialize(treeRoot, sb);
         return sb.toString();
@@ -53,17 +53,14 @@ class DCP_003 {
         sb.append("}");
     }
 
-    Node deserialize(String str){
+    private Node deserialize(String str){
         DeserResult result = deserialize(str, 1);
         return result.node;
     }
 
-    DeserResult deserialize(String str, int index){
-        int initialIndex = index;
-        System.out.printf("Starting at %d \n", index);
-        if (str.charAt(index) == '}'){
+    private DeserResult deserialize(String str, int index){
+        if (str.charAt(index) == '}')
             return new DeserResult(null, index);
-        }
         
         index += "\"value\":\"".length();
         int index2 = str.indexOf("\"", index + 1);
@@ -83,12 +80,11 @@ class DCP_003 {
         node.left = leftResult.node;
         node.right = rightResult.node;
 
-        System.out.printf("Ending: %d - %d \n", initialIndex, index);
         DeserResult result = new DeserResult(node, index);
         return result;
     }
 
-    static class DeserResult {
+    private static class DeserResult {
         Node node;
         int index;
 
@@ -98,7 +94,7 @@ class DCP_003 {
         }
     }
 
-    static class Node {
+    private static class Node {
         int value;
         Node left;
         Node right;
