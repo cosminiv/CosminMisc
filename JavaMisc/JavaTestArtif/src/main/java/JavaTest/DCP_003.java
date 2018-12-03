@@ -20,12 +20,12 @@ class DCP_003 {
 
         String ser = serialize(n1);
         
-        Node node1 = deserialize("{}");
-        Node node2 = deserialize("{\"value\":\"7\",\"left\":{},\"right\":{}}");
+        //Node node1 = deserialize("{}");
+        //Node node2 = deserialize("{\"value\":\"7\",\"left\":{},\"right\":{}}");
         Node node3 = deserialize(ser);
 
         System.out.println(ser);
-        //System.out.println(node3);
+        System.out.println(node3);
     }
 
     private String serialize(Node treeRoot) {

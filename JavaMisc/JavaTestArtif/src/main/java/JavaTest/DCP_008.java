@@ -1,10 +1,10 @@
+// Count how many "unival subtrees" there are in a tree
+// (they have only one repeated value)
+//
 package JavaTest;
 
 import java.util.HashSet;
 
-// Count how many "unival subtrees" there are in a tree
-// (they have only one repeated value)
-//
 class DCP_008 {
     public void test() {
         TreeNode tree = new TreeNode(0, new TreeNode(1, null, null),
