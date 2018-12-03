@@ -6,7 +6,7 @@ public final class App {
     }
 
     public static void main(String[] args) {
-        new DCP_003().test();
+        new DCP_009().test();
         //System.out.println(String.format("result = %d", n));
         
     }
