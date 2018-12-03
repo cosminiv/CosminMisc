@@ -5,16 +5,16 @@ import java.util.Stack;
 
 class Leet_020{
     public void test(){
-        boolean a = isValid("");
-        boolean b = isValid("(");
-        boolean c = isValid(")");
-        boolean d = isValid(")(");
-        boolean e = isValid("()");
-        boolean f = isValid("(()");
-        boolean g = isValid("([])");
-        boolean h = isValid("[(])");
-        boolean i = isValid("[]{}");
-        boolean j = isValid("{([]{})()}");
+        // boolean a = isValid("");
+        // boolean b = isValid("(");
+        // boolean c = isValid(")");
+        // boolean d = isValid(")(");
+        // boolean e = isValid("()");
+        // boolean f = isValid("(()");
+        // boolean g = isValid("([])");
+        // boolean h = isValid("[(])");
+        // boolean i = isValid("[]{}");
+        // boolean j = isValid("{([]{})()}");
     }
 
     public boolean isValid(String s) {
