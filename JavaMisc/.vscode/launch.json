@@ -7,7 +7,7 @@
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "JavaTest.App",
+            "mainClass": "JavaTest.Main",
             "args": "",
             "projectName": "JavaTestArtif"
         }

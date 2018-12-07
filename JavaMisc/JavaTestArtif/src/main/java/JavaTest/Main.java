@@ -6,12 +6,12 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        new JavaTest.Leet.Leet_012().test();
+        new JavaTest.Misc.StringSearch().test();
         //System.out.println(String.format("result = %d", n));
         
     }
 
-
+    
     
 }
 
