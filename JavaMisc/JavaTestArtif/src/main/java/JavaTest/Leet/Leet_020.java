@@ -1,6 +1,6 @@
 // Validate Parentheses: (), [], {}
 //
-package JavaTest;
+package JavaTest.Leet;
 import java.util.Stack;
 
 class Leet_020{

@@ -1,6 +1,6 @@
 // Find the longest substring formed of at most X distinct characters
 //
-package JavaTest;
+package JavaTest.DCP;
 
 import java.util.*;
 

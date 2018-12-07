@@ -1,7 +1,7 @@
 // Get maximum sum of non-consecutive numbers in an array
 // Numbers can be negative as well
 //
-package JavaTest;
+package JavaTest.DCP;
 
 class DCP_009{
     void test(){

@@ -1,7 +1,7 @@
 // Implement atoi which converts a string to an integer.
 // Discard leading spaces and trailing text
 //
-package JavaTest;
+package JavaTest.Leet;
 
 class Leet_008 {
     void test(){

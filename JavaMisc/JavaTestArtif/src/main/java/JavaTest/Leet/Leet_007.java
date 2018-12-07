@@ -1,4 +1,4 @@
-package JavaTest;
+package JavaTest.Leet;
 
 class Leet_007 {
     public void test(){

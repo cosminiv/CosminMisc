@@ -2,7 +2,7 @@
 // Given N, write a function that returns the number of unique ways you can climb the staircase. The order of the steps matters.
 // Also solve for an arbitrary list of steps you can climb
 //
-package JavaTest;
+package JavaTest.DCP;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;

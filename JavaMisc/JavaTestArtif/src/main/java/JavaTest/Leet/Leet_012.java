@@ -1,9 +1,9 @@
 // Integer to Roman number
 //
-package JavaTest;
+package JavaTest.Leet;
 
 
-class Leet_012 {
+public class Leet_012 {
 	public void test() {
 		int[] n = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
 				30, 31, 34, 36, 39, 40, 49, 50, 99, 100, 101, 174, 199, 200, 248, 399, 433, 2949 };
