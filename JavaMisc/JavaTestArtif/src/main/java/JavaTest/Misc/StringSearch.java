@@ -7,7 +7,7 @@ public class StringSearch {
         String[] userNames = new String[] { "abba", "adrian", "adrian1", "adrian123", "cosmin", "cosmin2" };
         String text = "Blah @abb blah @adrian, how you doin @cosmin@@@";
         List<String> result = findMentions(text, userNames);
-        int a = 8;
+        System.out.printf("%d mentions found", result.size());
     }
 
     List<String> findMentions(String text, String[] userNames) {

@@ -6,7 +6,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        new JavaTest.Misc.StringSearch().test();
+        new JavaTest.Leet.Leet_017().test();
         //System.out.println(String.format("result = %d", n));
         
     }
