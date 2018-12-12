@@ -19,11 +19,15 @@ public class Leet_033 {
 
         int result = -1;
         int pivotIndex = binarySearchPivot(nums);
+
         if (pivotIndex == -1) 
+            // The array is not rotated
             result = binarySearch(nums, target, 0, nums.length - 1);
         else if (target >= nums[0])
+            // Search in the first part
             result = binarySearch(nums, target, 0, pivotIndex);
         else
+            // Search in last part
             result = binarySearch(nums, target, pivotIndex + 1, nums.length - 1);
 
         return result;
