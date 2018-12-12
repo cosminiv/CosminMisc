@@ -23,19 +23,19 @@ public class Leet_030 {
 
 	// Return list of indices where all the words are present exactly once in string s
 	//
-	public List<Integer> findSubstring(String s, String[] words) {
+	public List<Integer> findSubstring(String s, String[] wordsX) {
 		List<Integer> result = new ArrayList<Integer>();
-		if (s == null || s.length() == 0 || words == null || words.length == 0)
+		if (s == null || s.length() == 0 || wordsX == null || wordsX.length == 0)
 			return result;
 		int wordsLen = 0;
-		for (String word : words)
+		for (String word : wordsX)
 			wordsLen += word.length();
 		if (wordsLen > s.length())
 			return result;
 
-		Arrays.sort(words);
-		// HashSet<String> wordsFound = new HashSet<String>(words.length);
-		int[] wordsFound = makeIndexArray(words.length);
+		Arrays.sort(wordsX);
+		List<String> words = Arrays.asList(Arrays.copyOf(wordsX, wordsX.length));
+		int[] wordsFound = makeIndexArray(words.size());
 
 		// iterate through the string and try to match words
 		int candidateResult = 0, wordStart = 0, wordEnd = 1, countWordsFound = 0;
@@ -43,7 +43,7 @@ public class Leet_030 {
 		for (; wordStart < s.length() && wordEnd <= s.length();) {
 			String substr = s.substring(wordStart, wordEnd);
 			// First try to find full word
-			int wordIndex = Arrays.binarySearch(words, substr);
+			int wordIndex = binarySearch(words, substr);
 			// If full word not found, search only for prefix
 			if (wordIndex < 0) 
 				wordIndex = substrBinarySearch(words, substr);
@@ -54,14 +54,15 @@ public class Leet_030 {
 				wordStart++;
 				wordEnd = wordStart + 1;
 				candidateResult = wordStart;
-				wordsFound = makeIndexArray(words.length);
+				wordsFound = makeIndexArray(words.size());
 				countWordsFound = 0;
+				//words = Arrays.asList(Arrays.copyOf(wordsX, wordsX.length));
 				printf("Have not found substring %s, resetting to index %d \n", substr, wordStart);
 				continue;
 			}
 
 			// Check if we found a full word which is not a substring of a bigger word
-			boolean foundFullWord = substr.length() == words[wordIndex].length();
+			boolean foundFullWord = substr.length() == words.get(wordIndex).length();
 			boolean foundBiggerWord = false;
 			if (foundFullWord) {
 				int wordEnd2 = wordEnd + 1;
@@ -83,12 +84,12 @@ public class Leet_030 {
 
 			// Remove the words found which appear before the duplicate
 			if (foundDuplicate){
-				printf("found duplicate %s\n", words[wordIndex]);
+				printf("found duplicate %s\n", words.get(wordIndex));
 				int indexCutoff = wordsFound[wordIndex];
 
 				for (int j = 0; j < wordsFound.length; j++){
 					if (wordsFound[j] >= 0 && wordsFound[j] <= indexCutoff){
-						String word = words[j];
+						String word = words.get(j);
 						wordsFound[j] = -1;
 						countWordsFound--;
 						int wordLen = word.length();
@@ -106,8 +107,9 @@ public class Leet_030 {
 			wordsFound[wordIndex] = wordStart;
 			wordStart = wordEnd;
 			wordEnd = wordStart + 1;
+			//words.remove(wordIndex);
 
-			if (countWordsFound == words.length) {
+			if (countWordsFound == words.size()) {
 				//printf("--------------\nMatched all at index %d\n\n", candidateResult);
 				result.add(candidateResult);
 
@@ -116,7 +118,7 @@ public class Leet_030 {
 				for (int j = 0; j < wordsFound.length; j++) {
 					if (wordsFound[j] == candidateResult){
 						wordsFound[j] = -1;
-						charCountOffset = words[j].length();
+						charCountOffset = words.get(j).length();
 						break;
 					}
 				}
@@ -141,25 +143,39 @@ public class Leet_030 {
 		return result;
 	}
 
-	int substrBinarySearch(String[] words, String prefix) {
-		int start = 0, end = words.length - 1;
+	int substrBinarySearch(List<String> words, String prefix) {
+		int start = 0, end = words.size() - 1;
 		// System.out.printf("Searching for: %s\n", prefix);
 
 		while (start <= end) {
 			int mid = (start + end) / 2;
-			// System.out.printf("start = %d, end = %d, mid = %d\n", start, end, mid);
-			String word = words[mid];
+			String word = words.get(mid);
 			if (word.indexOf(prefix) == 0) {
-				/* System.out.printf("%s in %s\n", prefix, word); */return mid;
+				return mid;
 			}
-			// if (start == end) return -1;
 			int c = word.compareTo(prefix);
 			if (c < 0) {
 				start = mid + 1;
-				/* System.out.printf("%s < %s\n", word, prefix); */ } else {
+			} else {
 				end = mid - 1;
-				/* System.out.printf("%s > %s\n", word, prefix); */ }
+			}
 		}
 		return -1;
 	}
+
+	int binarySearch(List<String> words, String toFind) {
+		int start = 0, end = words.size() - 1;
+		// System.out.printf("Searching for: %s\n", prefix);
+
+		while (start <= end) {
+			int mid = (start + end) / 2;
+			String word = words.get(mid);
+			int res = word.compareTo(toFind);
+			
+			if (res == 0) return mid;
+			else if (res < 0) start = mid + 1;
+			else end = mid - 1;
+		}
+		return -1;
+	}	
 }
