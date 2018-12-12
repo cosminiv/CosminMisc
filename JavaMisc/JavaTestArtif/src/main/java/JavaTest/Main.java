@@ -6,7 +6,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        new JavaTest.Leet.Leet_030().test();
+        new JavaTest.Leet.Leet_033().test();
         //System.out.println(String.format("result = %d", n));
         
     }
