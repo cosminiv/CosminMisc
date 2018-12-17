@@ -1,12 +1,13 @@
 package JavaTest;
 
+import JavaTest.Leet.*;
 
 public final class Main {
     private Main() {
     }
 
     public static void main(String[] args) {
-        new JavaTest.Misc.Tree().test();
+        new Leet_037().test();
         //System.out.println(String.format("result = %d", n));
         
     }
