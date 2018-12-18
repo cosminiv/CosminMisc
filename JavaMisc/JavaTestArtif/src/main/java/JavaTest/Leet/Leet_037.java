@@ -28,35 +28,87 @@ public class Leet_037 {
           };
 
         solveSudoku(board);
-        printMatrix(currentBoard, "Current:");
+        //printMatrix(currentBoard, "Final:");
+        printSudoku(board);
     }
 
     public void solveSudoku(char[][] board) {
         initialBoard = copyBoard(board);
         currentBoard = copyBoard(board);
         initExistingData();
-        printState();
 
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                if (currentBoard[i][j] != 0) continue;
-                for (int d = 1; d <= BOARD_SIZE; d++){
-                    if (isValidSudoku(currentBoard, d, i, j)) { 
-                        setNumberOnBoard(currentBoard, d, i, j);
+                if (initialBoard[i][j] != 0) continue;
+
+                // If backtracking, don't start with 1 again
+                int firstNumber = (currentBoard[i][j] == 0 ? 1 : currentBoard[i][j] + 1);
+                currentBoard[i][j] = 0;
+
+                for (int n = firstNumber; n <= BOARD_SIZE; n++){
+                    if (isValidSudoku(currentBoard, n, i, j)) { 
+                        setNumber(n, i, j);
                         break;
                     }
                 }
+
+                // If no number is good, backtrack.
+                if (currentBoard[i][j] == 0){
+                    Coords coords = backtrack(i, j);
+                    i = coords.Row;
+                    j = coords.Col - 1;  // It will be incremented by the for loop
+                    //System.out.printf("BT: (%d, %d) ", i, j + 1);
+                }
             }   
         }
-    }    
 
-    private void setNumberOnBoard(int[][] board, int number, int row, int col) {
-        board[row][col] = number;
+        copyBoard(currentBoard, board);
+    }
+
+    private Coords backtrack(int row, int col) {
+        int i = row, j = col - 1;
+        while(true){
+            if (j == -1) {
+                j = BOARD_SIZE - 1;
+                i--;
+            }            
+
+            if (initialBoard[i][j] == 0) { 
+                resetNumber(i, j);
+                if (currentBoard[i][j] < BOARD_SIZE)
+                    return new Coords(i, j);
+                else
+                    currentBoard[i][j] = 0;
+            }
+
+            j--;
+        }
+    }
+
+    private void copyBoard(int[][] intBoard, char[][] charBoard) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                int n = intBoard[i][j];
+                charBoard[i][j] = (char)('0' + n);
+            }
+        }        
+    }
+
+    private void setNumber(int number, int row, int col) {
+        currentBoard[row][col] = number;
         existingCols[col][number] = 1;
         existingRows[row][number] = 1;
         int squareIndex = getSquareIndex(row, col);
         existingSquares[squareIndex][number] = 1;
     }
+
+    private void resetNumber(int row, int col) {
+        int number = currentBoard[row][col];
+        existingCols[col][number] = 0;
+        existingRows[row][number] = 0;
+        int squareIndex = getSquareIndex(row, col);
+        existingSquares[squareIndex][number] = 0;
+    }    
 
     private int getSquareIndex(int row, int col) {
         int overallIndex = row * BOARD_SIZE + col;
@@ -68,13 +120,6 @@ public class Leet_037 {
             squareIndex = squareIndex + 3;
 
         return squareIndex;
-    }
-
-    private void printState() {
-        printMatrix(initialBoard, "Initial: ");
-        printMatrix(existingRows, "Rows: ");
-        printMatrix(existingCols, "Cols: ");
-        printMatrix(existingSquares, "Squares: ");
     }
 
     private void initExistingData() {
@@ -151,5 +196,15 @@ public class Leet_037 {
         }
 
         System.out.println("\n");
-    }    
+    } 
+    
+    static class Coords {
+        int Row;
+        int Col;
+
+        Coords(int r, int c){
+            Row = r;
+            Col = c;
+        }
+    }
 }
