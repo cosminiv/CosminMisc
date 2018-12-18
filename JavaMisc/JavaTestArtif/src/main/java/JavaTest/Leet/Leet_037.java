@@ -2,15 +2,15 @@
 //
 package JavaTest.Leet;
 
-//import java.util.Arrays;
-
 public class Leet_037 {
-    int[][] initialBoard;
-    int[][] currentBoard;
+    static final int BOARD_SIZE = 9;
+    int[][] initialBoard;   // used to check the fixed numbers
+    int[][] currentBoard;   // the current state of the board during the computation
+
+    // current data indexed by number; used for fast checks for duplicates
     int[][] existingRows = new int[BOARD_SIZE][];
     int[][] existingCols = new int[BOARD_SIZE][];
     int[][] existingSquares = new int[BOARD_SIZE][];
-    static final int BOARD_SIZE = 9;
 
     public void test() {
         char[][] board = {
@@ -28,24 +28,20 @@ public class Leet_037 {
           };
 
         solveSudoku(board);
-        //printMatrix(currentBoard, "Final:");
         printSudoku(board);
     }
 
     public void solveSudoku(char[][] board) {
-        initialBoard = copyBoard(board);
-        currentBoard = copyBoard(board);
-        initExistingData();
+        initData(board);
 
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                if (initialBoard[i][j] != 0) continue;
+                if (initialBoard[i][j] != 0) continue;  // fixed number
 
-                // If backtracking, don't start with 1 again
-                int firstNumber = (currentBoard[i][j] == 0 ? 1 : currentBoard[i][j] + 1);
+                int startValue = currentBoard[i][j] + 1;
                 currentBoard[i][j] = 0;
 
-                for (int n = firstNumber; n <= BOARD_SIZE; n++){
+                for (int n = startValue; n <= BOARD_SIZE; n++){
                     if (isValidSudoku(currentBoard, n, i, j)) { 
                         setNumber(n, i, j);
                         break;
@@ -57,11 +53,11 @@ public class Leet_037 {
                     Coords coords = backtrack(i, j);
                     i = coords.Row;
                     j = coords.Col - 1;  // It will be incremented by the for loop
-                    //System.out.printf("BT: (%d, %d) ", i, j + 1);
                 }
             }   
         }
 
+        // copy from our working data to output
         copyBoard(currentBoard, board);
     }
 
@@ -122,7 +118,10 @@ public class Leet_037 {
         return squareIndex;
     }
 
-    private void initExistingData() {
+    private void initData(char[][] board) {
+        initialBoard = copyBoard(board);
+        currentBoard = copyBoard(board);
+
         for (int i = 0; i < BOARD_SIZE; i++) {
             existingRows[i] = new int[10];
             existingCols[i] = new int[10];
