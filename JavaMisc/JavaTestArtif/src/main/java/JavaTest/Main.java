@@ -7,7 +7,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        new Leet_037().test();
+        new Leet_041().test();
         //System.out.println(String.format("result = %d", n));
         
     }
