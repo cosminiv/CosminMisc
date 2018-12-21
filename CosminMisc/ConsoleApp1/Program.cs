@@ -15,7 +15,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new Leet_019().Test();
+            new Misc.StringSearch().Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
