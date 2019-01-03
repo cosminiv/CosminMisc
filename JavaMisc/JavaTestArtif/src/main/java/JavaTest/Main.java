@@ -8,7 +8,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        new StringSearch().test();
+        new Leet_045().test();
         //System.out.println(String.format("result = %d", n));
         
     }
