@@ -65,8 +65,7 @@ public class Tree {
 
     void traverseInOrderNonRecursive(BST root) {
         Stack<BST> stack = new Stack<BST>();
-        stack.push(root);
-        BST crtNode = root.Left;
+        BST crtNode = root;
 
         while (true) {
             while (crtNode != null) {
