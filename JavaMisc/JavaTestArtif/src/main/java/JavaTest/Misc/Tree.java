@@ -1,16 +1,24 @@
 package JavaTest.Misc;
 
+import java.util.Stack;
+
 public class Tree {
     public void test() {
         BST tree = new BST(6, null, null);
         addNonRecursive(tree, 2);
         addNonRecursive(tree, 1);
-        addNonRecursive(tree, 7);
+        addNonRecursive(tree, 17);
         addNonRecursive(tree, 5);
         addNonRecursive(tree, 0);
+        addNonRecursive(tree, 20);
+        addNonRecursive(tree, 3);
 
         traverseInOrder(tree);
-        System.out.println("\n");
+        System.out.printf("\n");
+
+        traverseInOrderNonRecursive(tree);
+        System.out.printf("\n\n");
+        
         traverseIndented(tree, 0);
     }
 
@@ -55,9 +63,30 @@ public class Tree {
             traverseInOrder(root.Right);
     }
 
+    void traverseInOrderNonRecursive(BST root) {
+        Stack<BST> stack = new Stack<BST>();
+        stack.push(root);
+        BST crtNode = root.Left;
+
+        while (true) {
+            while (crtNode != null) {
+                stack.push(crtNode);
+                crtNode = crtNode.Left;
+            }
+            
+            if (stack.empty()) break;
+
+            BST node = stack.pop();
+            System.out.printf("%d ", node.Value);
+            crtNode = node.Right;
+        }
+
+        System.out.printf("\n");
+    }
+
     void traverseIndented(BST root, int level) {
         for (int i = 0; i < level; i++)
-            System.out.printf("--");
+            System.out.printf("   ");
         System.out.printf("%d\n", root.Value);
         if (root.Left != null)
             traverseIndented(root.Left, level + 1);

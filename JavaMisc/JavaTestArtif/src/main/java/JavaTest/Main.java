@@ -8,7 +8,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        new Leet_045().test();
+        new Tree().test();
         //System.out.println(String.format("result = %d", n));
         
     }
