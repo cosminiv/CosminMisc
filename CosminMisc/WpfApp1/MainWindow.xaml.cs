@@ -26,14 +26,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow() {
-            InitializeComponent();
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e) {
-            Stopwatch sw = Stopwatch.StartNew();
-
-            string[] urls = {
+        string[] _urls = {
                 "https://news.google.com",
                 "https://news.yahoo.com",
                 "https://www.theguardian.com",
@@ -44,9 +37,19 @@ namespace WpfApp1
                 "https://edition.cnn.com"
             };
 
-            await DownloadParallelAsync(sw, urls);
-            //await DownloadSequentiallyAsync(sw, urls);
+        public MainWindow() {
+            InitializeComponent();
+        }
 
+        private async void Download_Click(object sender, RoutedEventArgs e) {
+            Stopwatch sw = Stopwatch.StartNew();
+            await DownloadSequentiallyAsync(sw, _urls);
+            TextBox1.Text += $"{sw.Elapsed.Seconds}s\n\n";
+        }
+
+        private async void DownloadParallel_Click(object sender, RoutedEventArgs e) {
+            Stopwatch sw = Stopwatch.StartNew();
+            await DownloadParallelAsync(sw, _urls);
             TextBox1.Text += $"{sw.Elapsed.Seconds}s\n\n";
         }
 
@@ -61,7 +64,7 @@ namespace WpfApp1
                     Task<DownloadResult> taskDone = await Task.WhenAny(tasks);
                     tasks.Remove(taskDone);
                     DownloadResult dlRes = await taskDone;
-                    status = $"{dlRes.Url}: {Math.Round(dlRes.Html.Length / 1000.0)}KB";
+                    status = $"{dlRes.Url}: {Math.Round(dlRes.Html.Length / 1024.0)}KB";
                 }
                 catch(AggregateException) {
                     status = "ae error";
@@ -84,13 +87,13 @@ namespace WpfApp1
 
                 try {
                     DownloadResult dlRes = await Task.Run(() => DownloadUrl(url));
-                    status = $"{Math.Round(dlRes.Html.Length / 1000.0)}KB";
+                    status = $"{Math.Round(dlRes.Html.Length / 1024.0)}KB";
                 }
                 catch (Exception) {
                     status = "error";
                 }
 
-                TextBox1.Text += $": {status}\n";
+                TextBox1.Text += $": {status}  {sw.ElapsedMilliseconds}ms\n";
             }
         }
 

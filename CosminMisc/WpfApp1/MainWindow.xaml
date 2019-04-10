@@ -9,7 +9,8 @@
     <Grid>
         <StackPanel HorizontalAlignment="Left" Height="370" Margin="21,39,0,0" VerticalAlignment="Top" Width="360"
                     >
-            <Button x:Name="Button1" Content="Download" Width="100" Click="Button_Click" Margin="130,0"/>
+            <Button x:Name="Download" Content="Download" Width="100" Click="Download_Click" Margin="130,0"/>
+            <Button x:Name="DownloadParallel" Content="Download Parallel" Width="100" Click="DownloadParallel_Click" Margin="130,0"/>
             <TextBox x:Name="TextBox1" Height="315" TextWrapping="Wrap" Margin="0,0,10,0" AcceptsReturn="True" AutoWordSelection="True"/>
             <Button x:Name="btnClear1" Content="Clear" Margin="0,0,10,0" Click="BtnClear1_Click"/>
         </StackPanel>
