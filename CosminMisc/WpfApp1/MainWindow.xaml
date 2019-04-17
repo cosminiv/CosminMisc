@@ -7,16 +7,18 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <StackPanel HorizontalAlignment="Left" Height="370" Margin="21,39,0,0" VerticalAlignment="Top" Width="360"
+        <StackPanel HorizontalAlignment="Left" Height="370" Margin="21,39,0,0" VerticalAlignment="Top" Width="153" 
                     >
-            <Button x:Name="Download" Content="Download" Width="100" Click="Download_Click" Margin="130,0"/>
-            <Button x:Name="DownloadParallel" Content="Download Parallel" Width="100" Click="DownloadParallel_Click" Margin="130,0"/>
-            <TextBox x:Name="TextBox1" Height="315" TextWrapping="Wrap" Margin="0,0,10,0" AcceptsReturn="True" AutoWordSelection="True"/>
-            <Button x:Name="btnClear1" Content="Clear" Margin="0,0,10,0" Click="BtnClear1_Click"/>
+            <Button x:Name="DownloadNewThread" Content="Download New Thread" Height="30" Click="DownloadNewThread_Click" Margin="0 0 0 10" />
+            <Button x:Name="Download" Content="Download Async Serial" Height="30" Click="Download_Click" Margin="0 0 0 10" />
+            <Button x:Name="DownloadParallel" Content="Download Async Parallel" Click="DownloadParallel_Click" Height="30" Margin="0 0 0 10"/>
+            <Button x:Name="btnCancel" Content="Cancel" Click="btnCancel_Click" Height="30" Margin="0 0 0 10"/>
+            <Button x:Name="btnClear1" Content="Clear" Click="BtnClear1_Click" Height="30"/>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Left" Height="355" Margin="404,43,0,0" VerticalAlignment="Top" Width="359">
-            <Button x:Name="Button2" Content="Button" Click="Button2_Click" Margin="0,0,236,0"/>
-            <TextBox x:Name="TextBox2" Height="311" TextWrapping="Wrap" Margin="0,0,10,0" AcceptsReturn="True" AutoWordSelection="True"/>
+
+        <StackPanel HorizontalAlignment="Left" Height="355" Margin="190,43,0,0" VerticalAlignment="Top" Width="573">
+            <TextBox x:Name="TextBox1" Height="324" TextWrapping="Wrap" Margin="10,0" AcceptsReturn="True" AutoWordSelection="True"/>
+            <ProgressBar Height="30" x:Name="Progress1" Margin="10,0"/>
         </StackPanel>
 
     </Grid>

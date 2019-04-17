@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.Algorithms;
+using ConsoleApp1.HackerRank;
 using ConsoleApp1.Leet;
 using ConsoleApp1.Misc;
 using System;
@@ -16,11 +17,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            var evTest = new EventsTest();
-            evTest.OnSetZero += (sender, zeroArgs) => Console.WriteLine($"{sender} {zeroArgs.Text}");
-            evTest.Number = 9;
-            evTest.Number = 0;
-            evTest.Number = 8;
+            new MagicSquare().Solve();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
