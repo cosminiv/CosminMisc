@@ -17,7 +17,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new NonDivisibleSubset().Solve();
+            CountTriplets.Solve();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();

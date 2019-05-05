@@ -136,6 +136,7 @@
     <Compile Include="GCJ\Year_2017_Qualif_C.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_B.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_A.cs" />
+    <Compile Include="HackerRank\CountTriplets.cs" />
     <Compile Include="HackerRank\MagicSquare.cs" />
     <Compile Include="HackerRank\NonDivisibleSubset.cs" />
     <Compile Include="Leet\Leet_003.cs" />
@@ -160,6 +161,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="TextFile1.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
