@@ -17,7 +17,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new MagicSquare().Solve();
+            new NonDivisibleSubset().Solve();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
