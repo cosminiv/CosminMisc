@@ -149,6 +149,7 @@
     <Compile Include="Leet\Leet_022.cs" />
     <Compile Include="Leet\Leet_032.cs" />
     <Compile Include="Leet\Leet_151.cs" />
+    <Compile Include="Misc\ArithmeticExprEvaluator.cs" />
     <Compile Include="Misc\DynamicTest.cs" />
     <Compile Include="Misc\EventsTest.cs" />
     <Compile Include="Misc\StringSearch.cs" />
