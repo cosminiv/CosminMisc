@@ -17,7 +17,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            SherlockAndAnagrams.Test();
+            FrequencyQueries.Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();

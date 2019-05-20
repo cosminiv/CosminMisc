@@ -137,6 +137,7 @@
     <Compile Include="GCJ\Year_2017_Qualif_B.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_A.cs" />
     <Compile Include="HackerRank\CountTriplets.cs" />
+    <Compile Include="HackerRank\FrequencyQueries.cs" />
     <Compile Include="HackerRank\MagicSquare.cs" />
     <Compile Include="HackerRank\NonDivisibleSubset.cs" />
     <Compile Include="HackerRank\SherlockAndAnagrams.cs" />
