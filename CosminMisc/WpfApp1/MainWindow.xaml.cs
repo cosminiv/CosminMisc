@@ -90,13 +90,13 @@ namespace WpfApp1
                     DownloadResult dlRes = await taskDone;
                     status = $"{dlRes.Url}: {Math.Round(dlRes.Html.Length / 1024.0)}KB";
                 }
-                catch(OperationCanceledException oce) {
+                catch(OperationCanceledException) {
                     status = "CANCELED";
                 }
                 catch (AggregateException) {
                     status = "ae error";
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     status = "error";
                 }
 

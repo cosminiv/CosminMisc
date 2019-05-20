@@ -139,6 +139,7 @@
     <Compile Include="HackerRank\CountTriplets.cs" />
     <Compile Include="HackerRank\MagicSquare.cs" />
     <Compile Include="HackerRank\NonDivisibleSubset.cs" />
+    <Compile Include="HackerRank\SherlockAndAnagrams.cs" />
     <Compile Include="Leet\Leet_003.cs" />
     <Compile Include="Leet\Leet_004.cs" />
     <Compile Include="Leet\Leet_005.cs" />
