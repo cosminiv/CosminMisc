@@ -63,6 +63,7 @@
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStar.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStarNode.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathTestCase.cs" />
+    <Compile Include="Arrays\FairSplit.cs" />
     <Compile Include="Eu\051_100\Problem_051.cs" />
     <Compile Include="Eu\051_100\Problem_052.cs" />
     <Compile Include="Eu\051_100\Problem_053.cs" />
@@ -136,8 +137,10 @@
     <Compile Include="GCJ\Year_2017_Qualif_C.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_B.cs" />
     <Compile Include="GCJ\Year_2017_Qualif_A.cs" />
+    <Compile Include="HackerRank\ArrayRotation.cs" />
     <Compile Include="HackerRank\CountTriplets.cs" />
     <Compile Include="HackerRank\FrequencyQueries.cs" />
+    <Compile Include="HackerRank\ArrayHourglassSum.cs" />
     <Compile Include="HackerRank\MagicSquare.cs" />
     <Compile Include="HackerRank\NonDivisibleSubset.cs" />
     <Compile Include="HackerRank\SherlockAndAnagrams.cs" />

@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.Algorithms;
+using ConsoleApp1.Arrays;
 using ConsoleApp1.HackerRank;
 using ConsoleApp1.Leet;
 using ConsoleApp1.Misc;
@@ -17,7 +18,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            FrequencyQueries.Test();
+            ArrayHourglassSum.Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
