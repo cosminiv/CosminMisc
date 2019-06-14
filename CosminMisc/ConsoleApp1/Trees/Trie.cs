@@ -45,34 +45,41 @@ namespace ConsoleApp1.Trees
         }
 
         public string FindLongestWordWithAllPrefixesWords() {
-            List<StringBuilder> longestWords = new List<StringBuilder> { new StringBuilder("")} ;
+            List<Node> longestWords = new List<Node>();
             int maxLenFound = 0;
-            NodeWithText root = new NodeWithText { Node = Root, Text = new StringBuilder("") };
-            Queue<NodeWithText> wordsQueue = new Queue<NodeWithText>();
-            wordsQueue.Enqueue(root);
+            
+            Queue<Node> wordsQueue = new Queue<Node>();
+            wordsQueue.Enqueue(Root);
 
             while (wordsQueue.Count > 0) {
-                NodeWithText node = wordsQueue.Dequeue();
-                if (node.Text.Length > 0 && !node.Node.IsWord)
+                Node node = wordsQueue.Dequeue();
+                if (node.Level > 0 && !node.IsWord)
                     continue;
 
-                if (node.Text.Length > maxLenFound) { 
-                    maxLenFound = node.Text.Length;
+                if (node.Level > maxLenFound) { 
+                    maxLenFound = node.Level;
                     longestWords.Clear();
                 }
 
-                if (node.Text.Length == maxLenFound) {
-                    longestWords.Add(node.Text);
+                if (node.Level == maxLenFound) {
+                    longestWords.Add(node);
                 }
 
-                foreach (char ch in node.Node.Children.Keys) {
-                    NodeWithText newNode = GenerateNodeWithText(node, ch);
-                    wordsQueue.Enqueue(newNode);
+                foreach (char ch in node.Children.Keys) {
+                    wordsQueue.Enqueue(node.Children[ch]);
                 }
             }
 
-            string result = longestWords.Select(w => w.ToString()).Min();
+            string result = longestWords.Select(n => MakeWordFromNode(n)).Min();
             return result;
+        }
+
+        string MakeWordFromNode(Node node) {
+            StringBuilder sb = new StringBuilder(node.Level);
+            for (Node crtNode = node; crtNode.Level > 0; crtNode = crtNode.Parent)
+                sb.Append(crtNode.Value);
+            
+            return new string(sb.ToString().Reverse().ToArray());
         }
 
         IEnumerable<NodeWithText> IterateBreadthFirst(NodeWithText root) {
@@ -130,8 +137,12 @@ namespace ConsoleApp1.Trees
                 char ch = word[i];
 
                 if (!parent.Children.ContainsKey(ch)) {
-                    parent.Children[ch] = new Node { };
                     NodeCount++;
+                    parent.Children[ch] = new Node {
+                        Parent = parent,
+                        Value = ch,
+                        Level = i + 1
+                    };
                 }
 
                 parent = parent.Children[ch];
@@ -142,8 +153,11 @@ namespace ConsoleApp1.Trees
         class Node
         {
             public char Value { get; set; }
-            public SortedDictionary<char, Node> Children { get; set; } = new SortedDictionary<char, Node>(CharComparer);
+            //public int Id { get; set; }
+            public SortedDictionary<char, Node> Children { get; set; } = new SortedDictionary<char, Node>();
             public bool IsWord { get; set; }
+            public Node Parent { get; set; }
+            public int Level { get; set; }
             static ReverseCharComparer CharComparer = new ReverseCharComparer();
 
             class ReverseCharComparer : IComparer<char>
