@@ -13,7 +13,6 @@ namespace ConsoleApp1.Trees
     {
         Node Root { get; } = new Node {
             Value = '0',
-            Children = new Dictionary<char, Node>()
         };
 
         public int NodeCount = 0;
@@ -45,6 +44,37 @@ namespace ConsoleApp1.Trees
             return result;
         }
 
+        public string FindLongestWordWithAllPrefixesWords() {
+            List<StringBuilder> longestWords = new List<StringBuilder> { new StringBuilder("")} ;
+            int maxLenFound = 0;
+            NodeWithText root = new NodeWithText { Node = Root, Text = new StringBuilder("") };
+            Queue<NodeWithText> wordsQueue = new Queue<NodeWithText>();
+            wordsQueue.Enqueue(root);
+
+            while (wordsQueue.Count > 0) {
+                NodeWithText node = wordsQueue.Dequeue();
+                if (node.Text.Length > 0 && !node.Node.IsWord)
+                    continue;
+
+                if (node.Text.Length > maxLenFound) { 
+                    maxLenFound = node.Text.Length;
+                    longestWords.Clear();
+                }
+
+                if (node.Text.Length == maxLenFound) {
+                    longestWords.Add(node.Text);
+                }
+
+                foreach (char ch in node.Node.Children.Keys) {
+                    NodeWithText newNode = GenerateNodeWithText(node, ch);
+                    wordsQueue.Enqueue(newNode);
+                }
+            }
+
+            string result = longestWords.Select(w => w.ToString()).Min();
+            return result;
+        }
+
         IEnumerable<NodeWithText> IterateBreadthFirst(NodeWithText root) {
             Queue<NodeWithText> wordsQueue = new Queue<NodeWithText>();
             wordsQueue.Enqueue(root);
@@ -53,11 +83,9 @@ namespace ConsoleApp1.Trees
                 NodeWithText node = wordsQueue.Dequeue();
                 yield return node;
 
-                if (node.Node.Children != null) {
-                    foreach (char ch in node.Node.Children.Keys) {
-                        NodeWithText newNode = GenerateNodeWithText(node, ch);
-                        wordsQueue.Enqueue(newNode);
-                    }
+                foreach (char ch in node.Node.Children.Keys) {
+                    NodeWithText newNode = GenerateNodeWithText(node, ch);
+                    wordsQueue.Enqueue(newNode);
                 }
             }
         }
@@ -70,11 +98,9 @@ namespace ConsoleApp1.Trees
                 NodeWithText node = wordsStack.Pop();
                 yield return node;
 
-                if (node.Node.Children != null) {
-                    foreach (char ch in node.Node.Children.Keys.OrderByDescending(k => k)) {
-                        NodeWithText newNode = GenerateNodeWithText(node, ch);
-                        wordsStack.Push(newNode);
-                    }
+                foreach (char ch in node.Node.Children.Keys) {
+                    NodeWithText newNode = GenerateNodeWithText(node, ch);
+                    wordsStack.Push(newNode);
                 }
             }
         }
@@ -103,9 +129,6 @@ namespace ConsoleApp1.Trees
             for (int i = 0; i < word.Length; i++) {
                 char ch = word[i];
 
-                if (parent.Children == null)
-                    parent.Children = new Dictionary<char, Node>();
-
                 if (!parent.Children.ContainsKey(ch)) {
                     parent.Children[ch] = new Node { };
                     NodeCount++;
@@ -119,8 +142,16 @@ namespace ConsoleApp1.Trees
         class Node
         {
             public char Value { get; set; }
-            public Dictionary<char, Node> Children { get; set; }
+            public SortedDictionary<char, Node> Children { get; set; } = new SortedDictionary<char, Node>(CharComparer);
             public bool IsWord { get; set; }
+            static ReverseCharComparer CharComparer = new ReverseCharComparer();
+
+            class ReverseCharComparer : IComparer<char>
+            {
+                public int Compare(char x, char y) {
+                    return y - x;
+                }
+            }
         }
 
         class NodeWithText

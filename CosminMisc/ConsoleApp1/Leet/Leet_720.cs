@@ -17,29 +17,52 @@ namespace ConsoleApp1.Leet
         public static void Test() {
             Trie trie = new Trie();
 
-            foreach (string line in File.ReadLines(@"C:\Temp\words_alpha.txt"))
+            IEnumerable<string> words =
+                File.ReadLines(@"C:\Temp\words_alpha.txt");
+            //new[] { "apple", "app", "wo", "being", "ap", "be", "b", "a" };
+
+            foreach (string line in words)
                 trie.Insert(line);
 
-            TestFindWordsWithPrefix(trie);
-            //TestFindWords(trie);
+            string longest = trie.FindLongestWordWithAllPrefixesWords();
+            Console.WriteLine(longest);
+
+            //string prefix = "cracke";
+            //FindWordsWithPrefix(trie, prefix);
+            //Console.WriteLine("=====================================");
+            //FindWordsWithPrefixBruteForce(words, prefix);
+            //FindWords(trie);
         }
 
-        private static void TestFindWordsWithPrefix(Trie trie) {
+        private static void FindWordsWithPrefix(Trie trie, string prefix) {
             Stopwatch sw = Stopwatch.StartNew();
 
-            string prefix = "comp";
             var words = trie.FindWordsWithPrefix(prefix);
             long elapsedMs = sw.ElapsedMilliseconds;
 
-            Console.WriteLine($"FindWordsWithPrefix: {prefix}");
+            Console.WriteLine($"FindWordsWithPrefix: {prefix}\n");
             foreach (string word in words) {
                 Console.WriteLine($"{word}");
             }
 
-            Console.WriteLine($"\nFound {words.Count} words in {elapsedMs}ms");
+            Console.WriteLine($"\nFound {words.Count} words in {elapsedMs}ms\n");
         }
 
-        private static void TestFindWords(Trie trie) {
+        private static void FindWordsWithPrefixBruteForce(IEnumerable<string> allWords, string prefix) {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var words = allWords.Where(w => w.StartsWith(prefix)).ToList();
+            long elapsedMs = sw.ElapsedMilliseconds;
+
+            Console.WriteLine($"FindWordsWithPrefixBruteForce: {prefix}\n");
+            foreach (string word in words) {
+                Console.WriteLine($"{word}");
+            }
+
+            Console.WriteLine($"\nFound {words.Count} words in {elapsedMs}ms\n");
+        }
+
+        private static void FindWords(Trie trie) {
             string[] wordsToFind = new[] { "stav", "preacknowledgment", "dialyphyllous", "crackings", "revolutionizement", "revolutionizemenx", "stauroscopically" };
 
             Stopwatch sw = Stopwatch.StartNew();
