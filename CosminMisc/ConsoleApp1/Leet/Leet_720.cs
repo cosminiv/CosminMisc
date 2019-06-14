@@ -16,22 +16,40 @@ namespace ConsoleApp1.Leet
     {
         public static void Test() {
             Trie trie = new Trie();
+            LoadWords(trie);
 
-            IEnumerable<string> words =
-                File.ReadLines(@"C:\Temp\words_alpha.txt");
-            //new[] { "apple", "app", "wo", "being", "ap", "be", "b", "a" };
+            //string longest = trie.FindLongestWordWithAllPrefixesWords();
+            //Console.WriteLine(longest);
 
-            foreach (string line in words)
-                trie.Insert(line);
+            //string longest = trie.FindLongestWord();
+            //Console.WriteLine(longest);
 
-            string longest = trie.FindLongestWordWithAllPrefixesWords();
-            Console.WriteLine(longest);
+            while (true) {
+                Console.Write("prefix = ");
+                string prefix = Console.ReadLine();
+                if (prefix.Trim().Length > 0)
+                    FindWordsWithPrefix(trie, prefix);
+            }
 
-            //string prefix = "cracke";
-            //FindWordsWithPrefix(trie, prefix);
             //Console.WriteLine("=====================================");
             //FindWordsWithPrefixBruteForce(words, prefix);
             //FindWords(trie);
+        }
+
+        private static void LoadWords(Trie trie) {
+            Console.WriteLine("Loading...");
+            Stopwatch sw = Stopwatch.StartNew();
+            IEnumerable<string> words =
+                File.ReadLines(@"C:\Temp\german_words.txt", Encoding.GetEncoding(1252));
+            //new[] { "apple", "app", "wo", "being", "ap", "be", "b", "a" };
+            int count = 0;
+
+            foreach (string line in words) {
+                trie.Insert(line);
+                count++;
+            }
+
+            Console.WriteLine($"Loaded {count} words in {sw.ElapsedMilliseconds}ms\n");
         }
 
         private static void FindWordsWithPrefix(Trie trie, string prefix) {
@@ -41,11 +59,30 @@ namespace ConsoleApp1.Leet
             long elapsedMs = sw.ElapsedMilliseconds;
 
             Console.WriteLine($"FindWordsWithPrefix: {prefix}\n");
+            StringBuilder wordsText = WordsToText(words);
+            Console.WriteLine($"{wordsText}");
+            Console.WriteLine($"\nFound {words.Count} words in {elapsedMs}ms\n");
+        }
+
+        private static StringBuilder WordsToText(List<string> words) {
+            StringBuilder wordsText = new StringBuilder();
+            int columnWidth = 30;
+            int columnCount = 6;
+            int wordsOnLine = 0;
+
             foreach (string word in words) {
-                Console.WriteLine($"{word}");
+                wordsText.Append(word);
+                if (word.Length < columnWidth)
+                    wordsText.Append(' ', columnWidth - word.Length);
+                else
+                    wordsText.Append("  ");
+
+                wordsOnLine = (wordsOnLine + 1) % columnCount;
+                if (wordsOnLine == 0)
+                    wordsText.AppendLine();
             }
 
-            Console.WriteLine($"\nFound {words.Count} words in {elapsedMs}ms\n");
+            return wordsText;
         }
 
         private static void FindWordsWithPrefixBruteForce(IEnumerable<string> allWords, string prefix) {

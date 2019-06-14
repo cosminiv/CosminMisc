@@ -17,6 +17,28 @@ namespace ConsoleApp1.Trees
 
         public int NodeCount = 0;
 
+        public string FindLongestWord() {
+            string result = "";
+            int maxLen = 0;
+            Queue<Node> queue = new Queue<Node>();
+            queue.Enqueue(Root);
+
+            while (queue.Count > 0) {
+                Node node = queue.Dequeue();
+                if (node.Level > maxLen && node.IsWord) {
+                    maxLen = node.Level;
+                    result = MakeWordFromNode(node);
+                    Console.WriteLine(result);
+                }
+                
+                foreach (var ch in node.Children.Keys) {
+                    queue.Enqueue(node.Children[ch]);
+                }
+            }
+
+            return result;
+        }
+
         public bool FindWord(string word) {
             Node node = FindNodeWithPrefix(word);
             return node != null && node.IsWord;
@@ -154,7 +176,7 @@ namespace ConsoleApp1.Trees
         {
             public char Value { get; set; }
             //public int Id { get; set; }
-            public SortedDictionary<char, Node> Children { get; set; } = new SortedDictionary<char, Node>();
+            public SortedDictionary<char, Node> Children { get; set; } = new SortedDictionary<char, Node>(CharComparer);
             public bool IsWord { get; set; }
             public Node Parent { get; set; }
             public int Level { get; set; }
