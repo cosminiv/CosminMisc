@@ -18,6 +18,8 @@ namespace ConsoleApp1.Leet
             Trie trie = new Trie();
             LoadWords(trie);
 
+            //FindElementCountPerLevel(trie);
+
             //string longest = trie.FindLongestWordWithAllPrefixesWords();
             //Console.WriteLine(longest);
 
@@ -34,6 +36,13 @@ namespace ConsoleApp1.Leet
             //Console.WriteLine("=====================================");
             //FindWordsWithPrefixBruteForce(words, prefix);
             //FindWords(trie);
+        }
+
+        private static void FindElementCountPerLevel(Trie trie) {
+            var map = trie.FindNodeCountPerLevel();
+            for (int i = 0; map.ContainsKey(i); i++) {
+                Console.WriteLine($"{i}: {map[i]}");
+            }
         }
 
         private static void LoadWords(Trie trie) {

@@ -39,6 +39,28 @@ namespace ConsoleApp1.Trees
             return result;
         }
 
+        public Dictionary<int, int> FindNodeCountPerLevel() {
+            Dictionary<int, int> result = new Dictionary<int, int>();
+            Queue<Node> queue = new Queue<Node>();
+            queue.Enqueue(Root);
+
+            while (queue.Count > 0) {
+                Node node = queue.Dequeue();
+                if (!result.ContainsKey(node.Level))
+                    result[node.Level] = 1;
+                else
+                    result[node.Level]++;
+
+                if (node.Level == 1)
+                    Console.Write(node.Value);
+
+                foreach (var ch in node.Children.Keys)
+                    queue.Enqueue(node.Children[ch]);
+            }
+
+            return result;
+        }
+
         public bool FindWord(string word) {
             Node node = FindNodeWithPrefix(word);
             return node != null && node.IsWord;
