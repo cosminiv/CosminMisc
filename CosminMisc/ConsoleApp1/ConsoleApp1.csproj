@@ -146,6 +146,7 @@
     <Compile Include="HackerRank\NonDivisibleSubset.cs" />
     <Compile Include="HackerRank\SherlockAndAnagrams.cs" />
     <Compile Include="Leet\Leet_048.cs" />
+    <Compile Include="Leet\Leet_125.cs" />
     <Compile Include="Leet\Leet_283_MoveZeroes.cs" />
     <Compile Include="Leet\Leet_003.cs" />
     <Compile Include="Leet\Leet_004.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Leet\Leet_022.cs" />
     <Compile Include="Leet\Leet_032.cs" />
     <Compile Include="Leet\Leet_151.cs" />
+    <Compile Include="Leet\Leet_387.cs" />
     <Compile Include="Leet\Leet_720.cs" />
     <Compile Include="Misc\ArithmeticExprEvaluator.cs" />
     <Compile Include="Misc\DynamicTest.cs" />

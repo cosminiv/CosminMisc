@@ -62,16 +62,6 @@ namespace ConsoleApp1.Leet
                     matrix[row2][col2] = matrix[row3][col3];
                     matrix[row3][col3] = matrix[row4][col4];
                     matrix[row4][col4] = temp;
-
-                    //Debug.Print($"shell = {shell}, i = {i}\n");
-
-                    //Debug.Print($"({row1}, {col1})");
-                    //Debug.Print($"({row2}, {col2})");
-                    //Debug.Print($"({row3}, {col3})");
-                    //Debug.Print($"({row4}, {col4})\n");
-
-                    //Debug.Print(MatrixToString(matrix));
-                    //Debug.Print("====================\n");
                 }
             }
         }
