@@ -18,7 +18,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            Leet_720.Test();
+            new Leet_048().Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
