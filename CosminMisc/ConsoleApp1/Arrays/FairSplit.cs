@@ -10,7 +10,7 @@ namespace ConsoleApp1.Arrays
     public class FairSplit
     {
         public static void Test() {
-            var a = GenerateWaysToSplitArray(new int[] { 3, 5, 7, 1, 2, 6 }, 4);
+            var a = GenerateWaysToSplitArray(new int[] { 1,2,3,4,5,6,7,8,9,10 }, 5);
         }
 
         static List<int[]> GenerateWaysToSplitArray(int[] arr, int breakpointCount) {
@@ -21,9 +21,16 @@ namespace ConsoleApp1.Arrays
                 bp != null; 
                 bp = MakeNextBreakpoints(bp, arr.Length)) {
                 result.Add(bp);
+                PrintArray(bp);
             }
 
             return result;
+        }
+
+        private static void PrintArray(int[] bp) {
+            String val = string.Join(" ", bp);
+            Debug.Print(val);
+            //Console.WriteLine(val);
         }
 
         static int[] MakeInitialBreakpoints(int breakpointCount) {
@@ -35,17 +42,29 @@ namespace ConsoleApp1.Arrays
         }
 
         static int[] MakeNextBreakpoints(int[] bp, int arrayLength) {
-            int[] bp2 = (int[])bp.Clone();
+            //int[] bp = (int[])bp.Clone();
 
+            // Find the element which we can increment
+            int incrementedIndex = -1;
             for (int i = bp.Length - 1; i >= 0; i--) {
-                int j = bp.Length - i + 1;
+                int j = bp.Length - i;
                 if (bp[i] < arrayLength - j) {
                     bp[i]++;
-                    return bp2;
+                    incrementedIndex = i;
+                    break;
                 }
             }
 
-            return null; // bp2;
+            if (incrementedIndex < 0)
+                return null;
+
+            // Adjust the elements after the one incremented 
+            int value = bp[incrementedIndex] + 1;
+            for (int i = incrementedIndex + 1; i < bp.Length; i++) {
+                bp[i] = value++; 
+            }
+
+            return bp;
         }
     }
 }
