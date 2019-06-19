@@ -18,7 +18,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new Leet_101().Test();
+            LinkedLists.Palindrome.Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
