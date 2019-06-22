@@ -18,7 +18,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            LinkedLists.Palindrome.Test();
+            FraudulentActivity.Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();

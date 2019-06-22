@@ -139,6 +139,7 @@
     <Compile Include="HackerRank\ArrayNewYear.cs" />
     <Compile Include="HackerRank\ArrayRotation.cs" />
     <Compile Include="HackerRank\CountTriplets.cs" />
+    <Compile Include="HackerRank\FraudulentActivity.cs" />
     <Compile Include="HackerRank\FrequencyQueries.cs" />
     <Compile Include="HackerRank\ArrayHourglassSum.cs" />
     <Compile Include="HackerRank\MagicSquare.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="Trees\BSTree.cs" />
     <Compile Include="Trees\Trie.cs" />
   </ItemGroup>
   <ItemGroup>
