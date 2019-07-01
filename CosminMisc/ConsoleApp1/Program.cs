@@ -19,7 +19,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            Tree.Test();
+            new Leet_011().Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
