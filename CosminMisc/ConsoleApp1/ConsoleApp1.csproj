@@ -143,6 +143,8 @@
     <Compile Include="HackerRank\FrequencyQueries.cs" />
     <Compile Include="HackerRank\ArrayHourglassSum.cs" />
     <Compile Include="HackerRank\MagicSquare.cs" />
+    <Compile Include="HackerRank\MaxMin.cs" />
+    <Compile Include="HackerRank\MinAbsDiff.cs" />
     <Compile Include="HackerRank\NonDivisibleSubset.cs" />
     <Compile Include="HackerRank\SherlockAndAnagrams.cs" />
     <Compile Include="Leet\Leet_048.cs" />
@@ -175,7 +177,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="Trees\BSTree.cs" />
+    <Compile Include="Trees\BinaryTree.cs" />
+    <Compile Include="Trees\Tree.cs" />
     <Compile Include="Trees\Trie.cs" />
   </ItemGroup>
   <ItemGroup>

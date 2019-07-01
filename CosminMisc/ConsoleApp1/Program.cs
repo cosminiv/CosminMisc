@@ -3,6 +3,7 @@ using ConsoleApp1.Arrays;
 using ConsoleApp1.HackerRank;
 using ConsoleApp1.Leet;
 using ConsoleApp1.Misc;
+using ConsoleApp1.Trees;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +19,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            FraudulentActivity.Test();
+            Tree.Test();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
