@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.LinkedLists;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,12 +70,12 @@ namespace ConsoleApp1.Leet
         }
         
         //Definition for singly-linked list.
-        public class ListNode {
-            public int val;
-            public ListNode next;
+        //public class ListNode {
+        //    public int val;
+        //    public ListNode next;
 
-            public ListNode(int x) { val = x; }
-            public ListNode(int x, ListNode nxt) { val = x; next = nxt; }
-        }
+        //    public ListNode(int x) { val = x; }
+        //    public ListNode(int x, ListNode nxt) { val = x; next = nxt; }
+        //}
     }
 }

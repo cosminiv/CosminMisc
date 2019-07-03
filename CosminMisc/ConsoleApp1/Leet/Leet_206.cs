@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.LinkedLists;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -43,11 +44,11 @@ namespace ConsoleApp1.Leet
             return newHead;
         }
 
-        public class ListNode
-        {
-            public int val;
-            public ListNode next;
-            public ListNode(int x) { val = x; }
-        }
+        //public class ListNode
+        //{
+        //    public int val;
+        //    public ListNode next;
+        //    public ListNode(int x) { val = x; }
+        //}
     }
 }

@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.LinkedLists
 {
-    class Node
+    public class ListNode
     {
-        public int Value;
-        public Node Next;
+        public int val;
+        public ListNode next;
 
-        public Node(int val, Node next = null) {
-            Value = val;
-            Next = next;
+        public ListNode(int val, ListNode next = null) {
+            this.val = val;
+            this.next = next;
         }
 
         public override string ToString() {
-            return $"{Value}";
+            return $"{val}";
         }
     }
 }

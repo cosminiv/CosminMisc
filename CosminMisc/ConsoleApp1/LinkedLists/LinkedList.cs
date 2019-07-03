@@ -10,45 +10,45 @@ namespace ConsoleApp1.LinkedLists
     static class LinkedList
     {
         public static void Test() {
-            Node list1 = MakeList(5, 6, 7, 8);
+            ListNode list1 = MakeList(5, 6, 7, 8);
 
-            Node list = new Node(1, new Node(2, new Node(3, new Node(4))));
+            ListNode list = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
 
-            Node result = list.Filter(n => n.Value % 2 == 0);
+            ListNode result = list.Filter(n => n.val % 2 == 0);
 
             Debug.Assert(result != null);
-            Debug.Assert(result.Value == 2);
-            Debug.Assert(result.Next.Value == 4);
-            Debug.Assert(result.Next.Next == null);
+            Debug.Assert(result.val == 2);
+            Debug.Assert(result.next.val == 4);
+            Debug.Assert(result.next.next == null);
 
             PrintList(list);
         }
 
-        public static Node MakeList(params int[] arr) {
-            Node head = null;
-            Node tail = null;
+        public static ListNode MakeList(params int[] arr) {
+            ListNode head = null;
+            ListNode tail = null;
 
             for (int i = 0; i < arr.Length; i++) {
-                Node node = new Node(arr[i]);
+                ListNode node = new ListNode(arr[i]);
                 if (head == null) {
                     head = node;
                     tail = node;
                 }
                 else {
-                    tail.Next = node;
+                    tail.next = node;
                     tail = node;
                 }
             }
             return head;
         }
 
-        public static Node ReverseList(Node list) {
-            Node prev = null;
-            Node next = null;
+        public static ListNode ReverseList(ListNode list) {
+            ListNode prev = null;
+            ListNode next = null;
 
-            for (Node current = list; current != null; current = next) {
-                next = current.Next;
-                current.Next = prev;
+            for (ListNode current = list; current != null; current = next) {
+                next = current.next;
+                current.next = prev;
                 prev = current;
             }
 
@@ -56,12 +56,12 @@ namespace ConsoleApp1.LinkedLists
         }
 
         // Modifies the initial list
-        public static Node Filter(this Node list, Func<Node, bool> pred) {
-            Node result = null;
-            Node resultTail = null;
+        public static ListNode Filter(this ListNode list, Func<ListNode, bool> pred) {
+            ListNode result = null;
+            ListNode resultTail = null;
 
-            for (Node crt = list; crt != null; ) {
-                Node next = crt.Next;
+            for (ListNode crt = list; crt != null; ) {
+                ListNode next = crt.next;
 
                 if (pred(crt)) {
                     if (resultTail == null) {
@@ -69,10 +69,10 @@ namespace ConsoleApp1.LinkedLists
                         result = crt;
                     }
                     else {
-                        resultTail.Next = crt;
+                        resultTail.next = crt;
                         resultTail = crt;
                     }
-                    crt.Next = null;
+                    crt.next = null;
                 }
 
                 crt = next;
@@ -81,10 +81,10 @@ namespace ConsoleApp1.LinkedLists
             return result;
         }
 
-        public static void PrintList(Node list) {
+        public static void PrintList(ListNode list) {
             StringBuilder sb = new StringBuilder();
-            for (Node crt = list; crt != null; crt = crt.Next) {
-                sb.Append(crt.Value);
+            for (ListNode crt = list; crt != null; crt = crt.next) {
+                sb.Append(crt.val);
                 sb.Append(" ");
             }
             Console.WriteLine(sb.ToString());

@@ -20,34 +20,34 @@ namespace ConsoleApp1.LinkedLists
             };
 
             foreach (var arr in arrays) {
-                Node list = LinkedList.MakeList(arr);
+                ListNode list = LinkedList.MakeList(arr);
                 Console.WriteLine(IsPalindrome(list));
             }
 
             //PrintList(result);
         }
 
-        public static bool IsPalindrome(Node list) {
+        public static bool IsPalindrome(ListNode list) {
             if (list == null)
                 return true;
 
             int size = 0;
-            for (Node crt = list; crt != null; crt = crt.Next) {
+            for (ListNode crt = list; crt != null; crt = crt.next) {
                 size++;
             }
 
-            Node secondHalf = list;
+            ListNode secondHalf = list;
             for (int i = 0; i < size / 2; i++) {
-                secondHalf = secondHalf.Next;
+                secondHalf = secondHalf.next;
             }
 
             secondHalf = LinkedList.ReverseList(secondHalf);
 
-            for (Node n1 = list, n2= secondHalf; 
+            for (ListNode n1 = list, n2= secondHalf; 
                 n1 != null && n2 != null; 
-                n1 = n1.Next, n2 = n2.Next) {
+                n1 = n1.next, n2 = n2.next) {
 
-                if (n1.Value != n2.Value)
+                if (n1.val != n2.val)
                     return false;
             }
 

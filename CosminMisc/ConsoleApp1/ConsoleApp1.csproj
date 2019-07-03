@@ -55,6 +55,7 @@
     <Compile Include="Algorithms\InsertionSort.cs" />
     <Compile Include="Algorithms\MaxSubarray.cs" />
     <Compile Include="Algorithms\MergeSort.cs" />
+    <Compile Include="Algorithms\BinaryHeap.cs" />
     <Compile Include="Algorithms\Parallel.cs" />
     <Compile Include="Algorithms\QuickSort.cs" />
     <Compile Include="Algorithms\RadixSort.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Leet\Leet_002.cs" />
     <Compile Include="Leet\Leet_011.cs" />
     <Compile Include="Leet\Leet_014.cs" />
+    <Compile Include="Leet\Leet_023.cs" />
     <Compile Include="Leet\Leet_048.cs" />
     <Compile Include="Leet\Leet_101.cs" />
     <Compile Include="Leet\Leet_125.cs" />
@@ -168,7 +170,7 @@
     <Compile Include="Leet\Leet_387.cs" />
     <Compile Include="Leet\Leet_720.cs" />
     <Compile Include="LinkedLists\LinkedList.cs" />
-    <Compile Include="LinkedLists\Node.cs" />
+    <Compile Include="LinkedLists\ListNode.cs" />
     <Compile Include="LinkedLists\Palindrome.cs" />
     <Compile Include="LinkedLists\Partition.cs" />
     <Compile Include="Misc\ArithmeticExprEvaluator.cs" />

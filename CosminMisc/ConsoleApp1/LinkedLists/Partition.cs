@@ -16,8 +16,8 @@ namespace ConsoleApp1.LinkedLists
     class Partition
     {
         public static void Test() {
-            Node list = new Node(5, new Node(1, new Node(8, new Node(0, new Node(3)))));
-            Node result = DoPartition(list, -1);
+            ListNode list = new ListNode(5, new ListNode(1, new ListNode(8, new ListNode(0, new ListNode(3)))));
+            ListNode result = DoPartition(list, -1);
 
             //Node list = new Node(5, new Node(1, new Node(8, new Node(0, new Node(3)))));
             //Node result = DoPartition(list, 3);
@@ -25,20 +25,20 @@ namespace ConsoleApp1.LinkedLists
             PrintList(result);
         }
 
-        private static Node DoPartition(Node list, int pivot) {
-            Node smallHead = null, smallTail = null;
-            Node bigHead = null, bigTail = null;
+        private static ListNode DoPartition(ListNode list, int pivot) {
+            ListNode smallHead = null, smallTail = null;
+            ListNode bigHead = null, bigTail = null;
 
-            for (Node crt = list; crt != null;) {
-                Node next = crt.Next;
+            for (ListNode crt = list; crt != null;) {
+                ListNode next = crt.next;
 
-                if (crt.Value < pivot) {
+                if (crt.val < pivot) {
                     if (smallTail == null) {
                         smallTail = crt;
                         smallHead = crt;
                     }
                     else {
-                        smallTail.Next = crt;
+                        smallTail.next = crt;
                         smallTail = crt;
                     }
                 }
@@ -48,17 +48,17 @@ namespace ConsoleApp1.LinkedLists
                         bigHead = crt;
                     }
                     else {
-                        bigTail.Next = crt;
+                        bigTail.next = crt;
                         bigTail = crt;
                     }
                 }
 
-                crt.Next = null;
+                crt.next = null;
                 crt = next;
             }
 
             if (smallTail != null)
-                smallTail.Next = bigHead;
+                smallTail.next = bigHead;
 
             if (smallHead != null)
                 return smallHead;

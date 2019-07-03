@@ -19,7 +19,7 @@ namespace ConsoleApp1.Leet
             ListNode res = AddTwoNumbers(l1, l2);
         }
 
-        public ListNode AddTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode AddTwoNumbers(ListNode l1, ListNode l2) {
             ListNode resHead = null, resTail = null;
             int carry = 0;
 
@@ -61,7 +61,7 @@ namespace ConsoleApp1.Leet
             return resHead;
         }
 
-        public class ListNode {
+        class ListNode {
             public int val;
             public ListNode next;
             public ListNode(int x) { val = x; }
