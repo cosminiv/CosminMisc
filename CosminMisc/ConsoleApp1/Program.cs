@@ -19,7 +19,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new Leet_040().Test();
+            new Leet_046().Test();
             //MinHeap<int>.Test();
 
             long duration = sw.ElapsedMilliseconds;
