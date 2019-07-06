@@ -18,8 +18,39 @@ namespace ConsoleApp1.Leet
         }
 
         public IList<IList<int>> Permute(int[] nums) {
-            return Solve_Recursive(nums, 0);
+            return Solve_Backtracking(nums);
         }
+
+        // ========================================
+
+        private static IList<IList<int>> Solve_Backtracking(int[] nums) {
+            IList<IList<int>> solutions = new List<IList<int>>();
+            IList<int> partialSol = new List<int>();
+            bool[] visited = new bool[nums.Length];
+            Solve_Backtracking(nums, partialSol, solutions, visited);
+            return solutions;
+        }
+
+        private static void Solve_Backtracking(int[] nums, IList<int> partialSol, IList<IList<int>> solutions, bool[] visited) {
+            if (partialSol.Count == nums.Length) {
+                solutions.Add(new List<int>(partialSol));
+                return;
+            }
+
+            for (int i = 0; i < nums.Length; i++) {
+                if (!visited[i]) {
+                    partialSol.Add(nums[i]);
+                    visited[i] = true;
+
+                    Solve_Backtracking(nums, partialSol, solutions, visited);
+
+                    partialSol.RemoveAt(partialSol.Count - 1);
+                    visited[i] = false;
+                }
+            }
+        }
+
+        // ========================================
 
         private static IList<IList<int>> Solve_Recursive(int[] nums, int startIndex) {
             if (startIndex >= nums.Length)
