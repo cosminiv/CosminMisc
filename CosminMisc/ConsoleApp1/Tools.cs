@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.Misc
 {
-    public class Tools
+    public static class Tools
     {
         /// <summary>
         /// GetCaller
@@ -17,6 +17,15 @@ namespace ConsoleApp1.Misc
         public static string GetCaller([CallerMemberName] string caller = null)
         {
             return caller;
+        }
+
+        public static int ComputeHashCode<T>(this IEnumerable<T> list) {
+            unchecked {
+                int hash = 19;
+                foreach (var x in list)
+                    hash = hash * 31 + x.GetHashCode();
+                return hash;
+            }
         }
     }
 }

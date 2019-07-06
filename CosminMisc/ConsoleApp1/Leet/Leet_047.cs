@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Misc;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,11 +13,15 @@ namespace ConsoleApp1.Leet
     // 
     class Leet_047
     {
+        static int _duplicates = 0;
+
         public void Test() {
-            var result = PermuteUnique(new int[] { 1, 2, 3, 1 });
-            foreach (var lst in result) {
-                Console.WriteLine(String.Join(" ", lst));
-            }
+            var result = PermuteUnique(new int[] { 1, 2, 3, 1, 7, 2, 9, 4, 0, 5 });
+            //StringBuilder sb = new StringBuilder();
+            //foreach (var lst in result)
+            //    sb.AppendLine(String.Join(" ", lst));
+            //Console.Write(sb.ToString());
+            Console.WriteLine($"{result.Count} results, {_duplicates} duplicates");
         }
 
         public IList<IList<int>> PermuteUnique(int[] nums) {
@@ -35,35 +40,39 @@ namespace ConsoleApp1.Leet
 
         private static IList<IList<int>> Combine(IList<IList<int>> smallerSolutions, int n) {
             IList<IList<int>> solutions = new List<IList<int>>();
+            HashSet<int> solutionsHashes = new HashSet<int>();
 
             foreach (var smallerSol in smallerSolutions) {
                 for (int i = 0; i <= smallerSol.Count; i++) {
-                    List<int> newSol = new List<int>(smallerSol);
-                    newSol.Insert(i, n);
-                    if (!FindListInLists(solutions, newSol))
+
+                    List<int> newSol = MakeNewSolution(smallerSol, n, i);
+                    int solHash = newSol.ComputeHashCode();
+
+                    if (!solutionsHashes.Contains(solHash)) {
                         solutions.Add(newSol);
+                        solutionsHashes.Add(solHash);
+                    }
+                    else
+                        _duplicates++;
                 }
             }
 
             return solutions;
         }
 
-        private static bool FindListInLists(IList<IList<int>> lists, List<int> list) {
-            foreach (var crtList in lists) {
-                bool found = true;
-                
-                for (int i = 0; i < crtList.Count; i++) {
-                    if (crtList[i] != list[i]) {
-                        found = false;
-                        break;
-                    }
-                }
+        private static List<int> MakeNewSolution(IList<int> smallerSol, int newNumber, int insertionIndex) {
+            List<int> newSol = new List<int>(smallerSol.Count + 1);
 
-                if (found)
-                    return true;
-            }
+            for (int i = 0; i < insertionIndex && i < smallerSol.Count; i++)
+                newSol.Add(smallerSol[i]);
 
-            return false;
+            newSol.Add(newNumber);
+
+            for (int i = insertionIndex + 1; i <= smallerSol.Count; i++)
+                newSol.Add(smallerSol[i - 1]);
+
+            return newSol;
         }
+
     }
 }
