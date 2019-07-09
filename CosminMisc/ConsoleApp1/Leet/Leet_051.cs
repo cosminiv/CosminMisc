@@ -16,7 +16,7 @@ namespace ConsoleApp1.Leet
             StringBuilder text = new StringBuilder();
 
             foreach (var sol1 in sol) {
-                string sol1Str = string.Join("\n", sol1.Select(x => 
+                string sol1Str = string.Join("\n", sol1.Select(x =>
                     x.Replace("Q", "Q ").Replace(".", ". ")));  // Add some spaces
                 text.AppendLine(sol1Str);
                 text.AppendLine();
