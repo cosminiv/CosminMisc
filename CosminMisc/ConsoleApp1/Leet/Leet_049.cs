@@ -12,14 +12,14 @@ namespace ConsoleApp1.Leet
     class Leet_049
     {
         public IList<IList<string>> GroupAnagrams(string[] strs) {
-            Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+            Dictionary<int, List<string>> map = new Dictionary<int, List<string>>();
 
             foreach (var str in strs) {
-                string sorted = CountSortLetters(str); 
+                int hash = Hash(str); 
 
-                if (!map.TryGetValue(sorted, out List<string> lst)) {
+                if (!map.TryGetValue(hash, out List<string> lst)) {
                     lst = new List<string>();
-                    map[sorted] = lst;
+                    map[hash] = lst;
                 }
                 lst.Add(str);
             }
@@ -29,20 +29,27 @@ namespace ConsoleApp1.Leet
             return result;
         }
 
-        string CountSortLetters(string str) {
+        int Hash(string str) {
+            // Counting sort
             int[] charCounts = new int['z' - 'a' + 1];
+
             foreach (char ch in str) {
                 int index = ch - 'a';
                 charCounts[index]++;
             }
-            StringBuilder sb = new StringBuilder(str.Length);
+
+            // Hash
+            int hash = 19;
+
             for (int chIdx = 0; chIdx < charCounts.Length; chIdx++) {
-                char ch = (char)('a' + chIdx);
                 for (int count = 0; count < charCounts[chIdx]; count++) {
-                    sb.Append(ch);
+                    unchecked {
+                        hash = hash * 31 + chIdx;
+                    }
                 }
             }
-            return sb.ToString();
+
+            return hash;
         }
     }
 }
