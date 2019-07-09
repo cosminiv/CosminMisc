@@ -180,6 +180,7 @@
     <Compile Include="LinkedLists\Palindrome.cs" />
     <Compile Include="LinkedLists\Partition.cs" />
     <Compile Include="Misc\ArithmeticExprEvaluator.cs" />
+    <Compile Include="Misc\DownloadMp3s.cs" />
     <Compile Include="Misc\DynamicTest.cs" />
     <Compile Include="Misc\EventsTest.cs" />
     <Compile Include="Misc\StringSearch.cs" />
