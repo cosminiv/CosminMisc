@@ -5,17 +5,26 @@ using System.Text;
 namespace Games.Tetris
 {
     public class TetrisPiece {
-        internal TetrisBrick[][] Bricks = MakeBricksMatrix();
+        internal TetrisBrick[][] Bricks;
         public static readonly int MaxSize = 4;
+
+        public TetrisPiece(int width, int height) {
+            Width = width;
+            Height = height;
+            Bricks = MakeBricksMatrix();
+        }
+
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
         public TetrisBrick this[int row, int col] => Bricks[row][col];
 
         public TetrisColor Color { get; set; }
 
-        private static TetrisBrick[][] MakeBricksMatrix() {
-            TetrisBrick[][] result = new TetrisBrick[MaxSize][];
+        private TetrisBrick[][] MakeBricksMatrix() {
+            TetrisBrick[][] result = new TetrisBrick[Height][];
             for (int i = 0; i < result.Length; i++) {
-                result[i] = new TetrisBrick[MaxSize];
+                result[i] = new TetrisBrick[Width];
             }
             return result;
         }

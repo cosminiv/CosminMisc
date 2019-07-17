@@ -14,6 +14,7 @@ namespace ConsoleApp_Core
             TetrisPieceFactory factory = new TetrisPieceFactory();
             for (int i = 0; i < 20; i++) {
                 Console.WriteLine(factory.MakePiece().ToString());
+                Console.WriteLine();
             }
             Console.ReadLine();
 
