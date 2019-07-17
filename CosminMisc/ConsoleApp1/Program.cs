@@ -19,7 +19,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new DownloadMp3s().Download();
+            new DownloadMp3s().Download_DW_Misc();
             //MinHeap<int>.Test();
 
             long duration = sw.ElapsedMilliseconds;
