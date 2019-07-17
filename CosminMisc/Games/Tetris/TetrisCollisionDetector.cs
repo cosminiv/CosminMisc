@@ -10,7 +10,7 @@ namespace Games.Tetris
             if (ReachedBoardBottom(piece, boardRowCount))
                 return false;
 
-            if (ReachedFixedBrick(piece, fixedBricks))
+            if (ReachedFixedBrick(piece, fixedBricks, 1))
                 return false;
 
             return true;
@@ -22,12 +22,13 @@ namespace Games.Tetris
             return result;
         }
 
-        private bool ReachedFixedBrick(TetrisPieceWithPosition piece, TetrisFixedBricks fixedBricks) {
+        public bool ReachedFixedBrick(TetrisPieceWithPosition piece, TetrisFixedBricks fixedBricks,
+            int fixedBrickRowOffset) {
             for (int column = 0; column < piece.Piece.MaxWidth; column++) {
                 for (int row = piece.Piece.MaxHeight - 1; row >= 0; row--) {
                     bool isPieceBrick = piece.Piece.Bricks[row][column] != null;
                     if (isPieceBrick) {
-                        int rowRelativeToBoard = row + piece.Position.Row + 1;
+                        int rowRelativeToBoard = row + piece.Position.Row + fixedBrickRowOffset;
                         int columnRelativeToBoard = column + piece.Position.Column;
                         bool isFixedBrickUnderneath = fixedBricks.IsBrick(rowRelativeToBoard, columnRelativeToBoard);
 

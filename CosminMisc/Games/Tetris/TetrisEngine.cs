@@ -48,9 +48,23 @@ namespace Games.Tetris
                 Board.MovePieceDown();
             }
             else {
-                Board.FixPiece();
-                Board.MakeNewPiece();
+                Board.StickPiece();
+                UpdateScoreAfterStickingPiece();
+
+                bool couldPlacePiece = Board.MakeNewPiece();
+                if (!couldPlacePiece)
+                    End();
             }
+        }
+
+        private void UpdateScoreAfterStickingPiece() {
+            int increment = (int)(10 * (1 + (Speed - 1) * 0.1));
+            Score += increment;
+        }
+
+        private void End() {
+            Timer.Stop();
+            Console.WriteLine($"Game ended; score = {Score}");
         }
 
         double ComputeTimerInterval(int speed) {
