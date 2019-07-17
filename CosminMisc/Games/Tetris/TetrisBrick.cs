@@ -14,10 +14,4 @@ namespace Games.Tetris
         public TetrisBrick Brick { get; set; }
         public TetrisPosition Position { get; set; }
     }
-
-    public class TetrisPosition
-    {
-        public int Row { get; set; }
-        public int Column { get; set; }
-    }
 }

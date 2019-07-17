@@ -54,4 +54,10 @@ namespace Games.Tetris
             return sb.ToString();
         }
     }
+
+    class TetrisPieceWithPosition
+    {
+        public TetrisPiece Piece { get; set; }
+        public TetrisPosition Position { get; set; }
+    }
 }

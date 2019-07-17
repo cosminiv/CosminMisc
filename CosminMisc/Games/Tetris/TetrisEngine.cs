@@ -17,7 +17,7 @@ namespace Games.Tetris
         public int Score { get; private set; }
 
         TetrisPieceFactory PieceFactory;
-        TetrisPiece CurrentPiece;
+        TetrisPieceWithPosition CurrentPiece;
         TetrisFixedBricks FixedBricks;
         Timer Timer;
         readonly int MaxSpeed = 10;
@@ -28,9 +28,21 @@ namespace Games.Tetris
             Speed = 1;
             Score = 0;
             PieceFactory = new TetrisPieceFactory();
-            CurrentPiece = PieceFactory.MakePiece();
-            Timer = MakeTimer();
+            CurrentPiece = MakeCurrentPiece();
             FixedBricks = new TetrisFixedBricks();
+            // Only start the timer after everything is ready
+            Timer = MakeTimer();
+        }
+
+        private TetrisPieceWithPosition MakeCurrentPiece() {
+            TetrisPiece piece = PieceFactory.MakePiece();
+
+            TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
+                Piece = piece,
+                Position = new TetrisPosition(0, Cols / 2)
+            };
+
+            return pieceWithPosition;
         }
 
         private Timer MakeTimer() {
