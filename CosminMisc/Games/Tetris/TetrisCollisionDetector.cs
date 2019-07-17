@@ -24,7 +24,7 @@ namespace Games.Tetris
 
         private bool ReachedFixedBrick(TetrisPieceWithPosition piece, TetrisFixedBricks fixedBricks) {
             for (int column = 0; column < piece.Piece.MaxWidth; column++) {
-                for (int row = piece.Piece.MaxHeight; row >= 0; row--) {
+                for (int row = piece.Piece.MaxHeight - 1; row >= 0; row--) {
                     bool isPieceBrick = piece.Piece.Bricks[row][column] != null;
                     if (isPieceBrick) {
                         int rowRelativeToBoard = row + piece.Position.Row + 1;

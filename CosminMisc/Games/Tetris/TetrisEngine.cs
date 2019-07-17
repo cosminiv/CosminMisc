@@ -31,6 +31,10 @@ namespace Games.Tetris
             Timer = MakeTimer();
         }
 
+        public void Pause() {
+            Timer.Enabled = false;
+        }
+
         private Timer MakeTimer() {
             Timer timer = new Timer(ComputeTimerInterval(Speed));
             timer.Enabled = true;

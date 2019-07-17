@@ -7,6 +7,10 @@ namespace Games.Tetris
     public class TetrisBrick
     {
         public TetrisColor Color { get; set; }
+
+        public override string ToString() {
+            return "#";
+        }
     }
 
     class TetrisBrickWithPosition

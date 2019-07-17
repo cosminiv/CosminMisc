@@ -35,5 +35,27 @@ namespace Games.Tetris
             }
         }
 
+        public override string ToString() {
+            StringBuilder sb = new StringBuilder(500);
+
+            sb.Append('-', Bricks[0].Length + 2);
+            sb.AppendLine();
+
+            for (int row = 0; row < Bricks.Length; row++) {
+                sb.Append("|");
+                for (int column = 0; column < Bricks[row].Length; column++) {
+                    TetrisBrick brick = Bricks[row][column];
+                    sb.Append(brick != null ? brick.ToString() : " ");
+                }
+                sb.Append("|");
+                sb.AppendLine();
+            }
+
+            sb.Append('-', Bricks[0].Length + 2);
+            sb.AppendLine();
+
+            return sb.ToString();
+        }
+
     }
 }

@@ -10,7 +10,7 @@ namespace ConsoleApp_Core
         async static Task Main(string[] args) {
             Console.WriteLine("Press the Enter key to exit the program.");
 
-            new TetrisEngine();
+            TetrisEngine tetrisEngine = new TetrisEngine();
             
             //TetrisPieceFactory factory = new TetrisPieceFactory();
             //for (int i = 0; i < 20; i++) {
@@ -18,6 +18,9 @@ namespace ConsoleApp_Core
             //    Console.WriteLine();
             //}
             //Console.ReadLine();
+
+            Console.ReadLine();
+            tetrisEngine.Pause();
 
             Console.ReadLine();
         }

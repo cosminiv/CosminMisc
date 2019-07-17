@@ -25,6 +25,7 @@ namespace Games.Tetris
         public void FixPiece() {
             Console.WriteLine($"Can't move piece down; fixing at row {CurrentPiece.Position.Row}");
             FixedBricks.AddPiece(CurrentPiece);
+            Console.WriteLine(FixedBricks.ToString());
         }
 
         private TetrisPieceWithPosition MakePiece() {

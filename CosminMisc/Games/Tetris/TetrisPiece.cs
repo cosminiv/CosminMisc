@@ -73,7 +73,8 @@ namespace Games.Tetris
 
             for (int rowIndex = 0; rowIndex < Bricks.Length; rowIndex++) {
                 for (int colIndex = 0; colIndex < Bricks[rowIndex].Length; colIndex++) {
-                    sb.Append(Bricks[rowIndex][colIndex] != null ? "#" : " ");
+                    TetrisBrick brick = Bricks[rowIndex][colIndex];
+                    sb.Append(brick != null ? brick.ToString() : " ");
                 }
 
                 if (rowIndex < Bricks.Length - 1)
