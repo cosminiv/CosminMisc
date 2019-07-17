@@ -24,5 +24,19 @@ namespace Games.Tetris
                 Array.Copy(other.Bricks[rowIndex], this.Bricks[rowIndex], this.Bricks[rowIndex].Length);
             }
         }
+
+        public override string ToString() {
+            StringBuilder sb = new StringBuilder();
+            for (int rowIndex = 0; rowIndex < Bricks.Length; rowIndex++) {
+                for (int colIndex = 0; colIndex < Bricks[rowIndex].Length; colIndex++) {
+                    sb.Append(Bricks[rowIndex][colIndex] ? "#" : " ");
+                }
+
+                if (rowIndex < Bricks.Length - 1)
+                    sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
     }
 }
