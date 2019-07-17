@@ -23,7 +23,7 @@ namespace Games.Tetris
         public TetrisEngine() {
             Rows = 10;
             Columns = 10;
-            Board = new TetrisBoard { Rows = Rows, Columns = Columns };
+            Board = new TetrisBoard(Rows, Columns);
             Speed = 1;
             Score = 0;
             

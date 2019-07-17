@@ -1,41 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Games.Tetris
 {
     class TetrisFixedBricks
     {
-        SortedDictionary<int, TetrisBrickWithPosition[]> _rowsOfBricks = new SortedDictionary<int, TetrisBrickWithPosition[]>();
+        TetrisBrick[][] Bricks;
 
-        public IEnumerable<TetrisFixedLine> Lines {
-            get {
-                foreach (int row in _rowsOfBricks.Keys) {
-                    TetrisFixedLine line = new TetrisFixedLine(_rowsOfBricks[row]);
-                    yield return line;
+        public TetrisFixedBricks(int rows, int columns) {
+            Bricks = new TetrisBrick[rows][];
+            for (int i = 0; i < rows; i++) {
+                Bricks[i] = new TetrisBrick[columns];
+            }
+        }
+
+        public bool IsBrick(int row, int column) {
+            bool result = Bricks[row][column] != null;
+            return result;
+        }
+
+        public void AddPiece(TetrisPieceWithPosition pieceWithPos) {
+            for (int row = 0; row < pieceWithPos.Piece.MaxHeight; row++) {
+                for (int column = 0; column < pieceWithPos.Piece.MaxWidth; column++) {
+                    TetrisBrick brick = pieceWithPos.Piece.Bricks[row][column];
+
+                    if (brick != null) {
+                        int rowRelativeToBoard = row + pieceWithPos.Position.Row;
+                        int columnRelativeToBoard = column + pieceWithPos.Position.Column;
+                        Bricks[rowRelativeToBoard][columnRelativeToBoard] = brick;
+                    }
                 }
             }
         }
 
-        public void AddPiece(TetrisPiece piece) {
-
-        }
-    }
-
-    class TetrisFixedLine
-    {
-        TetrisBrickWithPosition[] _bricksWithPosition;
-
-        public TetrisFixedLine(TetrisBrickWithPosition[] bricksWithPosition) {
-            _bricksWithPosition = bricksWithPosition;
-        }
-
-        public IEnumerable<TetrisBrickWithPosition> BricksOnLine {
-            get {
-                foreach (TetrisBrickWithPosition brick in _bricksWithPosition) {
-                    yield return brick;
-                }
-            }
-        }
     }
 }

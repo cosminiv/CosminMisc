@@ -8,19 +8,23 @@ namespace Games.Tetris
 {
     class TetrisBoard
     {
-        public int Rows { get; set; }
-        public int Columns { get; set; }
+        int Rows { get; }
+        int Columns { get; }
         TetrisPieceWithPosition CurrentPiece;
         TetrisCollisionDetector CollisionDetector = new TetrisCollisionDetector();
-        TetrisPieceFactory PieceFactory = new TetrisPieceFactory(); 
-        TetrisFixedBricks FixedBricks = new TetrisFixedBricks();
+        TetrisPieceFactory PieceFactory = new TetrisPieceFactory();
+        TetrisFixedBricks FixedBricks;
 
-        public TetrisBoard() {
+        public TetrisBoard(int rows, int columns) {
+            Rows = rows;
+            Columns = columns;
+            FixedBricks = new TetrisFixedBricks(rows, columns);
             CurrentPiece = MakePiece();
         }
 
         public void FixPiece() {
             Console.WriteLine($"Can't move piece down; fixing at row {CurrentPiece.Position.Row}");
+            FixedBricks.AddPiece(CurrentPiece);
         }
 
         private TetrisPieceWithPosition MakePiece() {
@@ -36,7 +40,7 @@ namespace Games.Tetris
         }
 
         internal bool CanMovePieceDown() {
-            return CollisionDetector.CanMovePieceDown(CurrentPiece, Rows);
+            return CollisionDetector.CanMovePieceDown(CurrentPiece, Rows, FixedBricks);
         }
 
         internal void MakeNewPiece() {
