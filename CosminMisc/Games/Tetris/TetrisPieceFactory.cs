@@ -14,7 +14,7 @@ namespace Games.Tetris
         public TetrisPiece MakePiece() {
             int prototypePieceIndex = _random.Next(_prototypePieces.Length);
             TetrisPiece prototypePiece = _prototypePieces[prototypePieceIndex];
-            TetrisPiece piece = new TetrisPiece(prototypePiece.Width, prototypePiece.Height);
+            TetrisPiece piece = new TetrisPiece(prototypePiece.MaxWidth, prototypePiece.MaxHeight);
             piece.CopyFrom(prototypePiece);
             return piece;
         }

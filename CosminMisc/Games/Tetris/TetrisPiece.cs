@@ -1,30 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Games.Tetris
 {
     public class TetrisPiece {
         internal TetrisBrick[][] Bricks;
-        public static readonly int MaxSize = 4;
 
-        public TetrisPiece(int width, int height) {
-            Width = width;
-            Height = height;
+        public TetrisPiece(int maxWidth, int maxHeight) {
+            MaxWidth = maxWidth;
+            MaxHeight = maxHeight;
             Bricks = MakeBricksMatrix();
         }
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int MaxWidth { get; private set; }
+        public int MaxHeight { get; private set; }
+
+        public int Width {
+            get {
+                int result = Bricks.Max(row => row.Count(brick => brick != null));
+                return result;
+            }
+        }
+
+        public int Height {
+            get {
+                int result = Bricks.Count(row => row.Any(brick => brick != null));
+                return result;
+            }
+        }
+
+        public int TopPadding {
+            get {
+                int result = 0;
+
+                for (int i = 0; i < Bricks.Length; i++) {
+                    if (Bricks[i].All(brick => brick == null))
+                        result++;
+                    else
+                        break;
+                }
+
+                return result;
+            }
+        }
 
         public TetrisBrick this[int row, int col] => Bricks[row][col];
 
         public TetrisColor Color { get; set; }
 
         private TetrisBrick[][] MakeBricksMatrix() {
-            TetrisBrick[][] result = new TetrisBrick[Height][];
+            TetrisBrick[][] result = new TetrisBrick[MaxHeight][];
             for (int i = 0; i < result.Length; i++) {
-                result[i] = new TetrisBrick[Width];
+                result[i] = new TetrisBrick[MaxWidth];
             }
             return result;
         }

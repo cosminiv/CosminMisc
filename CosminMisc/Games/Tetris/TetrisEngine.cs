@@ -9,40 +9,26 @@ namespace Games.Tetris
         int _speed;
 
         public int Rows { get; }
-        public int Cols { get; }
+        public int Columns { get; }
         public int Speed {
             get { return _speed; }
             private set { _speed = Math.Min(value, MaxSpeed); }
         }
         public int Score { get; private set; }
 
-        TetrisPieceFactory PieceFactory;
-        TetrisPieceWithPosition CurrentPiece;
-        TetrisFixedBricks FixedBricks;
+        TetrisBoard Board;
         Timer Timer;
         readonly int MaxSpeed = 10;
 
         public TetrisEngine() {
-            Rows = 20;
-            Cols = 10;
+            Rows = 10;
+            Columns = 10;
+            Board = new TetrisBoard { Rows = Rows, Columns = Columns };
             Speed = 1;
             Score = 0;
-            PieceFactory = new TetrisPieceFactory();
-            CurrentPiece = MakeCurrentPiece();
-            FixedBricks = new TetrisFixedBricks();
-            // Only start the timer after everything is ready
+            
+            // Only start the timer after everything is ready.
             Timer = MakeTimer();
-        }
-
-        private TetrisPieceWithPosition MakeCurrentPiece() {
-            TetrisPiece piece = PieceFactory.MakePiece();
-
-            TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
-                Piece = piece,
-                Position = new TetrisPosition(0, Cols / 2)
-            };
-
-            return pieceWithPosition;
         }
 
         private Timer MakeTimer() {
@@ -53,8 +39,14 @@ namespace Games.Tetris
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-            Debug.WriteLine($"Timer elapsed; time = {DateTime.Now.Second}.{DateTime.Now.Millisecond}");
-
+            //Debug.WriteLine($"Timer elapsed; time = {DateTime.Now.Second}.{DateTime.Now.Millisecond}");
+            if (Board.CanMovePieceDown()) {
+                Board.MovePieceDown();
+            }
+            else {
+                Board.FixPiece();
+                Board.MakeNewPiece();
+            }
         }
 
         double ComputeTimerInterval(int speed) {
