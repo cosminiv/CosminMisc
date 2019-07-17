@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Games.Tetris
 {
-    internal class TetrisPieceFactory
+    public class TetrisPieceFactory
     {
         static TetrisPiece[] _prototypePieces = MakePrototypePieces();
         static Random _random = new Random();
@@ -30,59 +31,60 @@ namespace Games.Tetris
             return result;
         }
 
-        private static TetrisPiece MakePrototypePiece1() {
+        private static TetrisPiece MakePieceFromBrickCoordinates((int, int)[] brickCoords) {
             TetrisPiece result = new TetrisPiece();
-            // ****
-            result.Bricks[0][0] = result.Bricks[0][1] = result.Bricks[0][2] = result.Bricks[0][3] = true;
+            foreach ((int, int) position in brickCoords) {
+                result.Bricks[position.Item1][position.Item2] = new TetrisBrick();
+            }
             return result;
+        }
+
+        private static TetrisPiece MakePrototypePiece1() {
+            // ****
+            (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (0, 2), (0, 3) });
+            return MakePieceFromBrickCoordinates(brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece2() {
-            TetrisPiece result = new TetrisPiece();
             // ***
             // *
-            result.Bricks[0][0] = result.Bricks[0][1] = result.Bricks[0][2] = result.Bricks[1][0] = true;
-            return result;
+            (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (0, 2), (1, 0) });
+            return MakePieceFromBrickCoordinates(brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece3() {
-            TetrisPiece result = new TetrisPiece();
             // ***
             //   *
-            result.Bricks[0][0] = result.Bricks[0][1] = result.Bricks[0][2] = result.Bricks[1][2] = true;
-            return result;
+            (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (0, 2), (1, 2) });
+            return MakePieceFromBrickCoordinates(brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece4() {
-            TetrisPiece result = new TetrisPiece();
             // ***
             //  *
-            result.Bricks[0][0] = result.Bricks[0][1] = result.Bricks[0][2] = result.Bricks[1][1] = true;
-            return result;
+            (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (0, 2), (1, 1) });
+            return MakePieceFromBrickCoordinates(brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece5() {
-            TetrisPiece result = new TetrisPiece();
             // **
             //  **
-            result.Bricks[0][0] = result.Bricks[0][1] = result.Bricks[1][1] = result.Bricks[1][2] = true;
-            return result;
+            (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (1, 1), (1, 2) });
+            return MakePieceFromBrickCoordinates(brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece6() {
-            TetrisPiece result = new TetrisPiece();
             //  **
             // **
-            result.Bricks[0][1] = result.Bricks[0][2] = result.Bricks[1][0] = result.Bricks[1][1] = true;
-            return result;
+            (int, int)[] brickCoords = (new[] { (0, 1), (0, 2), (1, 0), (1, 1) });
+            return MakePieceFromBrickCoordinates(brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece7() {
-            TetrisPiece result = new TetrisPiece();
             // **
             // **
-            result.Bricks[0][0] = result.Bricks[0][1] = result.Bricks[1][0] = result.Bricks[1][1] = true;
-            return result;
+            (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (1, 0), (1, 1) });
+            return MakePieceFromBrickCoordinates(brickCoords);
         }
     }
 }
