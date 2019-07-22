@@ -32,12 +32,12 @@ namespace CosminIv.Games.Tetris
 
         #region Constructors
 
-        public TetrisEngine(ILogger logger) {
-            Logger = logger;
-            Rows = 10;
-            Columns = 10;
-            Board = new TetrisBoard(Rows, Columns, logger);
-            Speed = 1;
+        public TetrisEngine(TetrisEngineSettings settings) {
+            Logger = settings.Logger;
+            Rows = settings.Rows;
+            Columns = settings.Columns;
+            Board = new TetrisBoard(Rows, Columns, settings.Logger);
+            Speed = settings.Speed;
             Score = 0;
             Timer = MakeTimer();
         }

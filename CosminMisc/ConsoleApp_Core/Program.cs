@@ -17,8 +17,13 @@ namespace ConsoleApp_Core
         }
 
         private static void RunTetris() {
-            ILogger logger = new DebugLogger();
-            TetrisEngine tetrisEngine = new TetrisEngine(logger);
+            TetrisEngineSettings settings = new TetrisEngineSettings {
+                Columns = 15,
+                Logger = new DebugLogger(),
+                Rows = 15,
+                Speed = 7
+            };
+            TetrisEngine tetrisEngine = new TetrisEngine(settings);
             TetrisConsoleUI tetrisUI = new TetrisConsoleUI(tetrisEngine);
 
             tetrisUI.Start();

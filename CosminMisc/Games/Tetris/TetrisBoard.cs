@@ -27,16 +27,13 @@ namespace CosminIv.Games.Tetris
         }
 
         public void StickPiece() {
-            Logger.WriteLine($"Can't move piece down; sticking at row {CurrentPiece.Position.Row}");
             FixedBricks.AddPiece(CurrentPiece);
-            Logger.WriteLine(FixedBricks.ToString());
+            //Logger.WriteLine(FixedBricks.ToString());
         }
 
         private TetrisPieceWithPosition MakePiece() {
             TetrisPiece piece = PieceFactory.MakePiece();
             int column = Random.Next(Columns - piece.Width);
-            Logger.WriteLine($"{piece.ToString()}");
-            Logger.WriteLine($"Column {column}");
 
             TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
                 Piece = piece,
@@ -70,8 +67,6 @@ namespace CosminIv.Games.Tetris
                 OldCoordinates = new Coordinates(pos.Row - 1, pos.Column),
                 NewCoordinates = new Coordinates(pos.Row, pos.Column)
             };
-
-            Logger.WriteLine($"Moved piece to row {CurrentPiece.Position.Row}");
 
             return result;
         }

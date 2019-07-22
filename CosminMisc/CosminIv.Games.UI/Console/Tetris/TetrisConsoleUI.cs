@@ -9,19 +9,28 @@ namespace CosminIv.Games.UI.Console.Tetris
     public class TetrisConsoleUI
     {
         TetrisEngine Engine;
-        Coordinates TopLeft = new Coordinates(0, 0);
+        Coordinates TopLeft = new Coordinates(2, 20);
+        readonly int WindowHeight = 30;
+        readonly int WindowWidth = 60;
         readonly int BorderWidth = 1;
         readonly string Brick = "#";
 
         public TetrisConsoleUI(TetrisEngine engine) {
+            SetWindowSize();
             Engine = engine;
             Engine.PieceAppeared += Engine_PieceAppeared;
             Engine.PieceMoved += Engine_PieceMoved;
         }
 
+        private void SetWindowSize() {
+            System.Console.SetWindowSize(width: WindowWidth, height: WindowHeight);
+            System.Console.SetBufferSize(width: WindowWidth, height: WindowHeight);
+        }
+
         public void Start() {
             DisplayBoard();
             Engine.Start();
+            System.Console.CursorVisible = false;
         }
 
 
@@ -45,12 +54,14 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         private void DeletePiece(TetrisPiece piece, Coordinates oldCoordinates) {
             Func<TetrisPiece, int, int, string> charGenerator = (piece2, row, col) => {
-                return " ";
+                bool isBrick = piece2[row, col] != null;
+                return (isBrick ? " " : "");
             };
 
             DisplayBlock(piece, oldCoordinates, charGenerator);
         }
 
+        // TODO: Make the Func more elegant
         private void DisplayBlock(TetrisPiece piece, Coordinates coordinates, Func<TetrisPiece, int, int, string> charGenerator) {
             int originColumn = TopLeft.Column + BorderWidth + coordinates.Column;
             int originRow = TopLeft.Row + BorderWidth + coordinates.Row;
