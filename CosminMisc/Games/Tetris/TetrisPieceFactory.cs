@@ -35,7 +35,7 @@ namespace Games.Tetris
         private static TetrisPiece MakePieceFromBrickCoordinates(int width, int height, (int, int)[] brickCoords) {
             TetrisPiece result = new TetrisPiece(width, height);
             foreach ((int, int) position in brickCoords) {
-                result.Bricks[position.Item1][position.Item2] = new TetrisBrick();
+                result[position.Item1, position.Item2] = new TetrisBrick();
             }
             return result;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Games.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,7 @@ namespace Games.Tetris
 {
     public class TetrisBrick
     {
-        public TetrisColor Color { get; set; }
+        public Color Color { get; set; }
 
         public override string ToString() {
             return "#";
@@ -16,6 +17,6 @@ namespace Games.Tetris
     class TetrisBrickWithPosition
     {
         public TetrisBrick Brick { get; set; }
-        public TetrisPosition Position { get; set; }
+        public Coordinates Position { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Games.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text;
 namespace Games.Tetris
 {
     public class TetrisPiece {
-        internal TetrisBrick[][] Bricks;
+        TetrisBrick[][] Bricks;
 
         public TetrisPiece(int maxWidth, int maxHeight) {
             MaxWidth = maxWidth;
@@ -46,9 +47,16 @@ namespace Games.Tetris
             }
         }
 
-        public TetrisBrick this[int row, int col] => Bricks[row][col];
+        public TetrisBrick this[int row, int col] {
+            get {
+                return Bricks[row][col];
+            }
+            set {
+                Bricks[row][col] = value;
+            }
+        }
 
-        public TetrisColor Color { get; set; }
+        public Color Color { get; set; }
 
         private TetrisBrick[][] MakeBricksMatrix() {
             TetrisBrick[][] result = new TetrisBrick[MaxHeight][];
@@ -88,6 +96,6 @@ namespace Games.Tetris
     class TetrisPieceWithPosition
     {
         public TetrisPiece Piece { get; set; }
-        public TetrisPosition Position { get; set; }
+        public Coordinates Position { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Games.Tetris
         public void AddPiece(TetrisPieceWithPosition pieceWithPos) {
             for (int row = 0; row < pieceWithPos.Piece.MaxHeight; row++) {
                 for (int column = 0; column < pieceWithPos.Piece.MaxWidth; column++) {
-                    TetrisBrick brick = pieceWithPos.Piece.Bricks[row][column];
+                    TetrisBrick brick = pieceWithPos.Piece[row, column];
 
                     if (brick != null) {
                         int rowRelativeToBoard = row + pieceWithPos.Position.Row;

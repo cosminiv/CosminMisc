@@ -26,7 +26,7 @@ namespace Games.Tetris
             int fixedBrickRowOffset) {
             for (int column = 0; column < piece.Piece.MaxWidth; column++) {
                 for (int row = piece.Piece.MaxHeight - 1; row >= 0; row--) {
-                    bool isPieceBrick = piece.Piece.Bricks[row][column] != null;
+                    bool isPieceBrick = piece.Piece[row, column] != null;
                     if (isPieceBrick) {
                         int rowRelativeToBoard = row + piece.Position.Row + fixedBrickRowOffset;
                         int columnRelativeToBoard = column + piece.Position.Column;

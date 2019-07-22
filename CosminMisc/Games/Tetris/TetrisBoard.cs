@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using Games.Common;
 
 namespace Games.Tetris
 {
@@ -37,7 +38,7 @@ namespace Games.Tetris
 
             TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
                 Piece = piece,
-                Position = new TetrisPosition(0, column)
+                Position = new Coordinates(0, column)
             };
 
             return pieceWithPosition;

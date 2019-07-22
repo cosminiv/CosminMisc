@@ -1,8 +1,8 @@
-﻿namespace Games.Tetris
+﻿namespace Games.Common
 {
-    public class TetrisPosition
+    public class Coordinates
     {
-        public TetrisPosition(int row, int column) {
+        public Coordinates(int row, int column) {
             Row = row;
             Column = column;
         }

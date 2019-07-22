@@ -1,8 +1,8 @@
-﻿namespace Games.Tetris
+﻿namespace Games.Common
 {
-    public class TetrisColor
+    public class Color
     {
-        public TetrisColor(byte red, byte green, byte blue) {
+        public Color(byte red, byte green, byte blue) {
             Red = red;
             Green = green;
             Blue = blue;
