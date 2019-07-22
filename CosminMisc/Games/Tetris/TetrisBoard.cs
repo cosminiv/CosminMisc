@@ -61,9 +61,19 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        internal void MovePieceDown() {
+        internal PieceMovedArgs MovePieceDown() {
             CurrentPiece.Position.Row++;
+            Coordinates pos = CurrentPiece.Position;
+
+            PieceMovedArgs result = new PieceMovedArgs {
+                Piece = CurrentPiece.Piece,
+                OldCoordinates = new Coordinates(pos.Row - 1, pos.Column),
+                NewCoordinates = new Coordinates(pos.Row, pos.Column)
+            };
+
             Logger.WriteLine($"Moved piece to row {CurrentPiece.Position.Row}");
+
+            return result;
         }
     }
 }

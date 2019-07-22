@@ -16,17 +16,44 @@ namespace CosminIv.Games.UI.Console.Tetris
         public TetrisConsoleUI(TetrisEngine engine) {
             Engine = engine;
             Engine.PieceAppeared += Engine_PieceAppeared;
+            Engine.PieceMoved += Engine_PieceMoved;
         }
+
+        public void Start() {
+            DisplayBoard();
+            Engine.Start();
+        }
+
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
-            DisplayPiece(arg);
+            DisplayPiece(arg.Piece, arg.Position);
         }
 
-        private void DisplayPiece(TetrisPieceWithPosition pieceWithPos) {
-            int originColumn = TopLeft.Column + BorderWidth + pieceWithPos.Position.Column;
-            int originRow = TopLeft.Row + BorderWidth + pieceWithPos.Position.Row;
-            
-            TetrisPiece piece = pieceWithPos.Piece;
+        private void Engine_PieceMoved(PieceMovedArgs args) {
+            DeletePiece(args.Piece, args.OldCoordinates);
+            DisplayPiece(args.Piece, args.NewCoordinates);
+        }
+
+        private void DisplayPiece(TetrisPiece piece, Coordinates coordinates) {
+            Func<TetrisPiece, int, int, string> charGenerator = (piece2, row, col) => {
+                bool isBrick = piece2[row, col] != null;
+                return (isBrick ? Brick : "");
+            };
+
+            DisplayBlock(piece, coordinates, charGenerator);
+        }
+
+        private void DeletePiece(TetrisPiece piece, Coordinates oldCoordinates) {
+            Func<TetrisPiece, int, int, string> charGenerator = (piece2, row, col) => {
+                return " ";
+            };
+
+            DisplayBlock(piece, oldCoordinates, charGenerator);
+        }
+
+        private void DisplayBlock(TetrisPiece piece, Coordinates coordinates, Func<TetrisPiece, int, int, string> charGenerator) {
+            int originColumn = TopLeft.Column + BorderWidth + coordinates.Column;
+            int originRow = TopLeft.Row + BorderWidth + coordinates.Row;
 
             for (int pieceRow = 0; pieceRow < piece.MaxHeight; pieceRow++) {
                 for (int pieceColumn = 0; pieceColumn < piece.MaxWidth; pieceColumn++) {
@@ -34,15 +61,9 @@ namespace CosminIv.Games.UI.Console.Tetris
                     int windowColumn = originColumn + pieceColumn;
 
                     System.Console.SetCursorPosition(windowColumn, windowRow);
-                    bool isBrick = piece[pieceRow, pieceColumn] != null;
-                    System.Console.Write(isBrick ? Brick : " ");
+                    System.Console.Write(charGenerator(piece, pieceRow, pieceColumn));
                 }
             }
-        }
-
-        public void Start() {
-            DisplayBoard();
-            Engine.Start();
         }
 
         void DisplayBoard() {

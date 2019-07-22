@@ -1,4 +1,5 @@
-﻿using CosminIv.Games.Common.Logging;
+﻿using CosminIv.Games.Common;
+using CosminIv.Games.Common.Logging;
 using System;
 using System.Diagnostics;
 using System.Timers;
@@ -67,8 +68,11 @@ namespace CosminIv.Games.Tetris
 
         #region Public events
 
-        public delegate void PieceAppearedHandler(TetrisPieceWithPosition arg);
+        public delegate void PieceAppearedHandler(TetrisPieceWithPosition pieceWithPos);
         public event PieceAppearedHandler PieceAppeared;
+
+        public delegate void PieceMovedHandler(PieceMovedArgs args);
+        public event PieceMovedHandler PieceMoved;
 
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
@@ -86,9 +90,9 @@ namespace CosminIv.Games.Tetris
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-            //Debug.WriteLine($"Timer elapsed; time = {DateTime.Now.Second}.{DateTime.Now.Millisecond}");
             if (Board.CanMovePieceDown()) {
-                Board.MovePieceDown();
+                PieceMovedArgs pieceMovedArgs = Board.MovePieceDown();
+                PieceMoved?.Invoke(pieceMovedArgs);
             }
             else {
                 Board.StickPiece();
@@ -98,7 +102,7 @@ namespace CosminIv.Games.Tetris
         }
 
         private void MakeNewPiece() {
-            bool couldPlacePiece = Board.MakeNewPiece(out var piece);
+            bool couldPlacePiece = Board.MakeNewPiece(out TetrisPieceWithPosition piece);
             if (couldPlacePiece)
                 PieceAppeared?.Invoke(piece);
             else
