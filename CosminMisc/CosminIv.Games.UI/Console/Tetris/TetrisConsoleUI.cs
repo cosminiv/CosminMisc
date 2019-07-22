@@ -9,7 +9,7 @@ namespace CosminIv.Games.UI.Console.Tetris
     public class TetrisConsoleUI
     {
         TetrisEngine Engine;
-        Coordinates TopLeft = new Coordinates(10, 20);
+        Coordinates TopLeft = new Coordinates(0, 0);
 
         public TetrisConsoleUI(TetrisEngine engine) {
             Engine = engine;
@@ -22,26 +22,32 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         void DisplayInitial() {
             string initialStateStr = MakeInitialState();
+            System.Console.SetCursorPosition(0, TopLeft.Row);
             System.Console.Write(initialStateStr);
         }
 
         private string MakeInitialState() {
-            StringBuilder sb = new StringBuilder((Engine.Rows + 2) * (Engine.Columns + 2));
+            StringBuilder sb = new StringBuilder();
 
-            sb.Append('-', Engine.Columns);
-            sb.AppendLine();
+            AddBoardHorizontalBorder(sb);
 
             for (int row = 0; row < Engine.Rows; row++) {
+                sb.Append(' ', TopLeft.Column);
                 sb.Append("|");
                 sb.Append(' ', Engine.Columns);
                 sb.Append("|");
                 sb.AppendLine();
             }
 
-            sb.Append('-', Engine.Columns);
-            sb.AppendLine();
+            AddBoardHorizontalBorder(sb);
 
             return sb.ToString();
+        }
+
+        private void AddBoardHorizontalBorder(StringBuilder sb) {
+            sb.Append(' ', TopLeft.Column);
+            sb.Append('-', Engine.Columns + 2);
+            sb.AppendLine();
         }
     }
 }
