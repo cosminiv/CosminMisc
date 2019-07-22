@@ -26,18 +26,24 @@ namespace CosminIv.Games.Tetris
             Board = new TetrisBoard(Rows, Columns);
             Speed = 1;
             Score = 0;
-            
-            // Only start the timer after everything is ready.
             Timer = MakeTimer();
+        }
+
+        public void Start() {
+            Unpause();
         }
 
         public void Pause() {
             Timer.Enabled = false;
         }
 
+        public void Unpause() {
+            Timer.Enabled = true;
+        }
+
         private Timer MakeTimer() {
             Timer timer = new Timer(ComputeTimerInterval(Speed));
-            timer.Enabled = true;
+            timer.Enabled = false;
             timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
             return timer;
         }

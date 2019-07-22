@@ -1,13 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CosminIv.Games.UI\CosminIv.Games.UI.csproj" />
     <ProjectReference Include="..\Games\CosminIv.Games.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 ﻿using CosminIv.Games.Tetris;
+using CosminIv.Games.UI.Console.Tetris;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace ConsoleApp_Core
     class Program
     {
         async static Task Main(string[] args) {
-            TestConsoleAnimation();
+            RunTetris();
 
             //Console.SetCursorPosition(20, 2);
             //Console.WriteLine("World");
@@ -29,6 +30,12 @@ namespace ConsoleApp_Core
             //tetrisEngine.Pause();
 
             Console.ReadLine();
+        }
+
+        private static void RunTetris() {
+            TetrisEngine tetrisEngine = new TetrisEngine();
+            TetrisConsoleUI tetrisUI = new TetrisConsoleUI(tetrisEngine);
+            tetrisUI.Start();
         }
 
         private static void TestConsoleAnimation() {
