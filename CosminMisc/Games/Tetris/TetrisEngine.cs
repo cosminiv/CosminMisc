@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Timers;
 
-namespace Games.Tetris
+namespace CosminIv.Games.Tetris
 {
     public class TetrisEngine
     {

@@ -3,9 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using Games.Common;
+using CosminIv.Games.Common;
 
-namespace Games.Tetris
+namespace CosminIv.Games.Tetris
 {
     class TetrisBoard
     {

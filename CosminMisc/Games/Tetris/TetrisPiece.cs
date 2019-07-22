@@ -1,10 +1,10 @@
-﻿using Games.Common;
+﻿using CosminIv.Games.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Games.Tetris
+namespace CosminIv.Games.Tetris
 {
     public class TetrisPiece {
         TetrisBrick[][] Bricks;

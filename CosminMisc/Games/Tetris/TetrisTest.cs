@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Games.Tetris
+namespace CosminIv.Games.Tetris
 {
     public class TetrisTest
     {

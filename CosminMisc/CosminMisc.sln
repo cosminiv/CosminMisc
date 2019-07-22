@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{E670D593-0B2C-4E67-BE67-8C8C50AF1079}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Games", "Games\Games.csproj", "{7549A028-4FF8-4913-AA97-012CE188CDEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosminIv.Games", "Games\CosminIv.Games.csproj", "{7549A028-4FF8-4913-AA97-012CE188CDEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp_Core", "ConsoleApp_Core\ConsoleApp_Core.csproj", "{6A6D527D-2F29-4B54-B95F-1CFAD95583F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp_Core", "ConsoleApp_Core\ConsoleApp_Core.csproj", "{6A6D527D-2F29-4B54-B95F-1CFAD95583F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

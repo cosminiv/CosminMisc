@@ -1,4 +1,4 @@
-﻿namespace Games.Common
+﻿namespace CosminIv.Games.Common
 {
     public class Color
     {
