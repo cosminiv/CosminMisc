@@ -1,4 +1,4 @@
-﻿using CosminIv.Games.Common;
+﻿using CosminIv.Games.Common.Logging;
 using CosminIv.Games.Tetris;
 using CosminIv.Games.UI.Console.Tetris;
 using System;
@@ -12,24 +12,7 @@ namespace ConsoleApp_Core
         async static Task Main(string[] args) {
             RunTetris();
 
-            //Console.SetCursorPosition(20, 2);
-            //Console.WriteLine("World");
-            //Console.ReadLine();
-
-            //Console.WriteLine("Press the Enter key to exit the program.");
-
-            //TetrisEngine tetrisEngine = new TetrisEngine();
-
-            //TetrisPieceFactory factory = new TetrisPieceFactory();
-            //for (int i = 0; i < 20; i++) {
-            //    Console.WriteLine(factory.MakePiece().ToString());
-            //    Console.WriteLine();
-            //}
-            //Console.ReadLine();
-
-            //Console.ReadLine();
-            //tetrisEngine.Pause();
-
+            Console.WriteLine("Press Enter to exit.");
             Console.ReadLine();
         }
 

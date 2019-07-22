@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CosminIv.Games.Common
+namespace CosminIv.Games.Common.Logging
 {
     public interface ILogger
     {

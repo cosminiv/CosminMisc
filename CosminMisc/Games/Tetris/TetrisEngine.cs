@@ -1,4 +1,4 @@
-﻿using CosminIv.Games.Common;
+﻿using CosminIv.Games.Common.Logging;
 using System;
 using System.Diagnostics;
 using System.Timers;

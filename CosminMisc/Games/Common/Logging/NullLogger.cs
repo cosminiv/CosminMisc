@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
-namespace CosminIv.Games.Common
+namespace CosminIv.Games.Common.Logging
 {
-    public class DebugLogger : ILogger
+    /// <summary>
+    /// Logs nothing
+    /// </summary>
+    public class NullLogger : ILogger
     {
         public void Write(object value) {
-            Debug.Write(value);
         }
 
         public void WriteLine(object value) {
-            Debug.WriteLine(value);
         }
     }
 }

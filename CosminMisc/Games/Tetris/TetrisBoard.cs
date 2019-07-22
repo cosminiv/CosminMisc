@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using CosminIv.Games.Common.Logging;
 using CosminIv.Games.Common;
 
 namespace CosminIv.Games.Tetris
