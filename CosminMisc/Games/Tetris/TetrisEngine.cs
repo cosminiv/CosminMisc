@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CosminIv.Games.Common;
+using System;
 using System.Diagnostics;
 using System.Timers;
 
@@ -18,12 +19,14 @@ namespace CosminIv.Games.Tetris
 
         TetrisBoard Board;
         Timer Timer;
+        ILogger Logger;
         readonly int MaxSpeed = 10;
 
-        public TetrisEngine() {
+        public TetrisEngine(ILogger logger) {
+            Logger = logger;
             Rows = 10;
             Columns = 10;
-            Board = new TetrisBoard(Rows, Columns);
+            Board = new TetrisBoard(Rows, Columns, logger);
             Speed = 1;
             Score = 0;
             Timer = MakeTimer();
@@ -70,7 +73,7 @@ namespace CosminIv.Games.Tetris
 
         private void End() {
             Timer.Stop();
-            Console.WriteLine($"Game ended; score = {Score}");
+            Logger.WriteLine($"Game ended; score = {Score}");
         }
 
         double ComputeTimerInterval(int speed) {

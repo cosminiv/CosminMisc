@@ -1,4 +1,5 @@
-﻿using CosminIv.Games.Tetris;
+﻿using CosminIv.Games.Common;
+using CosminIv.Games.Tetris;
 using CosminIv.Games.UI.Console.Tetris;
 using System;
 using System.Threading;
@@ -33,8 +34,10 @@ namespace ConsoleApp_Core
         }
 
         private static void RunTetris() {
-            TetrisEngine tetrisEngine = new TetrisEngine();
+            ILogger logger = new DebugLogger();
+            TetrisEngine tetrisEngine = new TetrisEngine(logger);
             TetrisConsoleUI tetrisUI = new TetrisConsoleUI(tetrisEngine);
+
             tetrisUI.Start();
         }
 

@@ -22,6 +22,7 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         void DisplayInitial() {
             string initialStateStr = MakeInitialState();
+            System.Console.Write(initialStateStr);
         }
 
         private string MakeInitialState() {

@@ -16,8 +16,10 @@ namespace CosminIv.Games.Tetris
         TetrisPieceFactory PieceFactory = new TetrisPieceFactory();
         TetrisFixedBricks FixedBricks;
         Random Random = new Random();
+        ILogger Logger;
 
-        public TetrisBoard(int rows, int columns) {
+        public TetrisBoard(int rows, int columns, ILogger logger) {
+            Logger = logger;
             Rows = rows;
             Columns = columns;
             FixedBricks = new TetrisFixedBricks(rows, columns);
@@ -25,16 +27,16 @@ namespace CosminIv.Games.Tetris
         }
 
         public void StickPiece() {
-            Console.WriteLine($"Can't move piece down; sticking at row {CurrentPiece.Position.Row}");
+            Logger.WriteLine($"Can't move piece down; sticking at row {CurrentPiece.Position.Row}");
             FixedBricks.AddPiece(CurrentPiece);
-            Console.WriteLine(FixedBricks.ToString());
+            Logger.WriteLine(FixedBricks.ToString());
         }
 
         private TetrisPieceWithPosition MakePiece() {
             TetrisPiece piece = PieceFactory.MakePiece();
             int column = Random.Next(Columns - piece.Width);
-            Console.WriteLine($"{piece.ToString()}");
-            Console.WriteLine($"Column {column}");
+            Logger.WriteLine($"{piece.ToString()}");
+            Logger.WriteLine($"Column {column}");
 
             TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
                 Piece = piece,
@@ -61,7 +63,7 @@ namespace CosminIv.Games.Tetris
 
         internal void MovePieceDown() {
             CurrentPiece.Position.Row++;
-            Console.WriteLine($"Moved piece to row {CurrentPiece.Position.Row}");
+            Logger.WriteLine($"Moved piece to row {CurrentPiece.Position.Row}");
         }
     }
 }
