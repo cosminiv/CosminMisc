@@ -7,6 +7,8 @@ namespace CosminIv.Games.Tetris
 {
     public class TetrisEngine
     {
+        #region Data members and properties
+
         int _speed;
 
         public int Rows { get; }
@@ -20,7 +22,14 @@ namespace CosminIv.Games.Tetris
         TetrisBoard Board;
         Timer Timer;
         ILogger Logger;
+        bool IsGameStarted = false;
+
         readonly int MaxSpeed = 10;
+
+        #endregion
+
+
+        #region Constructors
 
         public TetrisEngine(ILogger logger) {
             Logger = logger;
@@ -32,8 +41,17 @@ namespace CosminIv.Games.Tetris
             Timer = MakeTimer();
         }
 
+        #endregion
+
+
+        #region Public Methods
+
         public void Start() {
-            Unpause();
+            if (!IsGameStarted) {
+                MakeNewPiece();
+                Unpause();
+                IsGameStarted = true;
+            }
         }
 
         public void Pause() {
@@ -43,6 +61,22 @@ namespace CosminIv.Games.Tetris
         public void Unpause() {
             Timer.Enabled = true;
         }
+
+        #endregion
+
+
+        #region Public events
+
+        public delegate void PieceAppearedHandler(TetrisPieceWithPosition arg);
+        public event PieceAppearedHandler PieceAppeared;
+
+        public delegate void GameEndedHandler();
+        public event GameEndedHandler GameEnded;
+
+        #endregion
+
+
+        #region Private methods
 
         private Timer MakeTimer() {
             Timer timer = new Timer(ComputeTimerInterval(Speed));
@@ -59,11 +93,16 @@ namespace CosminIv.Games.Tetris
             else {
                 Board.StickPiece();
                 UpdateScoreAfterStickingPiece();
-
-                bool couldPlacePiece = Board.MakeNewPiece();
-                if (!couldPlacePiece)
-                    End();
+                MakeNewPiece();
             }
+        }
+
+        private void MakeNewPiece() {
+            bool couldPlacePiece = Board.MakeNewPiece(out var piece);
+            if (couldPlacePiece)
+                PieceAppeared?.Invoke(piece);
+            else
+                End();
         }
 
         private void UpdateScoreAfterStickingPiece() {
@@ -74,17 +113,21 @@ namespace CosminIv.Games.Tetris
         private void End() {
             Timer.Stop();
             Logger.WriteLine($"Game ended; score = {Score}");
+            GameEnded?.Invoke();
         }
 
         double ComputeTimerInterval(int speed) {
             return 1000 * (1 - (Speed - 1) * 0.1);
         }
 
+        #endregion
+
         //Methods
         //    MoveLeft
         //    MoveRight
         //    MoveDown
         //    Rotate
+
 
         //Events
         //    PieceChange

@@ -92,10 +92,4 @@ namespace CosminIv.Games.Tetris
             return sb.ToString();
         }
     }
-
-    class TetrisPieceWithPosition
-    {
-        public TetrisPiece Piece { get; set; }
-        public Coordinates Position { get; set; }
-    }
 }

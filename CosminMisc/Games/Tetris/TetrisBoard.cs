@@ -24,7 +24,6 @@ namespace CosminIv.Games.Tetris
             Rows = rows;
             Columns = columns;
             FixedBricks = new TetrisFixedBricks(rows, columns);
-            MakeNewPiece();
         }
 
         public void StickPiece() {
@@ -51,8 +50,8 @@ namespace CosminIv.Games.Tetris
             return CollisionDetector.CanMovePieceDown(CurrentPiece, Rows, FixedBricks);
         }
 
-        internal bool MakeNewPiece() {
-            TetrisPieceWithPosition piece = MakePiece();
+        internal bool MakeNewPiece(out TetrisPieceWithPosition piece) {
+            piece = MakePiece();
 
             if (CollisionDetector.ReachedFixedBrick(piece, FixedBricks, 0))
                 return false;

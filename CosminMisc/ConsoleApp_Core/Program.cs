@@ -12,7 +12,7 @@ namespace ConsoleApp_Core
         async static Task Main(string[] args) {
             RunTetris();
 
-            Console.WriteLine("Press Enter to exit.");
+            //Console.WriteLine("Press Enter to exit.");
             Console.ReadLine();
         }
 
