@@ -19,9 +19,9 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         public void Display() {
-            string initialStateStr = MakeBoardString();
-            System.Console.SetCursorPosition(0, BoardWindowOrigin.Row);
-            System.Console.Write(initialStateStr);
+            string boardString = MakeBoardString();
+            System.Console.SetCursorPosition(left: 0, top: BoardWindowOrigin.Row);
+            System.Console.Write(boardString);
         }
 
         private string MakeBoardString() {

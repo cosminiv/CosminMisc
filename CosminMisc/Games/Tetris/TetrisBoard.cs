@@ -13,7 +13,7 @@ namespace CosminIv.Games.Tetris
         int Rows { get; }
         int Columns { get; }
         TetrisPieceWithPosition CurrentPiece;
-        TetrisCollisionDetector CollisionDetector = new TetrisCollisionDetector();
+        TetrisCollisionDetector CollisionDetector;
         TetrisPieceFactory PieceFactory = new TetrisPieceFactory();
         TetrisFixedBricks FixedBricks;
         Random Random = new Random();
@@ -24,6 +24,7 @@ namespace CosminIv.Games.Tetris
             Rows = rows;
             Columns = columns;
             FixedBricks = new TetrisFixedBricks(rows, columns);
+            CollisionDetector = new TetrisCollisionDetector(FixedBricks, Rows, Columns);
         }
 
         public void StickPiece() {
@@ -43,14 +44,14 @@ namespace CosminIv.Games.Tetris
             return pieceWithPosition;
         }
 
-        internal bool CanMovePieceDown() {
-            return CollisionDetector.CanMovePieceDown(CurrentPiece, Rows, FixedBricks);
+        internal bool CanMovePiece() {
+            return CollisionDetector.CanMovePiece(CurrentPiece);
         }
 
         internal bool MakeNewPiece(out TetrisPieceWithPosition piece) {
             piece = MakePiece();
 
-            if (CollisionDetector.ReachedFixedBrick(piece, FixedBricks, 0))
+            if (CollisionDetector.ReachedFixedBrick(piece, 0))
                 return false;
             else {
                 CurrentPiece = piece;

@@ -29,6 +29,7 @@ namespace CosminIv.Games.UI.Console.Tetris
             BoardDisplayer.Display();
             Engine.Start();
             System.Console.CursorVisible = false;
+            MonitorKeyboard();
         }
 
 
@@ -49,6 +50,27 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void Engine_PieceMoved(PieceMovedArgs args) {
             PieceDisplayer.Delete(args.Piece, args.OldCoordinates);
             PieceDisplayer.Display(args.Piece, args.NewCoordinates);
+        }
+
+        private void MonitorKeyboard() {
+            while (true) {
+                ConsoleKeyInfo keyInfo = System.Console.ReadKey(true);
+
+                switch (keyInfo.Key) {
+                    case ConsoleKey.LeftArrow:
+                        Engine.MovePieceLeft();
+                        break;
+                    case ConsoleKey.RightArrow:
+                        Engine.MovePieceRight();
+                        break;
+                    //case ConsoleKey.UpArrow:
+                    //    Engine.RotatePieceClockwise();
+                    //    break;
+                    case ConsoleKey.DownArrow:
+                        Engine.MovePieceDown();
+                        break;
+                }
+            }
         }
     }
 }

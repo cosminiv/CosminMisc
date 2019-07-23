@@ -55,6 +55,26 @@ namespace CosminIv.Games.Tetris
             }
         }
 
+        public void MovePieceDown() {
+            if (Board.CanMovePiece()) {
+                PieceMovedArgs pieceMovedArgs = Board.MovePieceDown();
+                PieceMoved?.Invoke(pieceMovedArgs);
+            }
+            else {
+                Board.StickPiece();
+                UpdateScoreAfterStickingPiece();
+                MakeNewPiece();
+            }
+        }
+
+        public void MovePieceLeft() {
+
+        }
+
+        public void MovePieceRight() {
+
+        }
+
         public void Pause() {
             Timer.Enabled = false;
         }
@@ -90,15 +110,7 @@ namespace CosminIv.Games.Tetris
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-            if (Board.CanMovePieceDown()) {
-                PieceMovedArgs pieceMovedArgs = Board.MovePieceDown();
-                PieceMoved?.Invoke(pieceMovedArgs);
-            }
-            else {
-                Board.StickPiece();
-                UpdateScoreAfterStickingPiece();
-                MakeNewPiece();
-            }
+            MovePieceDown();
         }
 
         private void MakeNewPiece() {
