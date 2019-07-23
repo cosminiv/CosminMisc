@@ -10,21 +10,15 @@ namespace CosminIv.Games.UI.Console.Tetris
     {
         TetrisEngine Engine;
         Coordinates TopLeft = new Coordinates(2, 20);
-        readonly int WindowHeight = 30;
+        readonly int WindowHeight = 28;
         readonly int WindowWidth = 60;
         readonly int BorderWidth = 1;
-        readonly string Brick = "#";
+        readonly char Brick = '#';
 
         public TetrisConsoleUI(TetrisEngine engine) {
             SetWindowSize();
             Engine = engine;
-            Engine.PieceAppeared += Engine_PieceAppeared;
-            Engine.PieceMoved += Engine_PieceMoved;
-        }
-
-        private void SetWindowSize() {
-            System.Console.SetWindowSize(width: WindowWidth, height: WindowHeight);
-            System.Console.SetBufferSize(width: WindowWidth, height: WindowHeight);
+            WireEventHandlers();
         }
 
         public void Start() {
@@ -33,6 +27,16 @@ namespace CosminIv.Games.UI.Console.Tetris
             System.Console.CursorVisible = false;
         }
 
+
+        private void SetWindowSize() {
+            System.Console.SetBufferSize(WindowWidth, WindowHeight);
+            System.Console.SetWindowSize(WindowWidth, WindowHeight);
+        }
+
+        private void WireEventHandlers() {
+            Engine.PieceAppeared += Engine_PieceAppeared;
+            Engine.PieceMoved += Engine_PieceMoved;
+        }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
             DisplayPiece(arg.Piece, arg.Position);
@@ -44,35 +48,25 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void DisplayPiece(TetrisPiece piece, Coordinates coordinates) {
-            Func<TetrisPiece, int, int, string> charGenerator = (piece2, row, col) => {
-                bool isBrick = piece2[row, col] != null;
-                return (isBrick ? Brick : "");
-            };
-
-            DisplayBlock(piece, coordinates, charGenerator);
+            DisplayInPlaceOfPiece(piece, coordinates, Brick);
         }
 
-        private void DeletePiece(TetrisPiece piece, Coordinates oldCoordinates) {
-            Func<TetrisPiece, int, int, string> charGenerator = (piece2, row, col) => {
-                bool isBrick = piece2[row, col] != null;
-                return (isBrick ? " " : "");
-            };
-
-            DisplayBlock(piece, oldCoordinates, charGenerator);
+        private void DeletePiece(TetrisPiece piece, Coordinates coordinates) {
+            DisplayInPlaceOfPiece(piece, coordinates, ' ');
         }
 
-        // TODO: Make the Func more elegant
-        private void DisplayBlock(TetrisPiece piece, Coordinates coordinates, Func<TetrisPiece, int, int, string> charGenerator) {
-            int originColumn = TopLeft.Column + BorderWidth + coordinates.Column;
-            int originRow = TopLeft.Row + BorderWidth + coordinates.Row;
+        private void DisplayInPlaceOfPiece(TetrisPiece piece, Coordinates pieceBoardCoord, char displayChar) {
+            int boardOriginColumn = TopLeft.Column + BorderWidth + pieceBoardCoord.Column;
+            int boardOriginRow = TopLeft.Row + BorderWidth + pieceBoardCoord.Row;
 
             for (int pieceRow = 0; pieceRow < piece.MaxHeight; pieceRow++) {
                 for (int pieceColumn = 0; pieceColumn < piece.MaxWidth; pieceColumn++) {
-                    int windowRow = originRow + pieceRow;
-                    int windowColumn = originColumn + pieceColumn;
+                    int windowRow = boardOriginRow + pieceRow;
+                    int windowColumn = boardOriginColumn + pieceColumn;
+                    bool isBrick = piece[pieceRow, pieceColumn] != null;
 
                     System.Console.SetCursorPosition(windowColumn, windowRow);
-                    System.Console.Write(charGenerator(piece, pieceRow, pieceColumn));
+                    System.Console.Write(isBrick ? displayChar.ToString() : "");
                 }
             }
         }
