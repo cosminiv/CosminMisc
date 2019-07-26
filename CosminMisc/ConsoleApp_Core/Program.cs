@@ -21,7 +21,7 @@ namespace ConsoleApp_Core
                 Columns = 15,
                 Logger = new DebugLogger(),
                 Rows = 15,
-                Speed = 7
+                Speed = 5
             };
             TetrisEngine tetrisEngine = new TetrisEngine(settings);
             TetrisConsoleUI tetrisUI = new TetrisConsoleUI(tetrisEngine);

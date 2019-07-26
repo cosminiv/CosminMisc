@@ -70,7 +70,7 @@ namespace CosminIv.Games.Tetris
 
                     TetrisBrick otherBrick = other.Bricks[rowIndex][colIndex];
                     if (otherBrick != null)
-                        this.Bricks[rowIndex][colIndex] = new TetrisBrick { Color = otherBrick.Color };
+                        this.Bricks[rowIndex][colIndex] = otherBrick;
                 }
             }
         }

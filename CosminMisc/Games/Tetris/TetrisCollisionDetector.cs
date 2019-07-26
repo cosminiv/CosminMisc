@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CosminIv.Games.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,52 +10,60 @@ namespace CosminIv.Games.Tetris
         readonly TetrisFixedBricks FixedBricks;
         readonly int BoardRowCount;
         readonly int BoardColumnCount;
-        readonly TetrisPieceWithPosition TentativePiece;
+        readonly TetrisPieceWithPositionCopy PieceCopy;
 
         public TetrisCollisionDetector(TetrisFixedBricks fixedBricks, int boardRowCount, int boardColumnCount) {
             FixedBricks = fixedBricks;
             BoardRowCount = boardRowCount;
             BoardColumnCount = boardColumnCount;
-
-            TentativePiece = new TetrisPieceWithPosition {
-                Piece = new TetrisPiece(4),
-                Position = new Common.Coordinates(0, 0)
-            };
+            PieceCopy = new TetrisPieceWithPositionCopy();
         }
 
         internal bool CanMovePiece(TetrisPieceWithPosition piece, int rowDelta, int columnDelta) {
-            TentativePiece.Piece.CopyFrom(piece.Piece);
-            if (ReachedBoardBottom(piece))
-                return false;
+            TetrisPieceWithPosition pieceCopy = PreparePieceCopy(piece, rowDelta, columnDelta);
 
-            if (ReachedFixedBrick(piece, 1))
+            if (IsCollision(pieceCopy))
                 return false;
 
             return true;
         }
 
-        bool ReachedBoardBottom(TetrisPieceWithPosition piece) {
-            int pieceBottomRow = piece.Position.Row + piece.Piece.TopPadding + piece.Piece.Height - 1;
-            bool result = pieceBottomRow >= BoardRowCount - 1;
-            return result;
+        private TetrisPieceWithPosition PreparePieceCopy(TetrisPieceWithPosition piece, int rowDelta, int columnDelta) {
+            PieceCopy.CopyFrom(piece);
+            PieceCopy.Value.Position.Row += rowDelta;
+            PieceCopy.Value.Position.Column += columnDelta;
+            return PieceCopy.Value;
         }
 
-        public bool ReachedFixedBrick(TetrisPieceWithPosition piece, int verticalDistanceToFixedBrick) {
-            for (int column = 0; column < piece.Piece.MaxSize; column++) {
-                for (int row = piece.Piece.MaxSize - 1; row >= 0; row--) {
-                    bool isPieceBrick = piece.Piece[row, column] != null;
-                    if (isPieceBrick) {
-                        int rowRelativeToBoard = row + piece.Position.Row + verticalDistanceToFixedBrick;
-                        int columnRelativeToBoard = column + piece.Position.Column;
-                        bool isFixedBrickUnderneath = FixedBricks.IsBrick(rowRelativeToBoard, columnRelativeToBoard);
+        public bool IsCollision(TetrisPieceWithPosition piece) {
+            foreach (Coordinates brickCoord in GetBrickCoordinatesRelativeToBoard(piece)) {
+                bool isLeftWallCollision = brickCoord.Column < 0;
+                bool isRightWallCollision = brickCoord.Column >= BoardColumnCount;
+                bool isBottomWallCollision = brickCoord.Row >= BoardRowCount;
+                bool isFixedBrickCollision = FixedBricks.IsBrick(brickCoord.Row, brickCoord.Column);
 
-                        if (isFixedBrickUnderneath)
-                            return true;
-                    }
-                }
+                if (isLeftWallCollision || isRightWallCollision || isBottomWallCollision || isFixedBrickCollision)
+                    return true;
             }
 
             return false;
+        }
+
+        IEnumerable<Coordinates> GetBrickCoordinatesRelativeToBoard(TetrisPieceWithPosition piece) {
+            Coordinates coord = new Coordinates(0, 0);
+
+            for (int column = 0; column < piece.Piece.MaxSize; column++) {
+                for (int row = piece.Piece.MaxSize - 1; row >= 0; row--) {
+                    bool isPieceBrick = piece.Piece[row, column] != null;
+
+                    if (isPieceBrick) {
+                        coord.Row = row + piece.Position.Row;
+                        coord.Column = column + piece.Position.Column;
+
+                        yield return coord;
+                    }
+                }
+            }
         }
     }
 }

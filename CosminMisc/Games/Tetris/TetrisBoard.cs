@@ -51,7 +51,7 @@ namespace CosminIv.Games.Tetris
         internal bool MakeNewPiece(out TetrisPieceWithPosition piece) {
             piece = MakePiece();
 
-            if (CollisionDetector.ReachedFixedBrick(piece, 0))
+            if (CollisionDetector.IsCollision(piece))
                 return false;
             else {
                 CurrentPiece = piece;
@@ -59,13 +59,14 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        internal PieceMovedArgs MovePieceDown() {
-            CurrentPiece.Position.Row++;
+        internal PieceMovedArgs MovePiece(int rowDelta, int columnDelta) {
+            CurrentPiece.Position.Row += rowDelta;
+            CurrentPiece.Position.Column += columnDelta;
             Coordinates pos = CurrentPiece.Position;
 
             PieceMovedArgs result = new PieceMovedArgs {
                 Piece = CurrentPiece.Piece,
-                OldCoordinates = new Coordinates(pos.Row - 1, pos.Column),
+                OldCoordinates = new Coordinates(pos.Row - rowDelta, pos.Column - columnDelta),
                 NewCoordinates = new Coordinates(pos.Row, pos.Column)
             };
 

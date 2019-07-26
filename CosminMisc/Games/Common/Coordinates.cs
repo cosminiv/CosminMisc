@@ -9,5 +9,10 @@
 
         public int Row { get; set; }
         public int Column { get; set; }
+
+        public void CopyFrom(Coordinates other) {
+            this.Row = other.Row;
+            this.Column = other.Column;
+        }
     }
 }

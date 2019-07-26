@@ -17,6 +17,13 @@ namespace CosminIv.Games.Tetris
         }
 
         public bool IsBrick(int row, int column) {
+            int columnCount = 0;
+            if (Bricks.Length > 0)
+                columnCount = Bricks[0].Length;
+
+            if (row < 0 || row >= Bricks.Length || column < 0 || column >= columnCount)
+                return false;
+
             bool result = Bricks[row][column] != null;
             return result;
         }
