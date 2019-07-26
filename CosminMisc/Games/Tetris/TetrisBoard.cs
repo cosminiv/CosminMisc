@@ -29,6 +29,7 @@ namespace CosminIv.Games.Tetris
 
         public void StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
+            FixedBricks.DeleteFullRows();
             //Logger.WriteLine(FixedBricks.ToString());
         }
 

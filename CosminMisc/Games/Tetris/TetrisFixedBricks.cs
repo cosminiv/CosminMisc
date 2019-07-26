@@ -9,8 +9,14 @@ namespace CosminIv.Games.Tetris
     class TetrisFixedBricks
     {
         TetrisBrick[][] Bricks;
+        TetrisFullRowsDeleter FullRowsDeleter;
 
         public TetrisFixedBricks(int rows, int columns) {
+            InitalizeBrickMatrix(rows, columns);
+            FullRowsDeleter = new TetrisFullRowsDeleter(Bricks);
+        }
+
+        private void InitalizeBrickMatrix(int rows, int columns) {
             Bricks = new TetrisBrick[rows][];
             for (int i = 0; i < rows; i++) {
                 Bricks[i] = new TetrisBrick[columns];
@@ -32,9 +38,11 @@ namespace CosminIv.Games.Tetris
         }
 
         public void AddPiece(TetrisPieceWithPosition pieceWithPos) {
-            for (int row = 0; row < pieceWithPos.Piece.MaxSize; row++) {
-                for (int column = 0; column < pieceWithPos.Piece.MaxSize; column++) {
-                    TetrisBrick brick = pieceWithPos.Piece[row, column];
+            TetrisPiece piece = pieceWithPos.Piece;
+
+            for (int row = 0; row < piece.MaxSize; row++) {
+                for (int column = 0; column < piece.MaxSize; column++) {
+                    TetrisBrick brick = piece[row, column];
 
                     if (brick != null) {
                         int rowRelativeToBoard = row + pieceWithPos.Position.Row;
@@ -43,6 +51,10 @@ namespace CosminIv.Games.Tetris
                     }
                 }
             }
+        }
+
+        public void DeleteFullRows() {
+            FullRowsDeleter.DeleteFullRows();
         }
 
         public override string ToString() {
