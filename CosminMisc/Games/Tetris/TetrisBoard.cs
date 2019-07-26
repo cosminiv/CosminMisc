@@ -29,9 +29,14 @@ namespace CosminIv.Games.Tetris
 
         public void StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
-            FixedBricks.DeleteFullRows();
+            TetrisFullRowsDeletedResult rowDeleteResult = FixedBricks.DeleteFullRows();
+            if (rowDeleteResult.DeletedRowsIndexes.Count > 0)
+                RowsDeleted?.Invoke(rowDeleteResult);
             //Logger.WriteLine(FixedBricks.ToString());
         }
+
+        public delegate void RowsDeletedHandler(TetrisFullRowsDeletedResult rowsDeletedResult);
+        public event RowsDeletedHandler RowsDeleted;
 
         private TetrisPieceWithPosition MakePiece() {
             TetrisPiece piece = PieceFactory.MakePiece();

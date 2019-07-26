@@ -37,6 +37,7 @@ namespace CosminIv.Games.Tetris
             Rows = settings.Rows;
             Columns = settings.Columns;
             Board = new TetrisBoard(Rows, Columns, settings.Logger);
+            Board.RowsDeleted += Board_RowsDeleted;
             Speed = settings.Speed;
             Score = 0;
             Timer = MakeTimer();
@@ -96,6 +97,9 @@ namespace CosminIv.Games.Tetris
         public delegate void PieceMovedHandler(PieceMovedArgs args);
         public event PieceMovedHandler PieceMoved;
 
+        public delegate void RowsDeletedHandler(TetrisFullRowsDeletedResult rowsDeletedResult);
+        public event RowsDeletedHandler RowsDeleted;
+
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
 
@@ -138,20 +142,11 @@ namespace CosminIv.Games.Tetris
             return 1000 * (1 - (Speed - 1) * 0.1);
         }
 
+        private void Board_RowsDeleted(TetrisFullRowsDeletedResult rowsDeletedResult) {
+            //TogglePause();
+            RowsDeleted?.Invoke(rowsDeletedResult);
+        }
+
         #endregion
-
-        //Methods
-        //    MoveLeft
-        //    MoveRight
-        //    MoveDown
-        //    Rotate
-
-
-        //Events
-        //    PieceChange
-        //    PieceAppear
-        //    ScoreChange
-        //    LinesCollapse
-        //    GameEnd
     }
 }

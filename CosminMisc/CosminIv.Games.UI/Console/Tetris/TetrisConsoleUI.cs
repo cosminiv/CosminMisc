@@ -41,6 +41,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void WireEventHandlers() {
             Engine.PieceAppeared += Engine_PieceAppeared;
             Engine.PieceMoved += Engine_PieceMoved;
+            Engine.RowsDeleted += Engine_RowsDeleted;
         }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
@@ -50,6 +51,10 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void Engine_PieceMoved(PieceMovedArgs args) {
             PieceDisplayer.Delete(args.Piece, args.OldCoordinates);
             PieceDisplayer.Display(args.Piece, args.NewCoordinates);
+        }
+
+        private void Engine_RowsDeleted(TetrisFullRowsDeletedResult rowsDeleted) {
+            PieceDisplayer.DeleteRows(rowsDeleted);
         }
 
         private void MonitorKeyboard() {

@@ -13,9 +13,10 @@ namespace CosminIv.Games.Tetris
             this.Bricks = bricks;
         }
 
-        public void DeleteFullRows() {
+        public TetrisFullRowsDeletedResult DeleteFullRows() {
             List<int> fullRowsIndexes = GetIndexesOfFullRows();
-            DeleteFullRows(fullRowsIndexes);
+            TetrisFullRowsDeletedResult result = DeleteFullRows(fullRowsIndexes);
+            return result;
         }
 
         private List<int> GetIndexesOfFullRows() {
@@ -41,26 +42,50 @@ namespace CosminIv.Games.Tetris
             return row.All(brick => brick == null);
         }
 
-        private void DeleteFullRows(List<int> fullRowsIndexes) {
-            int indexOfTopRowCopied = CopyRowsDown(fullRowsIndexes);
-            DeleteConsecutiveRows(indexOfTopRowCopied, fullRowsIndexes.Count());
+        private TetrisFullRowsDeletedResult DeleteFullRows(List<int> fullRowsIndexes) {
+            if (fullRowsIndexes.Count == 0) {
+                return new TetrisFullRowsDeletedResult {
+                    DeletedRowsIndexes = fullRowsIndexes,
+                    ModifiedRows = new TetrisBrick[0][],
+                    ModifiedRowsStartIndex = 0
+                };
+            }
+
+            CopyRowsResult copyResult = CopyRowsDown(fullRowsIndexes);
+
+            DeleteRows(copyResult.StartIndex, fullRowsIndexes.Count());
+
+            return new TetrisFullRowsDeletedResult {
+                DeletedRowsIndexes = fullRowsIndexes,
+                ModifiedRowsStartIndex = copyResult.StartIndex,
+                ModifiedRows = Bricks.Where((rows, i) => i >= copyResult.StartIndex && i <= fullRowsIndexes.Max()).ToArray()
+            };
         }
 
-        private int CopyRowsDown(List<int> fullRowsIndexes) {
+        private CopyRowsResult CopyRowsDown(List<int> fullRowsIndexes) {
+            if (fullRowsIndexes.Count == 0)
+                return new CopyRowsResult { HowMany = 0, StartIndex = 0 };
+
             int indexOfLowestFullRow = fullRowsIndexes.Max();
             int rowDelta = 0;
             int rowIndex = 0;
+            int rowCountCopied = 0;
 
             for (rowIndex = indexOfLowestFullRow; rowIndex >= 0; rowIndex--) {
                 if (IsEmptyRow(Bricks[rowIndex]))
                     break;
                 else if (fullRowsIndexes.Contains(rowIndex))
                     rowDelta++;
-                else
-                    CopyRow(rowIndex, rowIndex - rowDelta);
+                else {
+                    CopyRow(rowIndex, rowIndex + rowDelta);
+                    rowCountCopied++;
+                }
             }
 
-            return rowIndex;
+            return new CopyRowsResult {
+                StartIndex = rowIndex + 1,
+                HowMany = rowCountCopied
+            };
         }
 
         private void CopyRow(int sourceRowIndex, int destRowIndex) {
@@ -69,7 +94,7 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        private void DeleteConsecutiveRows(int startRowIndex, int howMany) {
+        private void DeleteRows(int startRowIndex, int howMany) {
             for (int rowIndex = startRowIndex; rowIndex < startRowIndex + howMany; rowIndex++) {
                 DeleteRow(rowIndex);
             }
@@ -79,6 +104,12 @@ namespace CosminIv.Games.Tetris
             for (int columnIndex = 0; columnIndex < Bricks[rowIndex].Length; columnIndex++) {
                 Bricks[rowIndex][columnIndex] = null;
             }
+        }
+
+        class CopyRowsResult
+        {
+            public int StartIndex;
+            public int HowMany;
         }
     }
 }

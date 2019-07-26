@@ -53,8 +53,9 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        public void DeleteFullRows() {
-            FullRowsDeleter.DeleteFullRows();
+        public TetrisFullRowsDeletedResult DeleteFullRows() {
+            TetrisFullRowsDeletedResult result = FullRowsDeleter.DeleteFullRows();
+            return result;
         }
 
         public override string ToString() {

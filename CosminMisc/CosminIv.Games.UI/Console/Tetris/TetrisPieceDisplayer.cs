@@ -8,7 +8,8 @@ namespace CosminIv.Games.UI.Console.Tetris
 {
     internal class TetrisPieceDisplayer
     {
-        readonly char Brick = '#';
+        readonly string Brick = "#";
+        readonly string Space = " ";
         readonly Coordinates BoardWindowOrigin;
         readonly int BorderWidth;
 
@@ -22,10 +23,30 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         public void Delete(TetrisPiece piece, Coordinates coordinates) {
-            DisplayInPlaceOfPiece(piece, coordinates, ' ');
+            DisplayInPlaceOfPiece(piece, coordinates, Space);
         }
 
-        private void DisplayInPlaceOfPiece(TetrisPiece piece, Coordinates pieceBoardCoord, char displayChar) {
+        public void DeleteRows(TetrisFullRowsDeletedResult rowsDeleted) {
+            if (rowsDeleted.DeletedRowsIndexes.Count == 0)
+                return;
+
+            for (int rowIndex = 0; rowIndex < rowsDeleted.ModifiedRows.Length; rowIndex++) {
+                TetrisBrick[] brickRow = rowsDeleted.ModifiedRows[rowIndex];
+                int rowIndexRelativeToBoard = rowIndex + rowsDeleted.ModifiedRowsStartIndex;
+
+                for (int columnIndex = 0; columnIndex < brickRow.Length; columnIndex++) {
+                    TetrisBrick brick = brickRow[columnIndex];
+                    int windowRow = BoardWindowOrigin.Row + BorderWidth + rowIndexRelativeToBoard;
+                    int windowColumn = BoardWindowOrigin.Column + BorderWidth + columnIndex;
+                    bool isBrick = brick != null;
+
+                    System.Console.SetCursorPosition(windowColumn, windowRow);
+                    System.Console.Write(isBrick ? Brick : Space);
+                }
+            }
+        }
+
+        private void DisplayInPlaceOfPiece(TetrisPiece piece, Coordinates pieceBoardCoord, string displayChar) {
             int boardOriginColumn = BoardWindowOrigin.Column + BorderWidth + pieceBoardCoord.Column;
             int boardOriginRow = BoardWindowOrigin.Row + BorderWidth + pieceBoardCoord.Row;
 
