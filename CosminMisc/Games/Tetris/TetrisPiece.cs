@@ -71,6 +71,8 @@ namespace CosminIv.Games.Tetris
                     TetrisBrick otherBrick = other.Bricks[rowIndex][colIndex];
                     if (otherBrick != null)
                         this.Bricks[rowIndex][colIndex] = otherBrick;
+                    else
+                        this.Bricks[rowIndex][colIndex] = null;
                 }
             }
         }

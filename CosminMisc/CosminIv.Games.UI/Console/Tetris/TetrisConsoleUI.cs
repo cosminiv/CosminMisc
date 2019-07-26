@@ -69,6 +69,10 @@ namespace CosminIv.Games.UI.Console.Tetris
                     case ConsoleKey.DownArrow:
                         Engine.MovePieceDown();
                         break;
+
+                    case ConsoleKey.P:
+                        Engine.TogglePause();
+                        break;
                 }
             }
         }

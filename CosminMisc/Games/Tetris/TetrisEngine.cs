@@ -50,7 +50,7 @@ namespace CosminIv.Games.Tetris
         public void Start() {
             if (!IsGameStarted) {
                 MakeNewPiece();
-                Unpause();
+                Timer.Enabled = true;
                 IsGameStarted = true;
             }
         }
@@ -81,12 +81,8 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        public void Pause() {
-            Timer.Enabled = false;
-        }
-
-        public void Unpause() {
-            Timer.Enabled = true;
+        public void TogglePause() {
+            Timer.Enabled = !Timer.Enabled;
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -21,10 +22,12 @@ namespace CosminIv.Games.Tetris
             if (Bricks.Length > 0)
                 columnCount = Bricks[0].Length;
 
-            if (row < 0 || row >= Bricks.Length || column < 0 || column >= columnCount)
+            bool areIndexesOutOfBounds = row < 0 || row >= Bricks.Length || column < 0 || column >= columnCount;
+            if (areIndexesOutOfBounds)
                 return false;
 
             bool result = Bricks[row][column] != null;
+
             return result;
         }
 
