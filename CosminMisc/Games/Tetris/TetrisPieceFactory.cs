@@ -14,7 +14,7 @@ namespace CosminIv.Games.Tetris
         public TetrisPiece MakePiece() {
             int prototypePieceIndex = _random.Next(_prototypePieces.Length);
             TetrisPiece prototypePiece = _prototypePieces[prototypePieceIndex];
-            TetrisPiece piece = new TetrisPiece(prototypePiece.MaxWidth, prototypePiece.MaxHeight);
+            TetrisPiece piece = new TetrisPiece(prototypePiece.MaxSize);
             piece.CopyFrom(prototypePiece);
             return piece;
         }
@@ -32,8 +32,8 @@ namespace CosminIv.Games.Tetris
             return result;
         }
 
-        private static TetrisPiece MakePieceFromBrickCoordinates(int width, int height, (int, int)[] brickCoords) {
-            TetrisPiece result = new TetrisPiece(width, height);
+        private static TetrisPiece MakePieceFromBrickCoordinates(int size, (int, int)[] brickCoords) {
+            TetrisPiece result = new TetrisPiece(size);
             foreach ((int, int) position in brickCoords) {
                 result[position.Item1, position.Item2] = new TetrisBrick();
             }
@@ -43,49 +43,49 @@ namespace CosminIv.Games.Tetris
         private static TetrisPiece MakePrototypePiece1() {
             // ****
             (int, int)[] brickCoords = (new[] { (1, 0), (1, 1), (1, 2), (1, 3) });
-            return MakePieceFromBrickCoordinates(4, 4, brickCoords);
+            return MakePieceFromBrickCoordinates(4, brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece2() {
             // ***
             // *
             (int, int)[] brickCoords = (new[] { (1, 0), (1, 1), (1, 2), (2, 0) });
-            return MakePieceFromBrickCoordinates(3, 3, brickCoords);
+            return MakePieceFromBrickCoordinates(3, brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece3() {
             // ***
             //   *
             (int, int)[] brickCoords = (new[] { (1, 0), (1, 1), (1, 2), (2, 2) });
-            return MakePieceFromBrickCoordinates(3, 3, brickCoords);
+            return MakePieceFromBrickCoordinates(3, brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece4() {
             // ***
             //  *
             (int, int)[] brickCoords = (new[] { (1, 0), (1, 1), (1, 2), (2, 1) });
-            return MakePieceFromBrickCoordinates(3, 3, brickCoords);
+            return MakePieceFromBrickCoordinates(3, brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece5() {
             // **
             //  **
             (int, int)[] brickCoords = (new[] { (1, 0), (1, 1), (2, 1), (2, 2) });
-            return MakePieceFromBrickCoordinates(3, 3, brickCoords);
+            return MakePieceFromBrickCoordinates(3, brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece6() {
             //  **
             // **
             (int, int)[] brickCoords = (new[] { (1, 1), (1, 2), (2, 0), (2, 1) });
-            return MakePieceFromBrickCoordinates(3, 3, brickCoords);
+            return MakePieceFromBrickCoordinates(3, brickCoords);
         }
 
         private static TetrisPiece MakePrototypePiece7() {
             // **
             // **
             (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (1, 0), (1, 1) });
-            return MakePieceFromBrickCoordinates(2, 2, brickCoords);
+            return MakePieceFromBrickCoordinates(2, brickCoords);
         }
     }
 }

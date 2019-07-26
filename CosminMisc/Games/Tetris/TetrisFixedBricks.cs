@@ -22,8 +22,8 @@ namespace CosminIv.Games.Tetris
         }
 
         public void AddPiece(TetrisPieceWithPosition pieceWithPos) {
-            for (int row = 0; row < pieceWithPos.Piece.MaxHeight; row++) {
-                for (int column = 0; column < pieceWithPos.Piece.MaxWidth; column++) {
+            for (int row = 0; row < pieceWithPos.Piece.MaxSize; row++) {
+                for (int column = 0; column < pieceWithPos.Piece.MaxSize; column++) {
                     TetrisBrick brick = pieceWithPos.Piece[row, column];
 
                     if (brick != null) {

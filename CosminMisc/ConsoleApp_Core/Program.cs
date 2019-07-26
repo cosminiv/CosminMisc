@@ -9,7 +9,7 @@ namespace ConsoleApp_Core
 {
     class Program
     {
-        async static Task Main(string[] args) {
+        static void Main(string[] args) {
             RunTetris();
 
             //Console.WriteLine("Press Enter to exit.");

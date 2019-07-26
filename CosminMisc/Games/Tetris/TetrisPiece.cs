@@ -9,14 +9,12 @@ namespace CosminIv.Games.Tetris
     public class TetrisPiece {
         TetrisBrick[][] Bricks;
 
-        public TetrisPiece(int maxWidth, int maxHeight) {
-            MaxWidth = maxWidth;
-            MaxHeight = maxHeight;
+        public TetrisPiece(int maxSize) {
+            MaxSize = maxSize;
             Bricks = MakeBricksMatrix();
         }
 
-        public int MaxWidth { get; private set; }
-        public int MaxHeight { get; private set; }
+        public int MaxSize { get; private set; }
 
         public int Width {
             get {
@@ -59,16 +57,17 @@ namespace CosminIv.Games.Tetris
         public Color Color { get; set; }
 
         private TetrisBrick[][] MakeBricksMatrix() {
-            TetrisBrick[][] result = new TetrisBrick[MaxHeight][];
+            TetrisBrick[][] result = new TetrisBrick[MaxSize][];
             for (int i = 0; i < result.Length; i++) {
-                result[i] = new TetrisBrick[MaxWidth];
+                result[i] = new TetrisBrick[MaxSize];
             }
             return result;
         }
 
         internal void CopyFrom(TetrisPiece other) {
-            for (int rowIndex = 0; rowIndex < Bricks.Length; rowIndex++) {
-                for (int colIndex = 0; colIndex < Bricks[rowIndex].Length; colIndex++) {
+            for (int rowIndex = 0; rowIndex < this.Bricks.Length; rowIndex++) {
+                for (int colIndex = 0; colIndex < this.Bricks[rowIndex].Length; colIndex++) {
+
                     TetrisBrick otherBrick = other.Bricks[rowIndex][colIndex];
                     if (otherBrick != null)
                         this.Bricks[rowIndex][colIndex] = new TetrisBrick { Color = otherBrick.Color };

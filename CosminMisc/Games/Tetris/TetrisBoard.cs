@@ -44,8 +44,8 @@ namespace CosminIv.Games.Tetris
             return pieceWithPosition;
         }
 
-        internal bool CanMovePiece() {
-            return CollisionDetector.CanMovePiece(CurrentPiece);
+        internal bool CanMovePiece(int rowDelta, int columnDelta) {
+            return CollisionDetector.CanMovePiece(CurrentPiece, rowDelta, columnDelta);
         }
 
         internal bool MakeNewPiece(out TetrisPieceWithPosition piece) {

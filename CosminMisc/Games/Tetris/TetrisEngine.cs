@@ -56,7 +56,7 @@ namespace CosminIv.Games.Tetris
         }
 
         public void MovePieceDown() {
-            if (Board.CanMovePiece()) {
+            if (Board.CanMovePiece(1, 0)) {
                 PieceMovedArgs pieceMovedArgs = Board.MovePieceDown();
                 PieceMoved?.Invoke(pieceMovedArgs);
             }
@@ -68,11 +68,17 @@ namespace CosminIv.Games.Tetris
         }
 
         public void MovePieceLeft() {
-
+            if (Board.CanMovePiece(0, -1)) {
+                PieceMovedArgs pieceMovedArgs = Board.MovePieceDown();
+                PieceMoved?.Invoke(pieceMovedArgs);
+            }
         }
 
         public void MovePieceRight() {
-
+            if (Board.CanMovePiece(0, 1)) {
+                PieceMovedArgs pieceMovedArgs = Board.MovePieceDown();
+                PieceMoved?.Invoke(pieceMovedArgs);
+            }
         }
 
         public void Pause() {

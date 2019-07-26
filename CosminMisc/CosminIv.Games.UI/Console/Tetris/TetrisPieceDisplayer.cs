@@ -29,8 +29,8 @@ namespace CosminIv.Games.UI.Console.Tetris
             int boardOriginColumn = BoardWindowOrigin.Column + BorderWidth + pieceBoardCoord.Column;
             int boardOriginRow = BoardWindowOrigin.Row + BorderWidth + pieceBoardCoord.Row;
 
-            for (int pieceRow = 0; pieceRow < piece.MaxHeight; pieceRow++) {
-                for (int pieceColumn = 0; pieceColumn < piece.MaxWidth; pieceColumn++) {
+            for (int pieceRow = 0; pieceRow < piece.MaxSize; pieceRow++) {
+                for (int pieceColumn = 0; pieceColumn < piece.MaxSize; pieceColumn++) {
                     int windowRow = boardOriginRow + pieceRow;
                     int windowColumn = boardOriginColumn + pieceColumn;
                     bool isBrick = piece[pieceRow, pieceColumn] != null;
