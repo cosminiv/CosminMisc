@@ -1,5 +1,6 @@
 ﻿using CosminIv.Games.Common;
 using CosminIv.Games.Tetris;
+using CosminIv.Games.Tetris.EventArguments;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,6 +43,7 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine.PieceAppeared += Engine_PieceAppeared;
             Engine.PieceMoved += Engine_PieceMoved;
             Engine.RowsDeleted += Engine_RowsDeleted;
+            Engine.PieceRotated += Engine_PieceRotated;
         }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
@@ -57,6 +59,11 @@ namespace CosminIv.Games.UI.Console.Tetris
             PieceDisplayer.DeleteRows(rowsDeleted);
         }
 
+        private void Engine_PieceRotated(PieceRotatedArgs args) {
+            PieceDisplayer.Delete(args.PieceBeforeRotation, args.Coordinates);
+            PieceDisplayer.Display(args.PieceAfterRotation, args.Coordinates);
+        }
+
         private void MonitorKeyboard() {
             while (true) {
                 ConsoleKeyInfo keyInfo = System.Console.ReadKey(true);
@@ -68,9 +75,9 @@ namespace CosminIv.Games.UI.Console.Tetris
                     case ConsoleKey.RightArrow:
                         Engine.MovePieceRight();
                         break;
-                    //case ConsoleKey.UpArrow:
-                    //    Engine.RotatePieceClockwise();
-                    //    break;
+                    case ConsoleKey.UpArrow:
+                        Engine.RotatePiece();
+                        break;
                     case ConsoleKey.DownArrow:
                         Engine.MovePieceDown();
                         break;

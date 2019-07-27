@@ -20,7 +20,7 @@ namespace CosminIv.Games.Tetris
         }
 
         internal bool CanMovePiece(TetrisPieceWithPosition piece, int rowDelta, int columnDelta) {
-            TetrisPieceWithPosition pieceCopy = PreparePieceCopy(piece, rowDelta, columnDelta);
+            TetrisPieceWithPosition pieceCopy = PreparePieceCopyForMove(piece, rowDelta, columnDelta);
 
             if (IsCollision(pieceCopy))
                 return false;
@@ -28,10 +28,25 @@ namespace CosminIv.Games.Tetris
             return true;
         }
 
-        private TetrisPieceWithPosition PreparePieceCopy(TetrisPieceWithPosition piece, int rowDelta, int columnDelta) {
+        internal bool CanRotatePiece(TetrisPieceWithPosition piece) {
+            TetrisPieceWithPosition pieceCopy = PreparePieceCopyForRotate(piece);
+
+            if (IsCollision(pieceCopy))
+                return false;
+
+            return true;
+        }
+
+        private TetrisPieceWithPosition PreparePieceCopyForMove(TetrisPieceWithPosition piece, int rowDelta, int columnDelta) {
             PieceCopy.CopyFrom(piece);
             PieceCopy.Value.Position.Row += rowDelta;
             PieceCopy.Value.Position.Column += columnDelta;
+            return PieceCopy.Value;
+        }
+
+        private TetrisPieceWithPosition PreparePieceCopyForRotate(TetrisPieceWithPosition piece) {
+            PieceCopy.CopyFrom(piece);
+            PieceCopy.Value.Piece.Rotate();
             return PieceCopy.Value;
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using CosminIv.Games.Common.Logging;
 using CosminIv.Games.Common;
+using CosminIv.Games.Tetris.EventArguments;
 
 namespace CosminIv.Games.Tetris
 {
@@ -40,7 +41,7 @@ namespace CosminIv.Games.Tetris
 
         private TetrisPieceWithPosition MakePiece() {
             TetrisPiece piece = PieceFactory.MakePiece();
-            int column = Random.Next(Columns - piece.Width);
+            int column = Random.Next(Columns - piece.MaxSize);
 
             TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
                 Piece = piece,
@@ -52,6 +53,10 @@ namespace CosminIv.Games.Tetris
 
         internal bool CanMovePiece(int rowDelta, int columnDelta) {
             return CollisionDetector.CanMovePiece(CurrentPiece, rowDelta, columnDelta);
+        }
+
+        internal bool CanRotatePiece() {
+            return CollisionDetector.CanRotatePiece(CurrentPiece);
         }
 
         internal bool MakeNewPiece(out TetrisPieceWithPosition piece) {
@@ -74,6 +79,22 @@ namespace CosminIv.Games.Tetris
                 Piece = CurrentPiece.Piece,
                 OldCoordinates = new Coordinates(pos.Row - rowDelta, pos.Column - columnDelta),
                 NewCoordinates = new Coordinates(pos.Row, pos.Column)
+            };
+
+            return result;
+        }
+
+        internal PieceRotatedArgs RotatePiece() {
+            TetrisPiece pieceBeforeRotation = new TetrisPiece(CurrentPiece.Piece.MaxSize);
+            pieceBeforeRotation.CopyFrom(CurrentPiece.Piece);
+
+            CurrentPiece.Piece.Rotate();
+            Coordinates pos = CurrentPiece.Position;
+
+            PieceRotatedArgs result = new PieceRotatedArgs {
+                Coordinates = CurrentPiece.Position,
+                PieceBeforeRotation = pieceBeforeRotation,
+                PieceAfterRotation = CurrentPiece.Piece
             };
 
             return result;

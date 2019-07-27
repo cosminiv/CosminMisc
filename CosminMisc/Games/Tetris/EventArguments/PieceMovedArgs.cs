@@ -1,7 +1,7 @@
 ﻿using CosminIv.Games.Common;
 using System;
 
-namespace CosminIv.Games.Tetris
+namespace CosminIv.Games.Tetris.EventArguments
 {
     public class PieceMovedArgs : EventArgs
     {

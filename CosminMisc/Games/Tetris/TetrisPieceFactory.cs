@@ -28,6 +28,13 @@ namespace CosminIv.Games.Tetris
                 MakePrototypePiece5(),
                 MakePrototypePiece6(),
                 MakePrototypePiece7(),
+
+                MakePrototypePiece8(),
+                MakePrototypePiece9(),
+                MakePrototypePiece10(),
+                MakePrototypePiece11(),
+                MakePrototypePiece12(),
+                MakePrototypePiece13(),
             };
             return result;
         }
@@ -86,6 +93,54 @@ namespace CosminIv.Games.Tetris
             // **
             (int, int)[] brickCoords = (new[] { (0, 0), (0, 1), (1, 0), (1, 1) });
             return MakePieceFromBrickCoordinates(2, brickCoords);
+        }
+
+
+
+        private static TetrisPiece MakePrototypePiece8() {
+            //  *
+            // ***
+            (int, int)[] brickCoords = (new[] { (0, 1), (1, 0), (1, 1), (1, 2) });
+            return MakePieceFromBrickCoordinates(3, brickCoords);
+        }
+
+        private static TetrisPiece MakePrototypePiece9() {
+            // *
+            // ***
+            (int, int)[] brickCoords = (new[] { (0, 0), (1, 0), (1, 1), (1, 2) });
+            return MakePieceFromBrickCoordinates(3, brickCoords);
+        }
+
+        private static TetrisPiece MakePrototypePiece10() {
+            //   *
+            // ***
+            (int, int)[] brickCoords = (new[] { (0, 2), (1, 0), (1, 1), (1, 2) });
+            return MakePieceFromBrickCoordinates(3, brickCoords);
+        }
+
+        private static TetrisPiece MakePrototypePiece11() {
+            //  *
+            // **
+            // *
+            (int, int)[] brickCoords = (new[] { (0, 1), (1, 0), (1, 1), (2, 0) });
+            return MakePieceFromBrickCoordinates(3, brickCoords);
+        }
+
+        private static TetrisPiece MakePrototypePiece12() {
+            // *
+            // **
+            //  *  
+            (int, int)[] brickCoords = (new[] { (0, 0), (1, 0), (1, 1), (2, 1) });
+            return MakePieceFromBrickCoordinates(3, brickCoords);
+        }
+
+        private static TetrisPiece MakePrototypePiece13() {
+            // *
+            // *
+            // *
+            // *
+            (int, int)[] brickCoords = (new[] { (0, 0), (1, 0), (2, 0), (3, 0) });
+            return MakePieceFromBrickCoordinates(4, brickCoords);
         }
     }
 }

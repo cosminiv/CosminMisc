@@ -1,5 +1,6 @@
 ﻿using CosminIv.Games.Common;
 using CosminIv.Games.Common.Logging;
+using CosminIv.Games.Tetris.EventArguments;
 using System;
 using System.Diagnostics;
 using System.Timers;
@@ -82,6 +83,13 @@ namespace CosminIv.Games.Tetris
             }
         }
 
+        public void RotatePiece() {
+            if (Board.CanRotatePiece()) {
+                PieceRotatedArgs pieceRotatedArgs = Board.RotatePiece();
+                PieceRotated?.Invoke(pieceRotatedArgs);
+            }
+        }
+
         public void TogglePause() {
             Timer.Enabled = !Timer.Enabled;
         }
@@ -96,6 +104,9 @@ namespace CosminIv.Games.Tetris
 
         public delegate void PieceMovedHandler(PieceMovedArgs args);
         public event PieceMovedHandler PieceMoved;
+
+        public delegate void PieceRotatedHandler(PieceRotatedArgs args);
+        public event PieceRotatedHandler PieceRotated;
 
         public delegate void RowsDeletedHandler(TetrisFullRowsDeletedResult rowsDeletedResult);
         public event RowsDeletedHandler RowsDeleted;

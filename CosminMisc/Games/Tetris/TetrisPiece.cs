@@ -16,35 +16,6 @@ namespace CosminIv.Games.Tetris
 
         public int MaxSize { get; private set; }
 
-        public int Width {
-            get {
-                int result = Bricks.Max(row => row.Count(brick => brick != null));
-                return result;
-            }
-        }
-
-        public int Height {
-            get {
-                int result = Bricks.Count(row => row.Any(brick => brick != null));
-                return result;
-            }
-        }
-
-        public int TopPadding {
-            get {
-                int result = 0;
-
-                for (int i = 0; i < Bricks.Length; i++) {
-                    if (Bricks[i].All(brick => brick == null))
-                        result++;
-                    else
-                        break;
-                }
-
-                return result;
-            }
-        }
-
         public TetrisBrick this[int row, int col] {
             get {
                 return Bricks[row][col];
@@ -55,6 +26,28 @@ namespace CosminIv.Games.Tetris
         }
 
         public Color Color { get; set; }
+
+        public void Rotate() {
+            if (Bricks.Length == 1)
+                return;
+
+            int n = Bricks.Length;
+
+            for (int shell = 0; shell <= n / 2; shell++) {
+                for (int i = 0; i < n - 2 * shell - 1; i++) {
+                    var (row1, col1) = (shell, shell + i);
+                    var (row2, col2) = (n - shell - 1 - i, shell);
+                    var (row3, col3) = (n - shell - 1, n - shell - 1 - i);
+                    var (row4, col4) = (shell + i, n - shell - 1);
+
+                    TetrisBrick temp = Bricks[row1][col1];
+                    Bricks[row1][col1] = Bricks[row2][col2];
+                    Bricks[row2][col2] = Bricks[row3][col3];
+                    Bricks[row3][col3] = Bricks[row4][col4];
+                    Bricks[row4][col4] = temp;
+                }
+            }
+        }
 
         private TetrisBrick[][] MakeBricksMatrix() {
             TetrisBrick[][] result = new TetrisBrick[MaxSize][];
@@ -67,12 +60,7 @@ namespace CosminIv.Games.Tetris
         internal void CopyFrom(TetrisPiece other) {
             for (int rowIndex = 0; rowIndex < this.Bricks.Length; rowIndex++) {
                 for (int colIndex = 0; colIndex < this.Bricks[rowIndex].Length; colIndex++) {
-
-                    TetrisBrick otherBrick = other.Bricks[rowIndex][colIndex];
-                    if (otherBrick != null)
-                        this.Bricks[rowIndex][colIndex] = otherBrick;
-                    else
-                        this.Bricks[rowIndex][colIndex] = null;
+                    this.Bricks[rowIndex][colIndex] = other.Bricks[rowIndex][colIndex];
                 }
             }
         }
