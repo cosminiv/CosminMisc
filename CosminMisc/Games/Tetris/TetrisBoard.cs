@@ -41,14 +41,21 @@ namespace CosminIv.Games.Tetris
 
         private TetrisPieceWithPosition MakePiece() {
             TetrisPiece piece = PieceFactory.MakePiece();
-            int column = Random.Next(Columns - piece.MaxSize);
+            RotatePieceRandomly(piece);
 
             TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
                 Piece = piece,
-                Position = new Coordinates(0, column)
+                Position = new Coordinates(0, Columns / 2)
             };
 
             return pieceWithPosition;
+        }
+
+        private void RotatePieceRandomly(TetrisPiece piece) {
+            int rotationCount = Random.Next(4);
+            for (int i = 0; i <= rotationCount; i++) {
+                piece.Rotate90DegreesClockwise();
+            }
         }
 
         internal bool CanMovePiece(int rowDelta, int columnDelta) {
@@ -88,7 +95,7 @@ namespace CosminIv.Games.Tetris
             TetrisPiece pieceBeforeRotation = new TetrisPiece(CurrentPiece.Piece.MaxSize);
             pieceBeforeRotation.CopyFrom(CurrentPiece.Piece);
 
-            CurrentPiece.Piece.Rotate();
+            CurrentPiece.Piece.Rotate90DegreesClockwise();
             Coordinates pos = CurrentPiece.Position;
 
             PieceRotatedArgs result = new PieceRotatedArgs {

@@ -46,7 +46,7 @@ namespace CosminIv.Games.Tetris
 
         private TetrisPieceWithPosition PreparePieceCopyForRotate(TetrisPieceWithPosition piece) {
             PieceCopy.CopyFrom(piece);
-            PieceCopy.Value.Piece.Rotate();
+            PieceCopy.Value.Piece.Rotate90DegreesClockwise();
             return PieceCopy.Value;
         }
 

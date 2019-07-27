@@ -27,7 +27,7 @@ namespace CosminIv.Games.Tetris
 
         public Color Color { get; set; }
 
-        public void Rotate() {
+        public void Rotate90DegreesClockwise() {
             if (Bricks.Length == 1)
                 return;
 
