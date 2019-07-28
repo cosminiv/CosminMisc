@@ -11,8 +11,8 @@ namespace CosminIv.Games.UI.Console.Tetris
     {
         readonly TetrisEngine Engine;
         readonly Coordinates BoardWindowOrigin = new Coordinates(2, 20);
-        readonly TetrisBoardDisplayer BoardDisplayer;
-        readonly TetrisPieceDisplayer PieceDisplayer;
+        readonly TetrisBoardRenderer BoardDisplayer;
+        readonly TetrisPieceRenderer PieceDisplayer;
         readonly TetrisTextRenderer TextRenderer;
 
         readonly int WindowHeight = 28;
@@ -22,8 +22,8 @@ namespace CosminIv.Games.UI.Console.Tetris
         public TetrisConsoleUI(TetrisEngine engine) {
             SetWindowSize();
             Engine = engine;
-            BoardDisplayer = new TetrisBoardDisplayer(engine, BoardWindowOrigin, BorderWidth);
-            PieceDisplayer = new TetrisPieceDisplayer(BoardWindowOrigin, BorderWidth);
+            BoardDisplayer = new TetrisBoardRenderer(engine, BoardWindowOrigin, BorderWidth);
+            PieceDisplayer = new TetrisPieceRenderer(BoardWindowOrigin, BorderWidth);
             TextRenderer = new TetrisTextRenderer();
             WireEventHandlers();
         }
@@ -70,7 +70,8 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void Engine_ScoreChanged(ScoreChangedArgs args) {
-            TextRenderer.DisplayScore(args.NewScore);
+            TextRenderer.DisplayScore(args.Score);
+            TextRenderer.DisplayLineCount(args.LineCount);
         }
 
         private void Engine_GameEnded() {

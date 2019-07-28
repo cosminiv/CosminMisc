@@ -6,14 +6,14 @@ using System.Text;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {
-    internal class TetrisPieceDisplayer
+    internal class TetrisPieceRenderer
     {
         readonly string Brick = "#";
         readonly string Space = " ";
         readonly Coordinates BoardWindowOrigin;
         readonly int BorderWidth;
 
-        public TetrisPieceDisplayer(Coordinates boardWindowOrigin, int borderWidth) {
+        public TetrisPieceRenderer(Coordinates boardWindowOrigin, int borderWidth) {
             BoardWindowOrigin = boardWindowOrigin;
             BorderWidth = borderWidth;
         }
@@ -47,6 +47,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void DisplayInPlaceOfPiece(TetrisPiece piece, Coordinates pieceBoardCoord, string displayChar) {
+            System.Console.ForegroundColor = ConsoleColor.Cyan;
             int boardOriginColumn = BoardWindowOrigin.Column + BorderWidth + pieceBoardCoord.Column;
             int boardOriginRow = BoardWindowOrigin.Row + BorderWidth + pieceBoardCoord.Row;
 

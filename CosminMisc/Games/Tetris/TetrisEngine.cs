@@ -162,12 +162,11 @@ namespace CosminIv.Games.Tetris
             Lines += fullRowCount;
 
             if (increment != 0)
-                ScoreChanged?.Invoke(new ScoreChangedArgs { NewScore = Score, NewLines = Lines });
+                ScoreChanged?.Invoke(new ScoreChangedArgs { Score = Score, LineCount = Lines });
         }
 
         private void End() {
             Timer.Stop();
-            Logger.WriteLine($"Game ended; score = {Score}");
             GameEnded?.Invoke();
         }
 
@@ -176,7 +175,6 @@ namespace CosminIv.Games.Tetris
         }
 
         private void Board_RowsDeleted(TetrisFullRowsDeletedResult rowsDeletedResult) {
-            //TogglePause();
             RowsDeleted?.Invoke(rowsDeletedResult);
         }
 

@@ -6,7 +6,7 @@ namespace CosminIv.Games.Tetris.EventArguments
 {
     public class ScoreChangedArgs : EventArgs
     {
-        public int NewScore;
-        public int NewLines;
+        public int Score;
+        public int LineCount;
     }
 }

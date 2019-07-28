@@ -6,13 +6,13 @@ using System.Text;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {
-    internal class TetrisBoardDisplayer
+    internal class TetrisBoardRenderer
     {
         TetrisEngine Engine;
         int BorderWidth;
         Coordinates BoardWindowOrigin;
 
-        public TetrisBoardDisplayer(TetrisEngine engine, Coordinates topLeft, int borderWidth) {
+        public TetrisBoardRenderer(TetrisEngine engine, Coordinates topLeft, int borderWidth) {
             Engine = engine;
             BoardWindowOrigin = topLeft;
             BorderWidth = borderWidth;
