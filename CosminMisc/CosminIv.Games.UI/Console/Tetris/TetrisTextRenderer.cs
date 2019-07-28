@@ -6,28 +6,31 @@ namespace CosminIv.Games.UI.Console.Tetris
 {
     class TetrisTextRenderer
     {
-        internal void DisplayInitial() {
+        internal void DisplayInitial(int speed) {
             DisplayScore(0);
             DisplayLineCount(0);
+            DisplaySpeed(speed);
         }
 
         internal void DisplayMessage(string message) {
-            SetTextColor();
-            System.Console.SetCursorPosition(left: 0, top: 0);
-            System.Console.Write(message);
+            DisplayMessage(message, 0);
         }
 
         internal void DisplayScore(int score) {
-            SetTextColor();
-            System.Console.SetCursorPosition(left: 0, top: 1);
-            string message = $"{TetrisMessage.Score}: {score}";
-            System.Console.Write(message);
+            DisplayMessage($"{TetrisMessage.Score}: {score}", 1);
         }
 
         internal void DisplayLineCount(int lineCount) {
+            DisplayMessage($"{TetrisMessage.Lines}: {lineCount}", 2);
+        }
+
+        internal void DisplaySpeed(int speed) {
+            DisplayMessage($"{TetrisMessage.Speed}: {speed}", 3);
+        }
+
+        private void DisplayMessage(string message, int line) {
             SetTextColor();
-            System.Console.SetCursorPosition(left: 0, top: 2);
-            string message = $"{TetrisMessage.Lines}: {lineCount}";
+            System.Console.SetCursorPosition(left: 0, top: line);
             System.Console.Write(message);
         }
 

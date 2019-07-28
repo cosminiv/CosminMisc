@@ -17,16 +17,21 @@ namespace CosminIv.Games.Tetris
         public int Columns { get; }
         public int Speed {
             get { return _speed; }
-            private set { _speed = Math.Min(value, MaxSpeed); }
+            private set {
+                _speed = Math.Min(value, MaxSpeed);
+                if (Timer != null)
+                    Timer.Interval = ComputeTimerInterval();
+            }
         }
-        public int Score { get; private set; }
-        public int Lines { get; private set; }
+        int Score { get; set; }
+        int FullLineCount { get; set; }
 
         TetrisBoard Board;
         Timer Timer;
         ILogger Logger;
         bool IsGameStarted = false;
 
+        readonly int FullLinesForLevelUp = 10;
         readonly int MaxSpeed = 10;
         static object ObjectMoveLock = new object();
 
@@ -67,7 +72,10 @@ namespace CosminIv.Games.Tetris
                 }
                 else {
                     int fullRowCount = Board.StickPiece();
-                    UpdateScoreAfterFullRows(fullRowCount);
+                    if (fullRowCount > 0) {
+                        UpdateScoreAfterFullRows(fullRowCount);
+                        UpdateSpeedAfterFullRows(fullRowCount);
+                    }
                     MakeNewPiece();
                 }
             }
@@ -128,6 +136,9 @@ namespace CosminIv.Games.Tetris
         public delegate void ScoreChangedHandler(ScoreChangedArgs args);
         public event ScoreChangedHandler ScoreChanged;
 
+        public delegate void SpeedChangedHandler(SpeedChangedArgs args);
+        public event SpeedChangedHandler SpeedChanged;
+
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
 
@@ -137,7 +148,7 @@ namespace CosminIv.Games.Tetris
         #region Private methods
 
         private Timer MakeTimer() {
-            Timer timer = new Timer(ComputeTimerInterval(Speed));
+            Timer timer = new Timer(ComputeTimerInterval());
             timer.Enabled = false;
             timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
             return timer;
@@ -159,10 +170,19 @@ namespace CosminIv.Games.Tetris
             double speedMultiplier = 1 + (Speed - 1) * 0.1;
             int increment = (int)(10 * fullRowCount * speedMultiplier);
             Score += increment;
-            Lines += fullRowCount;
+            FullLineCount += fullRowCount;
 
             if (increment != 0)
-                ScoreChanged?.Invoke(new ScoreChangedArgs { Score = Score, LineCount = Lines });
+                ScoreChanged?.Invoke(new ScoreChangedArgs { Score = Score, LineCount = FullLineCount });
+        }
+
+        private void UpdateSpeedAfterFullRows(int newFullRowCount) {
+            int fullLinesBefore = FullLineCount - newFullRowCount;
+            
+            if (fullLinesBefore / FullLinesForLevelUp != FullLineCount / FullLinesForLevelUp) {
+                Speed++;
+                SpeedChanged?.Invoke(new SpeedChangedArgs { Speed = this.Speed });
+            }
         }
 
         private void End() {
@@ -170,7 +190,7 @@ namespace CosminIv.Games.Tetris
             GameEnded?.Invoke();
         }
 
-        double ComputeTimerInterval(int speed) {
+        double ComputeTimerInterval() {
             return 1000 * (1 - (Speed - 1) * 0.1);
         }
 
