@@ -28,12 +28,15 @@ namespace CosminIv.Games.Tetris
             CollisionDetector = new TetrisCollisionDetector(FixedBricks, Rows, Columns);
         }
 
-        public void StickPiece() {
+        public int StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
             TetrisFullRowsDeletedResult rowDeleteResult = FixedBricks.DeleteFullRows();
-            if (rowDeleteResult.DeletedRowsIndexes.Count > 0)
+            int fullRowCount = rowDeleteResult.DeletedRowsIndexes.Count;
+
+            if (fullRowCount > 0)
                 RowsDeleted?.Invoke(rowDeleteResult);
-            //Logger.WriteLine(FixedBricks.ToString());
+
+            return fullRowCount;
         }
 
         public delegate void RowsDeletedHandler(TetrisFullRowsDeletedResult rowsDeletedResult);

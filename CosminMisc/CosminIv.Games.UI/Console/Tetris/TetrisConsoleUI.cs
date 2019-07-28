@@ -13,6 +13,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly Coordinates BoardWindowOrigin = new Coordinates(2, 20);
         readonly TetrisBoardDisplayer BoardDisplayer;
         readonly TetrisPieceDisplayer PieceDisplayer;
+        readonly TetrisTextRenderer TextRenderer;
 
         readonly int WindowHeight = 28;
         readonly int WindowWidth = 60;
@@ -23,11 +24,13 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine = engine;
             BoardDisplayer = new TetrisBoardDisplayer(engine, BoardWindowOrigin, BorderWidth);
             PieceDisplayer = new TetrisPieceDisplayer(BoardWindowOrigin, BorderWidth);
+            TextRenderer = new TetrisTextRenderer();
             WireEventHandlers();
         }
 
         public void Start() {
             BoardDisplayer.Display();
+            TextRenderer.DisplayInitial();
             Engine.Start();
             System.Console.CursorVisible = false;
             MonitorKeyboard();
@@ -44,6 +47,8 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine.PieceMoved += Engine_PieceMoved;
             Engine.RowsDeleted += Engine_RowsDeleted;
             Engine.PieceRotated += Engine_PieceRotated;
+            Engine.GameEnded += Engine_GameEnded;
+            Engine.ScoreChanged += Engine_ScoreChanged;
         }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
@@ -62,6 +67,14 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void Engine_PieceRotated(PieceRotatedArgs args) {
             PieceDisplayer.Delete(args.PieceBeforeRotation, args.Coordinates);
             PieceDisplayer.Display(args.PieceAfterRotation, args.Coordinates);
+        }
+
+        private void Engine_ScoreChanged(ScoreChangedArgs args) {
+            TextRenderer.DisplayScore(args.NewScore);
+        }
+
+        private void Engine_GameEnded() {
+            TextRenderer.DisplayMessage(TetrisMessage.GameEnded);
         }
 
         private void MonitorKeyboard() {
@@ -83,6 +96,9 @@ namespace CosminIv.Games.UI.Console.Tetris
                         break;
                     case ConsoleKey.P:
                         Engine.TogglePause();
+                        break;
+                    case ConsoleKey.R:
+                        Engine.Restart();
                         break;
                 }
             }

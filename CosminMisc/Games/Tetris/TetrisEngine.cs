@@ -20,6 +20,7 @@ namespace CosminIv.Games.Tetris
             private set { _speed = Math.Min(value, MaxSpeed); }
         }
         public int Score { get; private set; }
+        public int Lines { get; private set; }
 
         TetrisBoard Board;
         Timer Timer;
@@ -65,8 +66,8 @@ namespace CosminIv.Games.Tetris
                     PieceMoved?.Invoke(pieceMovedArgs);
                 }
                 else {
-                    Board.StickPiece();
-                    UpdateScoreAfterStickingPiece();
+                    int fullRowCount = Board.StickPiece();
+                    UpdateScoreAfterFullRows(fullRowCount);
                     MakeNewPiece();
                 }
             }
@@ -103,6 +104,10 @@ namespace CosminIv.Games.Tetris
             Timer.Enabled = !Timer.Enabled;
         }
 
+        public void Restart() {
+            // todo
+        }
+
         #endregion
 
 
@@ -119,6 +124,9 @@ namespace CosminIv.Games.Tetris
 
         public delegate void RowsDeletedHandler(TetrisFullRowsDeletedResult rowsDeletedResult);
         public event RowsDeletedHandler RowsDeleted;
+
+        public delegate void ScoreChangedHandler(ScoreChangedArgs args);
+        public event ScoreChangedHandler ScoreChanged;
 
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
@@ -147,9 +155,14 @@ namespace CosminIv.Games.Tetris
                 End();
         }
 
-        private void UpdateScoreAfterStickingPiece() {
-            int increment = (int)(10 * (1 + (Speed - 1) * 0.1));
+        private void UpdateScoreAfterFullRows(int fullRowCount) {
+            double speedMultiplier = 1 + (Speed - 1) * 0.1;
+            int increment = (int)(10 * fullRowCount * speedMultiplier);
             Score += increment;
+            Lines += fullRowCount;
+
+            if (increment != 0)
+                ScoreChanged?.Invoke(new ScoreChangedArgs { NewScore = Score, NewLines = Lines });
         }
 
         private void End() {
