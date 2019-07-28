@@ -27,6 +27,7 @@ namespace CosminIv.Games.Tetris
         bool IsGameStarted = false;
 
         readonly int MaxSpeed = 10;
+        static object ObjectMoveLock = new object();
 
         #endregion
 
@@ -58,35 +59,43 @@ namespace CosminIv.Games.Tetris
         }
 
         public void MovePieceDown() {
-            if (Board.CanMovePiece(1, 0)) {
-                PieceMovedArgs pieceMovedArgs = Board.MovePiece(1, 0);
-                PieceMoved?.Invoke(pieceMovedArgs);
-            }
-            else {
-                Board.StickPiece();
-                UpdateScoreAfterStickingPiece();
-                MakeNewPiece();
+            lock (ObjectMoveLock) {
+                if (Board.CanMovePiece(1, 0)) {
+                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(1, 0);
+                    PieceMoved?.Invoke(pieceMovedArgs);
+                }
+                else {
+                    Board.StickPiece();
+                    UpdateScoreAfterStickingPiece();
+                    MakeNewPiece();
+                }
             }
         }
 
         public void MovePieceLeft() {
-            if (Board.CanMovePiece(0, -1)) {
-                PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, -1);
-                PieceMoved?.Invoke(pieceMovedArgs);
+            lock (ObjectMoveLock) {
+                if (Board.CanMovePiece(0, -1)) {
+                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, -1);
+                    PieceMoved?.Invoke(pieceMovedArgs);
+                }
             }
         }
 
         public void MovePieceRight() {
-            if (Board.CanMovePiece(0, 1)) {
-                PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, 1);
-                PieceMoved?.Invoke(pieceMovedArgs);
+            lock (ObjectMoveLock) {
+                if (Board.CanMovePiece(0, 1)) {
+                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, 1);
+                    PieceMoved?.Invoke(pieceMovedArgs);
+                }
             }
         }
 
         public void RotatePiece() {
-            if (Board.CanRotatePiece()) {
-                PieceRotatedArgs pieceRotatedArgs = Board.RotatePiece();
-                PieceRotated?.Invoke(pieceRotatedArgs);
+            lock (ObjectMoveLock) {
+                if (Board.CanRotatePiece()) {
+                    PieceRotatedArgs pieceRotatedArgs = Board.RotatePiece();
+                    PieceRotated?.Invoke(pieceRotatedArgs);
+                }
             }
         }
 
