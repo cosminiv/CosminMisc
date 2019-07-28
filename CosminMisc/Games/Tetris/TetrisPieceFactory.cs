@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CosminIv.Games.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,15 +9,28 @@ namespace CosminIv.Games.Tetris
 {
     public class TetrisPieceFactory
     {
-        static TetrisPiece[] _prototypePieces = MakePrototypePieces();
-        static Random _random = new Random();
+        TetrisPiece[] _prototypePieces = MakePrototypePieces();
+        IColor[] _colors = MakePrototypeColors();
+        Random _random = new Random();
 
         public TetrisPiece MakePiece() {
-            int prototypePieceIndex = _random.Next(_prototypePieces.Length);
-            TetrisPiece prototypePiece = _prototypePieces[prototypePieceIndex];
+            TetrisPiece piece = MakeRandomPiece();
+            SetRandomColor(piece);
+            return piece;
+        }
+
+        private TetrisPiece MakeRandomPiece() {
+            int pieceIndex = _random.Next(_prototypePieces.Length);
+            TetrisPiece prototypePiece = _prototypePieces[pieceIndex];
             TetrisPiece piece = new TetrisPiece(prototypePiece.MaxSize);
             piece.CopyFrom(prototypePiece);
             return piece;
+        }
+
+        private void SetRandomColor(TetrisPiece piece) {
+            int colorIndex = _random.Next(_colors.Length);
+            IColor color = _colors[colorIndex];
+            piece.Color = color;
         }
 
         private static TetrisPiece[] MakePrototypePieces() {
@@ -30,6 +44,19 @@ namespace CosminIv.Games.Tetris
                 MakePrototypePiece7(),
             };
             return result;
+        }
+
+        private static IColor[] MakePrototypeColors() {
+            return new[] {
+                new ConsoleColor2(ConsoleColor.Blue),
+                new ConsoleColor2(ConsoleColor.Cyan),
+                new ConsoleColor2(ConsoleColor.Gray),
+                new ConsoleColor2(ConsoleColor.Green),
+                new ConsoleColor2(ConsoleColor.Magenta),
+                new ConsoleColor2(ConsoleColor.Red),
+                new ConsoleColor2(ConsoleColor.White),
+                new ConsoleColor2(ConsoleColor.Yellow),
+            };
         }
 
         private static TetrisPiece MakePieceFromBrickCoordinates(int size, (int, int)[] brickCoords) {

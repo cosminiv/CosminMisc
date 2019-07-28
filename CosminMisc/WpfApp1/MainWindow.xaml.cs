@@ -119,7 +119,7 @@ namespace WpfApp1
                     DownloadResult dlRes = await DownloadUrlAsync(url);
                     status = $"{Math.Round(dlRes.Html.Length / 1024.0)}KB";
                 }
-                catch(OperationCanceledException oce) {
+                catch(OperationCanceledException) {
                     status = "CANCELED";
                 }
                 catch (Exception) {

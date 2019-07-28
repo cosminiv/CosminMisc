@@ -8,6 +8,7 @@ namespace CosminIv.Games.Tetris
 {
     public class TetrisPiece {
         TetrisBrick[][] Bricks;
+        IColor _color;
 
         public TetrisPiece(int maxSize) {
             MaxSize = maxSize;
@@ -25,7 +26,23 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        public Color Color { get; set; }
+        public IColor Color {
+            get {
+                return _color;
+            }
+
+            set {
+                _color = value;
+
+                for (int rowIndex = 0; rowIndex < Bricks.Length; rowIndex++) {
+                    for (int colIndex = 0; colIndex < Bricks[rowIndex].Length; colIndex++) {
+                        TetrisBrick brick = Bricks[rowIndex][colIndex];
+                        if (brick != null)
+                            brick.Color = value;
+                    }
+                }
+            }
+        }
 
         public void Rotate90DegreesClockwise() {
             if (Bricks.Length == 1)
@@ -63,6 +80,8 @@ namespace CosminIv.Games.Tetris
                     this.Bricks[rowIndex][colIndex] = other.Bricks[rowIndex][colIndex];
                 }
             }
+
+            Color = other.Color;
         }
 
         public override string ToString() {

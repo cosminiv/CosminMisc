@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CosminIv.Games.Tetris
 {
-    public class TetrisFullRowsDeletedResult
+    public class TetrisModifiedRows
     {
         public List<int> DeletedRowsIndexes { get; set; }
         public int ModifiedRowsStartIndex { get; set; }

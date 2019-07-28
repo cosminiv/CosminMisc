@@ -30,16 +30,16 @@ namespace CosminIv.Games.Tetris
 
         public int StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
-            TetrisFullRowsDeletedResult rowDeleteResult = FixedBricks.DeleteFullRows();
-            int fullRowCount = rowDeleteResult.DeletedRowsIndexes.Count;
+            TetrisModifiedRows modifiedRows = FixedBricks.DeleteFullRows();
+            int fullRowCount = modifiedRows.DeletedRowsIndexes.Count;
 
             if (fullRowCount > 0)
-                RowsDeleted?.Invoke(rowDeleteResult);
+                RowsDeleted?.Invoke(modifiedRows);
 
             return fullRowCount;
         }
 
-        public delegate void RowsDeletedHandler(TetrisFullRowsDeletedResult rowsDeletedResult);
+        public delegate void RowsDeletedHandler(TetrisModifiedRows rowsDeletedResult);
         public event RowsDeletedHandler RowsDeleted;
 
         private TetrisPieceWithPosition MakePiece() {

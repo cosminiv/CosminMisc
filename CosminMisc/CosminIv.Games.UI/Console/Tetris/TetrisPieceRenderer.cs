@@ -26,13 +26,13 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplayInPlaceOfPiece(piece, coordinates, Space);
         }
 
-        public void DeleteRows(TetrisFullRowsDeletedResult rowsDeleted) {
-            if (rowsDeleted.DeletedRowsIndexes.Count == 0)
+        public void UpdateRows(TetrisModifiedRows modifiedRows) {
+            if (modifiedRows.DeletedRowsIndexes.Count == 0)
                 return;
 
-            for (int rowIndex = 0; rowIndex < rowsDeleted.ModifiedRows.Length; rowIndex++) {
-                TetrisBrick[] brickRow = rowsDeleted.ModifiedRows[rowIndex];
-                int rowIndexRelativeToBoard = rowIndex + rowsDeleted.ModifiedRowsStartIndex;
+            for (int rowIndex = 0; rowIndex < modifiedRows.ModifiedRows.Length; rowIndex++) {
+                TetrisBrick[] brickRow = modifiedRows.ModifiedRows[rowIndex];
+                int rowIndexRelativeToBoard = rowIndex + modifiedRows.ModifiedRowsStartIndex;
 
                 for (int columnIndex = 0; columnIndex < brickRow.Length; columnIndex++) {
                     TetrisBrick brick = brickRow[columnIndex];
@@ -41,13 +41,16 @@ namespace CosminIv.Games.UI.Console.Tetris
                     bool isBrick = brick != null;
 
                     System.Console.SetCursorPosition(windowColumn, windowRow);
+                    if (isBrick)
+                        System.Console.ForegroundColor = (brick.Color as ConsoleColor2).Value;
                     System.Console.Write(isBrick ? Brick : Space);
                 }
             }
         }
 
         private void DisplayInPlaceOfPiece(TetrisPiece piece, Coordinates pieceBoardCoord, string displayChar) {
-            System.Console.ForegroundColor = ConsoleColor.Cyan;
+            System.Console.ForegroundColor = (piece.Color as ConsoleColor2).Value;
+
             int boardOriginColumn = BoardWindowOrigin.Column + BorderWidth + pieceBoardCoord.Column;
             int boardOriginRow = BoardWindowOrigin.Row + BorderWidth + pieceBoardCoord.Row;
 

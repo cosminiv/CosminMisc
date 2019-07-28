@@ -60,8 +60,8 @@ namespace CosminIv.Games.UI.Console.Tetris
             PieceDisplayer.Display(args.Piece, args.NewCoordinates);
         }
 
-        private void Engine_RowsDeleted(TetrisFullRowsDeletedResult rowsDeleted) {
-            PieceDisplayer.DeleteRows(rowsDeleted);
+        private void Engine_RowsDeleted(TetrisModifiedRows rowsDeleted) {
+            PieceDisplayer.UpdateRows(rowsDeleted);
         }
 
         private void Engine_PieceRotated(PieceRotatedArgs args) {

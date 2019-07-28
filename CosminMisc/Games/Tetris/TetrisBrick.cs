@@ -7,7 +7,7 @@ namespace CosminIv.Games.Tetris
 {
     public class TetrisBrick
     {
-        public Color Color { get; set; }
+        public IColor Color { get; set; }
 
         public override string ToString() {
             return "#";

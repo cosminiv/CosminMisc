@@ -122,7 +122,7 @@ namespace CosminIv.Games.Tetris
         public delegate void PieceRotatedHandler(PieceRotatedArgs args);
         public event PieceRotatedHandler PieceRotated;
 
-        public delegate void RowsDeletedHandler(TetrisFullRowsDeletedResult rowsDeletedResult);
+        public delegate void RowsDeletedHandler(TetrisModifiedRows rowsDeletedResult);
         public event RowsDeletedHandler RowsDeleted;
 
         public delegate void ScoreChangedHandler(ScoreChangedArgs args);
@@ -174,7 +174,7 @@ namespace CosminIv.Games.Tetris
             return 1000 * (1 - (Speed - 1) * 0.1);
         }
 
-        private void Board_RowsDeleted(TetrisFullRowsDeletedResult rowsDeletedResult) {
+        private void Board_RowsDeleted(TetrisModifiedRows rowsDeletedResult) {
             RowsDeleted?.Invoke(rowsDeletedResult);
         }
 
