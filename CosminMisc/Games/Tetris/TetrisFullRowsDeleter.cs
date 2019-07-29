@@ -13,9 +13,9 @@ namespace CosminIv.Games.Tetris
             this.Bricks = bricks;
         }
 
-        public TetrisModifiedRows DeleteFullRows() {
+        public TetrisFixedBricksState DeleteFullRows() {
             List<int> fullRowsIndexes = GetIndexesOfFullRows();
-            TetrisModifiedRows result = DeleteFullRows(fullRowsIndexes);
+            TetrisFixedBricksState result = DeleteFullRows(fullRowsIndexes);
             return result;
         }
 
@@ -42,12 +42,12 @@ namespace CosminIv.Games.Tetris
             return row.All(brick => brick == null);
         }
 
-        private TetrisModifiedRows DeleteFullRows(List<int> fullRowsIndexes) {
+        private TetrisFixedBricksState DeleteFullRows(List<int> fullRowsIndexes) {
             if (fullRowsIndexes.Count == 0) {
-                return new TetrisModifiedRows {
+                return new TetrisFixedBricksState {
                     DeletedRowsIndexes = fullRowsIndexes,
-                    ModifiedRows = new TetrisBrick[0][],
-                    ModifiedRowsStartIndex = 0
+                    Rows = new List<TetrisBrick[]>(),
+                    RowsStartIndex = 0
                 };
             }
 
@@ -55,10 +55,10 @@ namespace CosminIv.Games.Tetris
 
             DeleteRows(copyResult.StartIndex, fullRowsIndexes.Count());
 
-            return new TetrisModifiedRows {
+            return new TetrisFixedBricksState {
                 DeletedRowsIndexes = fullRowsIndexes,
-                ModifiedRowsStartIndex = copyResult.StartIndex,
-                ModifiedRows = Bricks.Where((rows, i) => i >= copyResult.StartIndex && i <= fullRowsIndexes.Max()).ToArray()
+                RowsStartIndex = copyResult.StartIndex,
+                Rows = Bricks.Where((rows, i) => i >= copyResult.StartIndex && i <= fullRowsIndexes.Max()).ToList()
             };
         }
 

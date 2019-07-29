@@ -61,7 +61,7 @@ namespace CosminIv.Games.UI.Console.Tetris
             PieceDisplayer.Display(args.Piece, args.NewCoordinates);
         }
 
-        private void Engine_RowsDeleted(TetrisModifiedRows rowsDeleted) {
+        private void Engine_RowsDeleted(TetrisFixedBricksState rowsDeleted) {
             PieceDisplayer.UpdateRows(rowsDeleted);
         }
 
@@ -83,8 +83,8 @@ namespace CosminIv.Games.UI.Console.Tetris
             TextRenderer.DisplaySpeed(args.Speed);
         }
 
-        private void Engine_GameInitialized() {
-            BoardDisplayer.Display();
+        private void Engine_GameInitialized(GameInitializedArgs args) {
+            BoardDisplayer.Display(args);
             TextRenderer.DisplayInitial(Engine.Speed);
         }
 

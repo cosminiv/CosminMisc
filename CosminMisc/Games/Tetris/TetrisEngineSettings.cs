@@ -11,5 +11,6 @@ namespace CosminIv.Games.Tetris
         public int Columns;
         public int Speed;
         public ILogger Logger;
+        public int RowsWithFixedBricks;
     }
 }

@@ -16,21 +16,21 @@ namespace CosminIv.Games.Tetris
         TetrisPieceWithPosition CurrentPiece;
         TetrisCollisionDetector CollisionDetector;
         TetrisPieceFactory PieceFactory = new TetrisPieceFactory();
-        TetrisFixedBricks FixedBricks;
+        TetrisFixedBricksLogic FixedBricks;
         Random Random = new Random();
-        ILogger Logger;
+        readonly ILogger Logger;
 
-        public TetrisBoard(int rows, int columns, ILogger logger) {
-            Logger = logger;
-            Rows = rows;
-            Columns = columns;
-            FixedBricks = new TetrisFixedBricks(rows, columns);
+        public TetrisBoard(TetrisEngineSettings settings) {
+            Logger = settings.Logger;
+            Rows = settings.Rows;
+            Columns = settings.Columns;
+            FixedBricks = new TetrisFixedBricksLogic(Rows, Columns, settings.RowsWithFixedBricks);
             CollisionDetector = new TetrisCollisionDetector(FixedBricks, Rows, Columns);
         }
 
         public int StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
-            TetrisModifiedRows modifiedRows = FixedBricks.DeleteFullRows();
+            TetrisFixedBricksState modifiedRows = FixedBricks.DeleteFullRows();
             int fullRowCount = modifiedRows.DeletedRowsIndexes.Count;
 
             if (fullRowCount > 0)
@@ -39,7 +39,11 @@ namespace CosminIv.Games.Tetris
             return fullRowCount;
         }
 
-        public delegate void RowsDeletedHandler(TetrisModifiedRows rowsDeletedResult);
+        public TetrisFixedBricksState GetFixedBricks() {
+            return FixedBricks.GetState();
+        }
+
+        public delegate void RowsDeletedHandler(TetrisFixedBricksState rowsDeletedResult);
         public event RowsDeletedHandler RowsDeleted;
 
         private TetrisPieceWithPosition MakePiece() {

@@ -18,9 +18,7 @@ namespace CosminIv.Games.Tetris
         int _speed;
         public int Speed {
             get { return _speed; }
-            private set {
-                _speed = Math.Min(value, MaxSpeed);
-            }
+            private set { _speed = Math.Min(value, MaxSpeed); }
         }
 
         int Score { get; set; }
@@ -31,9 +29,9 @@ namespace CosminIv.Games.Tetris
         ILogger Logger;
         GameState State;
 
-        readonly int FullLinesForLevelUp = 10;
+        readonly int FullLinesForLevelUp = 5;
         readonly int MaxSpeed = 10;
-        static object PieceMoveLock = new object();
+        readonly object PieceMoveLock = new object();
 
         #endregion
 
@@ -55,7 +53,7 @@ namespace CosminIv.Games.Tetris
                 MakeNewPiece();
                 Timer.Enabled = true;
                 State = GameState.Running;
-                GameInitialized?.Invoke();
+                GameInitialized?.Invoke(new GameInitializedArgs { FixedBricks = Board.GetFixedBricks() });
             }
         }
 
@@ -112,7 +110,7 @@ namespace CosminIv.Games.Tetris
         public delegate void PieceRotatedHandler(PieceRotatedArgs args);
         public event PieceRotatedHandler PieceRotated;
 
-        public delegate void RowsDeletedHandler(TetrisModifiedRows rowsDeletedResult);
+        public delegate void RowsDeletedHandler(TetrisFixedBricksState modifiedRows);
         public event RowsDeletedHandler RowsDeleted;
 
         public delegate void ScoreChangedHandler(ScoreChangedArgs args);
@@ -124,7 +122,7 @@ namespace CosminIv.Games.Tetris
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
 
-        public delegate void GameInitializedHandler();
+        public delegate void GameInitializedHandler(GameInitializedArgs args);
         public event GameInitializedHandler GameInitialized;
 
         #endregion
@@ -136,7 +134,7 @@ namespace CosminIv.Games.Tetris
             Logger = Settings.Logger;
             Rows = Settings.Rows;
             Columns = Settings.Columns;
-            Board = new TetrisBoard(Rows, Columns, Settings.Logger);
+            Board = new TetrisBoard(Settings);
             Board.RowsDeleted += Board_RowsDeleted;
             Speed = Settings.Speed;
             Score = 0;
@@ -209,9 +207,10 @@ namespace CosminIv.Games.Tetris
 
         private void UpdateSpeedAfterFullRows(int newFullRowCount) {
             int fullLinesBefore = FullLineCount - newFullRowCount;
-            
-            if (fullLinesBefore / FullLinesForLevelUp != FullLineCount / FullLinesForLevelUp) {
-                Speed++;
+            int diff = FullLineCount / FullLinesForLevelUp - fullLinesBefore / FullLinesForLevelUp;
+
+            if (diff > 0) {
+                Speed += diff;
                 Timer.Interval = ComputeTimerInterval();
                 SpeedChanged?.Invoke(new SpeedChangedArgs { Speed = this.Speed });
             }
@@ -219,6 +218,7 @@ namespace CosminIv.Games.Tetris
 
         private void End() {
             Timer.Stop();
+            State = GameState.Ended;
             GameEnded?.Invoke();
         }
 
@@ -227,7 +227,7 @@ namespace CosminIv.Games.Tetris
             return (int)interval;
         }
 
-        private void Board_RowsDeleted(TetrisModifiedRows rowsDeletedResult) {
+        private void Board_RowsDeleted(TetrisFixedBricksState rowsDeletedResult) {
             RowsDeleted?.Invoke(rowsDeletedResult);
         }
 

@@ -26,13 +26,13 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplayInPlaceOfPiece(piece, coordinates, Space);
         }
 
-        public void UpdateRows(TetrisModifiedRows modifiedRows) {
+        public void UpdateRows(TetrisFixedBricksState modifiedRows) {
             if (modifiedRows.DeletedRowsIndexes.Count == 0)
                 return;
 
-            for (int rowIndex = 0; rowIndex < modifiedRows.ModifiedRows.Length; rowIndex++) {
-                TetrisBrick[] brickRow = modifiedRows.ModifiedRows[rowIndex];
-                int rowIndexRelativeToBoard = rowIndex + modifiedRows.ModifiedRowsStartIndex;
+            for (int rowIndex = 0; rowIndex < modifiedRows.Rows.Count; rowIndex++) {
+                TetrisBrick[] brickRow = modifiedRows.Rows[rowIndex];
+                int rowIndexRelativeToBoard = rowIndex + modifiedRows.RowsStartIndex;
 
                 for (int columnIndex = 0; columnIndex < brickRow.Length; columnIndex++) {
                     TetrisBrick brick = brickRow[columnIndex];

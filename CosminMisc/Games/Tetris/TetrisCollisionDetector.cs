@@ -7,12 +7,12 @@ namespace CosminIv.Games.Tetris
 {
     class TetrisCollisionDetector
     {
-        readonly TetrisFixedBricks FixedBricks;
+        readonly TetrisFixedBricksLogic FixedBricks;
         readonly int BoardRowCount;
         readonly int BoardColumnCount;
         readonly TetrisPieceWithPositionCopy PieceCopy;
 
-        public TetrisCollisionDetector(TetrisFixedBricks fixedBricks, int boardRowCount, int boardColumnCount) {
+        public TetrisCollisionDetector(TetrisFixedBricksLogic fixedBricks, int boardRowCount, int boardColumnCount) {
             FixedBricks = fixedBricks;
             BoardRowCount = boardRowCount;
             BoardColumnCount = boardColumnCount;

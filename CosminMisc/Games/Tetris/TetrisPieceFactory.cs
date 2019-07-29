@@ -10,12 +10,11 @@ namespace CosminIv.Games.Tetris
     public class TetrisPieceFactory
     {
         TetrisPiece[] _prototypePieces = MakePrototypePieces();
-        IColor[] _colors = MakePrototypeColors();
+        ConsoleColorFactory _colorFactory = new ConsoleColorFactory();
         Random _random = new Random();
 
         public TetrisPiece MakePiece() {
             TetrisPiece piece = MakeRandomPiece();
-            SetRandomColor(piece);
             return piece;
         }
 
@@ -24,13 +23,10 @@ namespace CosminIv.Games.Tetris
             TetrisPiece prototypePiece = _prototypePieces[pieceIndex];
             TetrisPiece piece = new TetrisPiece(prototypePiece.MaxSize);
             piece.CopyFrom(prototypePiece);
-            return piece;
-        }
 
-        private void SetRandomColor(TetrisPiece piece) {
-            int colorIndex = _random.Next(_colors.Length);
-            IColor color = _colors[colorIndex];
-            piece.Color = color;
+            piece.Color = _colorFactory.MakeRandomColor();
+
+            return piece;
         }
 
         private static TetrisPiece[] MakePrototypePieces() {
@@ -44,19 +40,6 @@ namespace CosminIv.Games.Tetris
                 MakePrototypePiece7(),
             };
             return result;
-        }
-
-        private static IColor[] MakePrototypeColors() {
-            return new[] {
-                new ConsoleColor2(ConsoleColor.Blue),
-                new ConsoleColor2(ConsoleColor.Cyan),
-                new ConsoleColor2(ConsoleColor.Gray),
-                new ConsoleColor2(ConsoleColor.Green),
-                new ConsoleColor2(ConsoleColor.Magenta),
-                new ConsoleColor2(ConsoleColor.Red),
-                new ConsoleColor2(ConsoleColor.White),
-                new ConsoleColor2(ConsoleColor.Yellow),
-            };
         }
 
         private static TetrisPiece MakePieceFromBrickCoordinates(int size, (int, int)[] brickCoords) {
