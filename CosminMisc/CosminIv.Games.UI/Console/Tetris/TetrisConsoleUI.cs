@@ -20,7 +20,6 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly int BorderWidth = 1;
 
         public TetrisConsoleUI(TetrisEngine engine) {
-            SetWindowSize();
             Engine = engine;
             BoardDisplayer = new TetrisBoardRenderer(engine, BoardWindowOrigin, BorderWidth);
             PieceDisplayer = new TetrisPieceRenderer(BoardWindowOrigin, BorderWidth);
@@ -33,12 +32,6 @@ namespace CosminIv.Games.UI.Console.Tetris
             // Rendering is done as a response to Engine_GameInitialized event.
             System.Console.CursorVisible = false;
             MonitorKeyboard();
-        }
-
-
-        private void SetWindowSize() {
-            System.Console.SetBufferSize(WindowWidth, WindowHeight);
-            System.Console.SetWindowSize(WindowWidth, WindowHeight);
         }
 
         private void WireEventHandlers() {

@@ -20,3 +20,7 @@ CosminMisc/WpfApp1/bin/
 /CosminMisc/ConsoleApp_Core/obj
 /CosminMisc/CosminIv.Games.UI/obj
 /CosminMisc/CosminIv.Games.UI/bin/Debug/netcoreapp2.1
+/CosminMisc/ConsoleApp_Core/bin/Release/netcoreapp2.1
+/CosminMisc/ConsoleApp_Core
+/CosminMisc/CosminIv.Games.UI/bin/Release/netcoreapp2.1
+/CosminMisc/Games/bin/Release/netcoreapp2.1
