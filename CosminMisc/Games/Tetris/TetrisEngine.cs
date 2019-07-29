@@ -26,8 +26,8 @@ namespace CosminIv.Games.Tetris
 
         TetrisBoard Board;
         Timer Timer;
-        ILogger Logger;
-        bool IsGameStarted = false;
+        readonly ILogger Logger;
+        GameState State = GameState.Paused;
 
         readonly int FullLinesForLevelUp = 10;
         readonly int MaxSpeed = 10;
@@ -55,59 +55,45 @@ namespace CosminIv.Games.Tetris
         #region Public Methods
 
         public void Start() {
-            if (!IsGameStarted) {
+            if (State == GameState.Paused) {
                 MakeNewPiece();
                 Timer.Enabled = true;
-                IsGameStarted = true;
+                State = GameState.Running;
             }
         }
 
         public void MovePieceDown() {
-            lock (PieceMoveLock) {
-                if (Board.CanMovePiece(1, 0)) {
-                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(1, 0);
-                    PieceMoved?.Invoke(pieceMovedArgs);
+            TryMovePieceResult result = TryMovePiece(1, 0);
+
+            if (result == TryMovePieceResult.CollisionDetected) {
+                int fullRowCount = Board.StickPiece();
+                if (fullRowCount > 0) {
+                    UpdateScoreAfterFullRows(fullRowCount);
+                    UpdateSpeedAfterFullRows(fullRowCount);
                 }
-                else {
-                    int fullRowCount = Board.StickPiece();
-                    if (fullRowCount > 0) {
-                        UpdateScoreAfterFullRows(fullRowCount);
-                        UpdateSpeedAfterFullRows(fullRowCount);
-                    }
-                    MakeNewPiece();
-                }
+                MakeNewPiece();
             }
         }
 
         public void MovePieceLeft() {
-            lock (PieceMoveLock) {
-                if (Board.CanMovePiece(0, -1)) {
-                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, -1);
-                    PieceMoved?.Invoke(pieceMovedArgs);
-                }
-            }
+            TryMovePiece(0, -1);
         }
 
         public void MovePieceRight() {
-            lock (PieceMoveLock) {
-                if (Board.CanMovePiece(0, 1)) {
-                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, 1);
-                    PieceMoved?.Invoke(pieceMovedArgs);
-                }
-            }
+            TryMovePiece(0, 1);
         }
 
         public void RotatePiece() {
-            lock (PieceMoveLock) {
-                if (Board.CanRotatePiece()) {
-                    PieceRotatedArgs pieceRotatedArgs = Board.RotatePiece();
-                    PieceRotated?.Invoke(pieceRotatedArgs);
-                }
-            }
+            TryRotatePiece();
         }
 
         public void TogglePause() {
             Timer.Enabled = !Timer.Enabled;
+
+            if (State == GameState.Running)
+                State = GameState.Paused;
+            else if (State == GameState.Paused)
+                State = GameState.Running;
         }
 
         public void Restart() {
@@ -144,6 +130,37 @@ namespace CosminIv.Games.Tetris
 
 
         #region Private methods
+
+        private TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
+            if (State != GameState.Running)
+                return TryMovePieceResult.GamePaused;
+
+            bool canMove = false;
+
+            lock (PieceMoveLock) {
+                canMove = Board.CanMovePiece(rowDelta, columnDelta);
+                if (canMove) {
+                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(rowDelta, columnDelta);
+                    PieceMoved?.Invoke(pieceMovedArgs);
+                }
+            }
+
+            TryMovePieceResult result = canMove ? TryMovePieceResult.Moved : TryMovePieceResult.CollisionDetected;
+
+            return result;
+        }
+
+        private void TryRotatePiece() {
+            if (State != GameState.Running)
+                return;
+
+            lock (PieceMoveLock) {
+                if (Board.CanRotatePiece()) {
+                    PieceRotatedArgs pieceRotatedArgs = Board.RotatePiece();
+                    PieceRotated?.Invoke(pieceRotatedArgs);
+                }
+            }
+        }
 
         private Timer MakeTimer() {
             Timer timer = new Timer();
@@ -200,5 +217,12 @@ namespace CosminIv.Games.Tetris
         }
 
         #endregion
+
+        enum TryMovePieceResult
+        {
+            Moved,
+            CollisionDetected,
+            GamePaused
+        }
     }
 }
