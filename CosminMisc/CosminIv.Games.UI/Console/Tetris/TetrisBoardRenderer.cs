@@ -22,6 +22,11 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         public void Display(GameInitializedArgs args) {
             FixedBricks = args.FixedBricks;
+            DisplayBoardBorder();
+            DisplayFixedBricks();
+        }
+
+        private void DisplayBoardBorder() {
             string boardString = MakeBoardString();
             System.Console.ForegroundColor = ConsoleColor.White;
             System.Console.SetCursorPosition(left: 0, top: BoardWindowOrigin.Row);
@@ -37,9 +42,8 @@ namespace CosminIv.Games.UI.Console.Tetris
                 sb.Append(' ', BoardWindowOrigin.Column);
                 sb.Append('|', BorderWidth);
 
-                for (int column = 0; column < Engine.Columns; column++)
-                    AddCharacter(sb, row, column);
-                
+                sb.Append(' ', Engine.Columns);
+
                 sb.Append('|', BorderWidth);
                 sb.AppendLine();
             }
@@ -49,25 +53,37 @@ namespace CosminIv.Games.UI.Console.Tetris
             return sb.ToString();
         }
 
-        private void AddCharacter(StringBuilder sb, int row, int column) {
+        private void DisplayFixedBricks() {
+            for (int row = 0; row < Engine.Rows; row++) {
+                for (int column = 0; column < Engine.Columns; column++) {
+
+                    DisplayFixedBrickCharacter(row, column);
+                }
+            }
+        }
+
+        private void DisplayFixedBrickCharacter(int row, int column) {
             if (FixedBricks.RowsStartIndex < 0) {
-                sb.Append(" ");
+                System.Console.Write(" ");
                 return;
             }
 
             int row2 = row - FixedBricks.RowsStartIndex;
             if (row2 < 0) {
-                sb.Append(" ");
+                System.Console.Write(" ");
                 return;
             }
 
             TetrisBrick brick = FixedBricks.Rows[row2][column];
 
             if (brick != null) {
-                sb.Append("#");
+                System.Console.SetCursorPosition(left: column + BoardWindowOrigin.Column + BorderWidth, 
+                    top: row + BoardWindowOrigin.Row + BorderWidth);
+                System.Console.ForegroundColor = (brick.Color as ConsoleColor2).Value;
+                System.Console.Write("#");
             }
             else
-                sb.Append(" ");
+                System.Console.Write(" ");
         }
 
         private void AddBoardHorizontalBorder(StringBuilder sb) {

@@ -29,7 +29,7 @@ namespace CosminIv.Games.Tetris
         ILogger Logger;
         GameState State;
 
-        readonly int FullLinesForLevelUp = 5;
+        readonly int FullLinesForLevelUp = 7;
         readonly int MaxSpeed = 10;
         readonly object PieceMoveLock = new object();
 
