@@ -19,8 +19,6 @@ namespace CosminIv.Games.Tetris
             get { return _speed; }
             private set {
                 _speed = Math.Min(value, MaxSpeed);
-                if (Timer != null)
-                    Timer.Interval = ComputeTimerInterval();
             }
         }
         int Score { get; set; }
@@ -33,7 +31,7 @@ namespace CosminIv.Games.Tetris
 
         readonly int FullLinesForLevelUp = 10;
         readonly int MaxSpeed = 10;
-        static object ObjectMoveLock = new object();
+        static object PieceMoveLock = new object();
 
         #endregion
 
@@ -65,7 +63,7 @@ namespace CosminIv.Games.Tetris
         }
 
         public void MovePieceDown() {
-            lock (ObjectMoveLock) {
+            lock (PieceMoveLock) {
                 if (Board.CanMovePiece(1, 0)) {
                     PieceMovedArgs pieceMovedArgs = Board.MovePiece(1, 0);
                     PieceMoved?.Invoke(pieceMovedArgs);
@@ -82,7 +80,7 @@ namespace CosminIv.Games.Tetris
         }
 
         public void MovePieceLeft() {
-            lock (ObjectMoveLock) {
+            lock (PieceMoveLock) {
                 if (Board.CanMovePiece(0, -1)) {
                     PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, -1);
                     PieceMoved?.Invoke(pieceMovedArgs);
@@ -91,7 +89,7 @@ namespace CosminIv.Games.Tetris
         }
 
         public void MovePieceRight() {
-            lock (ObjectMoveLock) {
+            lock (PieceMoveLock) {
                 if (Board.CanMovePiece(0, 1)) {
                     PieceMovedArgs pieceMovedArgs = Board.MovePiece(0, 1);
                     PieceMoved?.Invoke(pieceMovedArgs);
@@ -100,7 +98,7 @@ namespace CosminIv.Games.Tetris
         }
 
         public void RotatePiece() {
-            lock (ObjectMoveLock) {
+            lock (PieceMoveLock) {
                 if (Board.CanRotatePiece()) {
                     PieceRotatedArgs pieceRotatedArgs = Board.RotatePiece();
                     PieceRotated?.Invoke(pieceRotatedArgs);
@@ -148,7 +146,8 @@ namespace CosminIv.Games.Tetris
         #region Private methods
 
         private Timer MakeTimer() {
-            Timer timer = new Timer(ComputeTimerInterval());
+            Timer timer = new Timer();
+            timer.Interval = ComputeTimerInterval();
             timer.Enabled = false;
             timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
             return timer;
@@ -181,6 +180,7 @@ namespace CosminIv.Games.Tetris
             
             if (fullLinesBefore / FullLinesForLevelUp != FullLineCount / FullLinesForLevelUp) {
                 Speed++;
+                Timer.Interval = ComputeTimerInterval();
                 SpeedChanged?.Invoke(new SpeedChangedArgs { Speed = this.Speed });
             }
         }
@@ -190,8 +190,9 @@ namespace CosminIv.Games.Tetris
             GameEnded?.Invoke();
         }
 
-        double ComputeTimerInterval() {
-            return 1000 * (1 - (Speed - 1) * 0.1);
+        int ComputeTimerInterval() {
+            double interval = 1000 * (1 - (Speed - 1) * 0.1);
+            return (int)interval;
         }
 
         private void Board_RowsDeleted(TetrisModifiedRows rowsDeletedResult) {
