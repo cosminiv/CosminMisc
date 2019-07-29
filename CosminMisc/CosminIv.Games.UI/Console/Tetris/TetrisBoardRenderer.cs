@@ -20,6 +20,7 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         public void Display() {
             string boardString = MakeBoardString();
+            System.Console.ForegroundColor = ConsoleColor.White;
             System.Console.SetCursorPosition(left: 0, top: BoardWindowOrigin.Row);
             System.Console.Write(boardString);
         }

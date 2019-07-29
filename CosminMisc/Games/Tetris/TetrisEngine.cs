@@ -11,23 +11,25 @@ namespace CosminIv.Games.Tetris
     {
         #region Data members and properties
 
-        int _speed;
+        TetrisEngineSettings Settings;
+        public int Rows { get; private set; }
+        public int Columns { get; private set; }
 
-        public int Rows { get; }
-        public int Columns { get; }
+        int _speed;
         public int Speed {
             get { return _speed; }
             private set {
                 _speed = Math.Min(value, MaxSpeed);
             }
         }
+
         int Score { get; set; }
         int FullLineCount { get; set; }
 
         TetrisBoard Board;
         Timer Timer;
-        readonly ILogger Logger;
-        GameState State = GameState.Paused;
+        ILogger Logger;
+        GameState State;
 
         readonly int FullLinesForLevelUp = 10;
         readonly int MaxSpeed = 10;
@@ -39,14 +41,8 @@ namespace CosminIv.Games.Tetris
         #region Constructors
 
         public TetrisEngine(TetrisEngineSettings settings) {
-            Logger = settings.Logger;
-            Rows = settings.Rows;
-            Columns = settings.Columns;
-            Board = new TetrisBoard(Rows, Columns, settings.Logger);
-            Board.RowsDeleted += Board_RowsDeleted;
-            Speed = settings.Speed;
-            Score = 0;
-            Timer = MakeTimer();
+            Settings = settings;
+            Initialize();
         }
 
         #endregion
@@ -59,6 +55,7 @@ namespace CosminIv.Games.Tetris
                 MakeNewPiece();
                 Timer.Enabled = true;
                 State = GameState.Running;
+                GameInitialized?.Invoke();
             }
         }
 
@@ -97,7 +94,8 @@ namespace CosminIv.Games.Tetris
         }
 
         public void Restart() {
-            // todo
+            Initialize();
+            Start();
         }
 
         #endregion
@@ -126,10 +124,25 @@ namespace CosminIv.Games.Tetris
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
 
+        public delegate void GameInitializedHandler();
+        public event GameInitializedHandler GameInitialized;
+
         #endregion
 
 
         #region Private methods
+
+        private void Initialize() {
+            Logger = Settings.Logger;
+            Rows = Settings.Rows;
+            Columns = Settings.Columns;
+            Board = new TetrisBoard(Rows, Columns, Settings.Logger);
+            Board.RowsDeleted += Board_RowsDeleted;
+            Speed = Settings.Speed;
+            Score = 0;
+            State = GameState.Paused;
+            MakeTimer();
+        }
 
         private TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
             if (State != GameState.Running)
@@ -162,12 +175,14 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        private Timer MakeTimer() {
-            Timer timer = new Timer();
-            timer.Interval = ComputeTimerInterval();
-            timer.Enabled = false;
-            timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
-            return timer;
+        private void MakeTimer() {
+            if (Timer == null) {
+                Timer = new Timer();
+                Timer.Elapsed += Timer_Elapsed;
+            }
+
+            Timer.Interval = ComputeTimerInterval();
+            Timer.Enabled = false;
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e) {

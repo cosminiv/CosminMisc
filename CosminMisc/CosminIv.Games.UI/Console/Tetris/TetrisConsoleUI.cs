@@ -29,9 +29,8 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         public void Start() {
-            BoardDisplayer.Display();
-            TextRenderer.DisplayInitial(Engine.Speed);
             Engine.Start();
+            // Rendering is done as a response to Engine_GameInitialized event.
             System.Console.CursorVisible = false;
             MonitorKeyboard();
         }
@@ -50,6 +49,7 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine.GameEnded += Engine_GameEnded;
             Engine.ScoreChanged += Engine_ScoreChanged;
             Engine.SpeedChanged += Engine_SpeedChanged;
+            Engine.GameInitialized += Engine_GameInitialized;
         }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
@@ -83,6 +83,11 @@ namespace CosminIv.Games.UI.Console.Tetris
             TextRenderer.DisplaySpeed(args.Speed);
         }
 
+        private void Engine_GameInitialized() {
+            BoardDisplayer.Display();
+            TextRenderer.DisplayInitial(Engine.Speed);
+        }
+
         private void MonitorKeyboard() {
             while (true) {
                 ConsoleKeyInfo keyInfo = System.Console.ReadKey(true);
@@ -104,6 +109,7 @@ namespace CosminIv.Games.UI.Console.Tetris
                         Engine.TogglePause();
                         break;
                     case ConsoleKey.R:
+                        TextRenderer.DisplayMessage("                                 ");
                         Engine.Restart();
                         break;
                 }

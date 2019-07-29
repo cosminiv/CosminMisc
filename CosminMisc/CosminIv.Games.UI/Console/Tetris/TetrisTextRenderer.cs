@@ -17,11 +17,11 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         internal void DisplayScore(int score) {
-            DisplayMessage($"{TetrisMessage.Score}: {score}", 1);
+            DisplayMessage($"{TetrisMessage.Score}: {score}   ", 1);
         }
 
         internal void DisplayLineCount(int lineCount) {
-            DisplayMessage($"{TetrisMessage.Lines}: {lineCount}", 2);
+            DisplayMessage($"{TetrisMessage.Lines}: {lineCount}    ", 2);
         }
 
         internal void DisplaySpeed(int speed) {
@@ -29,13 +29,9 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void DisplayMessage(string message, int line) {
-            SetTextColor();
+            System.Console.ForegroundColor = ConsoleColor.White;
             System.Console.SetCursorPosition(left: 0, top: line);
             System.Console.Write(message);
-        }
-
-        private void SetTextColor() {
-            System.Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
