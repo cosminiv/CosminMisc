@@ -31,10 +31,10 @@ namespace CosminIv.Games.Tetris
         }
 
         internal TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
-            TryMovePieceResult result = new TryMovePieceResult();
-            result.Moved = false;
-
             lock (PieceMoveLock) {
+                TryMovePieceResult result = new TryMovePieceResult();
+                result.Moved = false;
+
                 bool canMove = CanMovePiece(rowDelta, columnDelta);
 
                 if (canMove) {
@@ -47,9 +47,28 @@ namespace CosminIv.Games.Tetris
                     if (tryingToMoveDown)
                         result.FullRowCount = StickPiece();
                 }
-            }
 
-            return result;
+                return result;
+            }
+        }
+
+        internal TryMovePieceResult MovePieceAllTheWayDownAndStick() {
+            lock (PieceMoveLock) {
+                TryMovePieceResult result = new TryMovePieceResult();
+                int rowDelta = 1;
+
+                while (CollisionDetector.CanMovePiece(CurrentPiece, rowDelta, 0))
+                    rowDelta++;
+
+                rowDelta--;
+
+                PieceMovedArgs pieceMovedArgs = MovePiece(rowDelta, 0);
+                result.Moved = true;
+                result.PieceMovedArgs = pieceMovedArgs;
+                result.FullRowCount = StickPiece();
+
+                return result;
+            }
         }
 
         internal TryRotatePieceResult TryRotatePiece() {
@@ -104,7 +123,7 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        internal bool CanMovePiece(int rowDelta, int columnDelta) {
+        private bool CanMovePiece(int rowDelta, int columnDelta) {
             return CollisionDetector.CanMovePiece(CurrentPiece, rowDelta, columnDelta);
         }
 

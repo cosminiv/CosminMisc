@@ -50,7 +50,7 @@ namespace CosminIv.Games.Tetris
             return PieceCopy.Value;
         }
 
-        public bool IsCollision(TetrisPieceWithPosition piece) {
+        internal bool IsCollision(TetrisPieceWithPosition piece) {
             foreach (Coordinates brickCoord in GetBrickCoordinatesRelativeToBoard(piece)) {
                 bool isLeftWallCollision = brickCoord.Column < 0;
                 bool isRightWallCollision = brickCoord.Column >= BoardColumnCount;

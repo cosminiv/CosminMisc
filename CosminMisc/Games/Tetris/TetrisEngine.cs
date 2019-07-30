@@ -65,8 +65,12 @@ namespace CosminIv.Games.Tetris
         }
 
         public void MovePieceAllTheWayDown() {
-            //TryMovePieceResult result = TryMovePiece(1, 0);
-            //StickPiece();
+            if (State != GameState.Running)
+                return;
+
+            TryMovePieceResult result = Board.MovePieceAllTheWayDownAndStick();
+            PieceMoved?.Invoke(result.PieceMovedArgs);
+            AfterStickPiece(result.FullRowCount);
         }
 
         private void AfterStickPiece(int fullRowCount) {
