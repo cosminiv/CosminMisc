@@ -1,5 +1,6 @@
 ﻿using CosminIv.Games.Common.Logging;
 using CosminIv.Games.Tetris;
+using CosminIv.Games.Tetris.DTO;
 using CosminIv.Games.UI.Console.Tetris;
 using System;
 using System.Threading;

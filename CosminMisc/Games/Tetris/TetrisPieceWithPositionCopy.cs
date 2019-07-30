@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CosminIv.Games.Tetris.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

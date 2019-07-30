@@ -1,5 +1,6 @@
 ﻿using CosminIv.Games.Common;
 using CosminIv.Games.Tetris;
+using CosminIv.Games.Tetris.DTO;
 using CosminIv.Games.Tetris.DTO.EventArg;
 using System;
 using System.Collections.Generic;

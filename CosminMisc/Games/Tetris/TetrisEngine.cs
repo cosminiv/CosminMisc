@@ -32,7 +32,7 @@ namespace CosminIv.Games.Tetris
 
         readonly int FullLinesForLevelUp = 7;
         readonly int MaxSpeed = 10;
-        
+        //readonly object PieceMoveLock = new object();
 
         #endregion
 

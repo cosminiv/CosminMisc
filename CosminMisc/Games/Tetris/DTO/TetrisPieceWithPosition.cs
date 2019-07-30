@@ -1,6 +1,6 @@
 ﻿using CosminIv.Games.Common;
 
-namespace CosminIv.Games.Tetris
+namespace CosminIv.Games.Tetris.DTO
 {
     public class TetrisPieceWithPosition
     {
