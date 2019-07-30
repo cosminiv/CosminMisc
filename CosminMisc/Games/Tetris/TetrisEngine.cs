@@ -1,6 +1,7 @@
 ﻿using CosminIv.Games.Common;
 using CosminIv.Games.Common.Logging;
-using CosminIv.Games.Tetris.EventArguments;
+using CosminIv.Games.Tetris.DTO;
+using CosminIv.Games.Tetris.DTO.EventArg;
 using System;
 using System.Diagnostics;
 using System.Timers;
@@ -31,7 +32,7 @@ namespace CosminIv.Games.Tetris
 
         readonly int FullLinesForLevelUp = 7;
         readonly int MaxSpeed = 10;
-        readonly object PieceMoveLock = new object();
+        
 
         #endregion
 
@@ -59,15 +60,22 @@ namespace CosminIv.Games.Tetris
 
         public void MovePieceDown() {
             TryMovePieceResult result = TryMovePiece(1, 0);
+            if (!result.Moved)
+                AfterStickPiece(result.FullRowCount);
+        }
 
-            if (result == TryMovePieceResult.CollisionDetected) {
-                int fullRowCount = Board.StickPiece();
-                if (fullRowCount > 0) {
-                    UpdateScoreAfterFullRows(fullRowCount);
-                    UpdateSpeedAfterFullRows(fullRowCount);
-                }
-                MakeNewPiece();
+        public void MovePieceAllTheWayDown() {
+            //TryMovePieceResult result = TryMovePiece(1, 0);
+            //StickPiece();
+        }
+
+        private void AfterStickPiece(int fullRowCount) {
+            if (fullRowCount > 0) {
+                UpdateScoreAfterFullRows(fullRowCount);
+                UpdateSpeedAfterFullRows(fullRowCount);
             }
+
+            MakeNewPiece();
         }
 
         public void MovePieceLeft() {
@@ -144,19 +152,14 @@ namespace CosminIv.Games.Tetris
 
         private TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
             if (State != GameState.Running)
-                return TryMovePieceResult.GamePaused;
+                return new TryMovePieceResult { Moved = false };
 
-            bool canMove = false;
+            TryMovePieceResult result = Board.TryMovePiece(rowDelta, columnDelta);
 
-            lock (PieceMoveLock) {
-                canMove = Board.CanMovePiece(rowDelta, columnDelta);
-                if (canMove) {
-                    PieceMovedArgs pieceMovedArgs = Board.MovePiece(rowDelta, columnDelta);
-                    PieceMoved?.Invoke(pieceMovedArgs);
-                }
+            if (result.Moved) {
+                Debug.Assert(result.PieceMovedArgs != null);
+                PieceMoved?.Invoke(result.PieceMovedArgs);
             }
-
-            TryMovePieceResult result = canMove ? TryMovePieceResult.Moved : TryMovePieceResult.CollisionDetected;
 
             return result;
         }
@@ -165,11 +168,10 @@ namespace CosminIv.Games.Tetris
             if (State != GameState.Running)
                 return;
 
-            lock (PieceMoveLock) {
-                if (Board.CanRotatePiece()) {
-                    PieceRotatedArgs pieceRotatedArgs = Board.RotatePiece();
-                    PieceRotated?.Invoke(pieceRotatedArgs);
-                }
+            TryRotatePieceResult result = Board.TryRotatePiece();
+            if (result.Rotated) {
+                Debug.Assert(result.PieceRotatedArgs != null);
+                PieceRotated?.Invoke(result.PieceRotatedArgs);
             }
         }
 
@@ -195,11 +197,12 @@ namespace CosminIv.Games.Tetris
                 End();
         }
 
-        private void UpdateScoreAfterFullRows(int fullRowCount) {
+        private void UpdateScoreAfterFullRows(int newFullRowCount) {
+            Debug.Assert(newFullRowCount >= 0 && newFullRowCount <= 4);
+            FullLineCount += newFullRowCount;
             double speedMultiplier = 1 + (Speed - 1) * 0.1;
-            int increment = (int)(10 * fullRowCount * speedMultiplier);
+            int increment = (int)(10 * newFullRowCount * speedMultiplier);
             Score += increment;
-            FullLineCount += fullRowCount;
 
             if (increment != 0)
                 ScoreChanged?.Invoke(new ScoreChangedArgs { Score = Score, LineCount = FullLineCount });
@@ -232,12 +235,5 @@ namespace CosminIv.Games.Tetris
         }
 
         #endregion
-
-        enum TryMovePieceResult
-        {
-            Moved,
-            CollisionDetected,
-            GamePaused
-        }
     }
 }

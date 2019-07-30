@@ -5,7 +5,8 @@ using System.Text;
 using System.Diagnostics;
 using CosminIv.Games.Common.Logging;
 using CosminIv.Games.Common;
-using CosminIv.Games.Tetris.EventArguments;
+using CosminIv.Games.Tetris.DTO.EventArg;
+using CosminIv.Games.Tetris.DTO;
 
 namespace CosminIv.Games.Tetris
 {
@@ -19,6 +20,7 @@ namespace CosminIv.Games.Tetris
         TetrisFixedBricksLogic FixedBricks;
         Random Random = new Random();
         readonly ILogger Logger;
+        readonly object PieceMoveLock = new object();
 
         public TetrisBoard(TetrisEngineSettings settings) {
             Logger = settings.Logger;
@@ -28,7 +30,43 @@ namespace CosminIv.Games.Tetris
             CollisionDetector = new TetrisCollisionDetector(FixedBricks, Rows, Columns);
         }
 
-        public int StickPiece() {
+        internal TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
+            TryMovePieceResult result = new TryMovePieceResult();
+            result.Moved = false;
+
+            lock (PieceMoveLock) {
+                bool canMove = CanMovePiece(rowDelta, columnDelta);
+
+                if (canMove) {
+                    PieceMovedArgs pieceMovedArgs = MovePiece(rowDelta, columnDelta);
+                    result.Moved = true;
+                    result.PieceMovedArgs = pieceMovedArgs;
+                }
+                else {
+                    bool tryingToMoveDown = rowDelta > 0;
+                    if (tryingToMoveDown)
+                        result.FullRowCount = StickPiece();
+                }
+            }
+
+            return result;
+        }
+
+        internal TryRotatePieceResult TryRotatePiece() {
+            TryRotatePieceResult result = new TryRotatePieceResult();
+
+            lock (PieceMoveLock) {
+                if (CanRotatePiece()) {
+                    PieceRotatedArgs pieceRotatedArgs = RotatePiece();
+                    result.Rotated = true;
+                    result.PieceRotatedArgs = pieceRotatedArgs;
+                }
+            }
+
+            return result;
+        }
+
+        private int StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
             TetrisFixedBricksState modifiedRows = FixedBricks.DeleteFullRows();
             int fullRowCount = modifiedRows.DeletedRowsIndexes.Count;
@@ -43,6 +81,7 @@ namespace CosminIv.Games.Tetris
             return FixedBricks.GetState();
         }
 
+        // events
         public delegate void RowsDeletedHandler(TetrisFixedBricksState rowsDeletedResult);
         public event RowsDeletedHandler RowsDeleted;
 
@@ -69,7 +108,7 @@ namespace CosminIv.Games.Tetris
             return CollisionDetector.CanMovePiece(CurrentPiece, rowDelta, columnDelta);
         }
 
-        internal bool CanRotatePiece() {
+        private bool CanRotatePiece() {
             return CollisionDetector.CanRotatePiece(CurrentPiece);
         }
 
@@ -84,7 +123,7 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        internal PieceMovedArgs MovePiece(int rowDelta, int columnDelta) {
+        private PieceMovedArgs MovePiece(int rowDelta, int columnDelta) {
             CurrentPiece.Position.Row += rowDelta;
             CurrentPiece.Position.Column += columnDelta;
             Coordinates pos = CurrentPiece.Position;

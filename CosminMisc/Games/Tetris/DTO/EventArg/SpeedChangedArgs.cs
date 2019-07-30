@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CosminIv.Games.Tetris.EventArguments
+namespace CosminIv.Games.Tetris.DTO.EventArg
 {
     public class SpeedChangedArgs : EventArgs
     {
