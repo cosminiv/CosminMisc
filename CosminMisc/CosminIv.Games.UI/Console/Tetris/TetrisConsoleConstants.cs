@@ -8,5 +8,7 @@ namespace CosminIv.Games.UI.Console.Tetris
     {
         public readonly static string Brick = "#";
         public readonly static string Space = " ";
+        public readonly static string VerticalBorder = "|";
+        public readonly static string HorizontalBorder = "-";
     }
 }
