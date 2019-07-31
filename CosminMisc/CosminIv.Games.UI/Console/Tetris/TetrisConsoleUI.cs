@@ -12,18 +12,14 @@ namespace CosminIv.Games.UI.Console.Tetris
     {
         readonly TetrisEngine Engine;
         readonly Coordinates BoardWindowOrigin = new Coordinates(2, 20);
-        readonly TetrisBoardRenderer BoardDisplayer;
-        readonly TetrisPieceRenderer PieceDisplayer;
+        readonly TetrisBoardRenderer BoardRenderer;
         readonly TetrisTextRenderer TextRenderer;
 
-        readonly int WindowHeight = 28;
-        readonly int WindowWidth = 60;
         readonly int BorderWidth = 1;
 
         public TetrisConsoleUI(TetrisEngine engine) {
             Engine = engine;
-            BoardDisplayer = new TetrisBoardRenderer(engine, BoardWindowOrigin, BorderWidth);
-            PieceDisplayer = new TetrisPieceRenderer(BoardWindowOrigin, BorderWidth);
+            BoardRenderer = new TetrisBoardRenderer(engine, BoardWindowOrigin, BorderWidth);
             TextRenderer = new TetrisTextRenderer();
             WireEventHandlers();
         }
@@ -47,21 +43,23 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
-            PieceDisplayer.Display(arg.Piece, arg.Position);
+            BoardRenderer.DisplayPiece(arg.Piece, arg.Position);
+            TextRenderer.DeleteNextPiece(arg.Piece);
+            TextRenderer.DisplayNextPiece(arg.NextPiece);
         }
 
         private void Engine_PieceMoved(PieceMovedArgs args) {
-            PieceDisplayer.Delete(args.Piece, args.OldCoordinates);
-            PieceDisplayer.Display(args.Piece, args.NewCoordinates);
+            BoardRenderer.DeletePiece(args.Piece, args.OldCoordinates);
+            BoardRenderer.DisplayPiece(args.Piece, args.NewCoordinates);
         }
 
         private void Engine_RowsDeleted(TetrisFixedBricksState rowsDeleted) {
-            PieceDisplayer.UpdateRows(rowsDeleted);
+            BoardRenderer.UpdateRows(rowsDeleted);
         }
 
         private void Engine_PieceRotated(PieceRotatedArgs args) {
-            PieceDisplayer.Delete(args.PieceBeforeRotation, args.Coordinates);
-            PieceDisplayer.Display(args.PieceAfterRotation, args.Coordinates);
+            BoardRenderer.DeletePiece(args.PieceBeforeRotation, args.Coordinates);
+            BoardRenderer.DisplayPiece(args.PieceAfterRotation, args.Coordinates);
         }
 
         private void Engine_ScoreChanged(ScoreChangedArgs args) {
@@ -78,7 +76,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void Engine_GameInitialized(GameInitializedArgs args) {
-            BoardDisplayer.Display(args);
+            BoardRenderer.DisplayBoard(args);
             TextRenderer.DisplayInitial(Engine.Speed);
         }
 

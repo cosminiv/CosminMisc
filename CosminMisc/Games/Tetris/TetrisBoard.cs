@@ -15,6 +15,7 @@ namespace CosminIv.Games.Tetris
         int Rows { get; }
         int Columns { get; }
         TetrisPieceWithPosition CurrentPiece;
+        TetrisPiece NextPiece;
         TetrisCollisionDetector CollisionDetector;
         TetrisPieceFactory PieceFactory = new TetrisPieceFactory();
         TetrisFixedBricksLogic FixedBricks;
@@ -96,23 +97,19 @@ namespace CosminIv.Games.Tetris
             return FixedBricks.GetState();
         }
 
-        private TetrisPieceWithPosition MakePiece() {
-            TetrisPiece piece = PieceFactory.MakePiece();
-            RotatePieceRandomly(piece);
+        private TetrisPieceWithPosition MakePieceWithPosition() {
+            TetrisPieceWithPosition result = new TetrisPieceWithPosition();
 
-            TetrisPieceWithPosition pieceWithPosition = new TetrisPieceWithPosition {
-                Piece = piece,
-                Position = new Coordinates(0, Columns / 2)
-            };
+            if (NextPiece != null)
+                result.Piece = NextPiece;
+            else
+                result.Piece = PieceFactory.MakePiece();
 
-            return pieceWithPosition;
-        }
+            NextPiece = PieceFactory.MakePiece();
+            result.NextPiece = NextPiece;
+            result.Position = new Coordinates(0, Columns / 2);
 
-        private void RotatePieceRandomly(TetrisPiece piece) {
-            int rotationCount = Random.Next(4);
-            for (int i = 0; i <= rotationCount; i++) {
-                piece.Rotate90DegreesClockwise();
-            }
+            return result;
         }
 
         internal bool CanMovePiece(int rowDelta, int columnDelta) {
@@ -123,14 +120,14 @@ namespace CosminIv.Games.Tetris
             return CollisionDetector.CanRotatePiece(CurrentPiece);
         }
 
-        internal bool MakeNewPiece(out TetrisPieceWithPosition piece) {
-            piece = MakePiece();
+        internal TetrisPieceWithPosition MakeNewPiece() {
+            TetrisPieceWithPosition pieceWithPos = MakePieceWithPosition();
 
-            if (CollisionDetector.IsCollision(piece))
-                return false;
+            if (CollisionDetector.IsCollision(pieceWithPos))
+                return null;
             else {
-                CurrentPiece = piece;
-                return true;
+                CurrentPiece = pieceWithPos;
+                return pieceWithPos;
             }
         }
 

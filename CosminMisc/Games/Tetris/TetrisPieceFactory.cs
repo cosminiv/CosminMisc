@@ -13,6 +13,7 @@ namespace CosminIv.Games.Tetris
         TetrisPiece[] _prototypePieces = MakePrototypePieces();
         ConsoleColorFactory _colorFactory = new ConsoleColorFactory();
         Random _random = new Random();
+        TetrisPiece _nextPiece;
 
         public TetrisPiece MakePiece() {
             TetrisPiece piece = MakeRandomPiece();
@@ -26,8 +27,16 @@ namespace CosminIv.Games.Tetris
             piece.CopyFrom(prototypePiece);
 
             piece.Color = _colorFactory.MakeRandomColor();
+            RotatePieceRandomly(piece);
 
             return piece;
+        }
+
+        private void RotatePieceRandomly(TetrisPiece piece) {
+            int rotationCount = _random.Next(4);
+            for (int i = 0; i <= rotationCount; i++) {
+                piece.Rotate90DegreesClockwise();
+            }
         }
 
         private static TetrisPiece[] MakePrototypePieces() {

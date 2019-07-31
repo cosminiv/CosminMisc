@@ -195,8 +195,9 @@ namespace CosminIv.Games.Tetris
         }
 
         private void MakeNewPiece() {
-            bool couldPlacePiece = Board.MakeNewPiece(out TetrisPieceWithPosition piece);
-            if (couldPlacePiece)
+            TetrisPieceWithPosition piece = Board.MakeNewPiece();
+
+            if (piece != null)
                 PieceAppeared?.Invoke(piece);
             else
                 End();
