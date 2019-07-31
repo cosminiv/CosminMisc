@@ -8,5 +8,6 @@ namespace CosminIv.Games.Tetris.DTO.EventArg
         public TetrisPiece Piece;
         public Coordinates OldCoordinates;
         public Coordinates NewCoordinates;
+        public TetrisFixedBricksState FixedBricks;
     }
 }

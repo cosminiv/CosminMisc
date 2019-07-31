@@ -32,7 +32,6 @@ namespace CosminIv.Games.Tetris
 
         readonly int FullLinesForLevelUp = 7;
         readonly int MaxSpeed = 10;
-        //readonly object PieceMoveLock = new object();
 
         #endregion
 
@@ -61,7 +60,7 @@ namespace CosminIv.Games.Tetris
         public void MovePieceDown() {
             TryMovePieceResult result = TryMovePiece(1, 0);
             if (!result.Moved)
-                AfterStickPiece(result.FullRowCount);
+                AfterStickPiece(result.FixedBricks);
         }
 
         public void MovePieceAllTheWayDown() {
@@ -70,11 +69,14 @@ namespace CosminIv.Games.Tetris
 
             TryMovePieceResult result = Board.MovePieceAllTheWayDownAndStick();
             PieceMoved?.Invoke(result.PieceMovedArgs);
-            AfterStickPiece(result.FullRowCount);
+            AfterStickPiece(result.FixedBricks);
         }
 
-        private void AfterStickPiece(int fullRowCount) {
+        private void AfterStickPiece(TetrisFixedBricksState fixedBricks) {
+            int fullRowCount = fixedBricks.DeletedRowsIndexes.Count;
+
             if (fullRowCount > 0) {
+                RowsDeleted?.Invoke(fixedBricks);
                 UpdateScoreAfterFullRows(fullRowCount);
                 UpdateSpeedAfterFullRows(fullRowCount);
             }
@@ -147,7 +149,6 @@ namespace CosminIv.Games.Tetris
             Rows = Settings.Rows;
             Columns = Settings.Columns;
             Board = new TetrisBoard(Settings);
-            Board.RowsDeleted += Board_RowsDeleted;
             Speed = Settings.Speed;
             Score = 0;
             State = GameState.Paused;
@@ -232,10 +233,6 @@ namespace CosminIv.Games.Tetris
         int ComputeTimerInterval() {
             double interval = 1000 * (1 - (Speed - 1) * 0.1);
             return (int)interval;
-        }
-
-        private void Board_RowsDeleted(TetrisFixedBricksState rowsDeletedResult) {
-            RowsDeleted?.Invoke(rowsDeletedResult);
         }
 
         #endregion

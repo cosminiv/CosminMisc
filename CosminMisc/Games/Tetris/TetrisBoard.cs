@@ -45,7 +45,7 @@ namespace CosminIv.Games.Tetris
                 else {
                     bool tryingToMoveDown = rowDelta > 0;
                     if (tryingToMoveDown)
-                        result.FullRowCount = StickPiece();
+                        result.FixedBricks = StickPiece();
                 }
 
                 return result;
@@ -65,7 +65,7 @@ namespace CosminIv.Games.Tetris
                 PieceMovedArgs pieceMovedArgs = MovePiece(rowDelta, 0);
                 result.Moved = true;
                 result.PieceMovedArgs = pieceMovedArgs;
-                result.FullRowCount = StickPiece();
+                result.FixedBricks = StickPiece();
 
                 return result;
             }
@@ -85,24 +85,16 @@ namespace CosminIv.Games.Tetris
             return result;
         }
 
-        private int StickPiece() {
+        internal TetrisFixedBricksState StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
             TetrisFixedBricksState modifiedRows = FixedBricks.DeleteFullRows();
-            int fullRowCount = modifiedRows.DeletedRowsIndexes.Count;
 
-            if (fullRowCount > 0)
-                RowsDeleted?.Invoke(modifiedRows);
-
-            return fullRowCount;
+            return modifiedRows;
         }
 
         public TetrisFixedBricksState GetFixedBricks() {
             return FixedBricks.GetState();
         }
-
-        // events
-        public delegate void RowsDeletedHandler(TetrisFixedBricksState rowsDeletedResult);
-        public event RowsDeletedHandler RowsDeleted;
 
         private TetrisPieceWithPosition MakePiece() {
             TetrisPiece piece = PieceFactory.MakePiece();
@@ -123,7 +115,7 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        private bool CanMovePiece(int rowDelta, int columnDelta) {
+        internal bool CanMovePiece(int rowDelta, int columnDelta) {
             return CollisionDetector.CanMovePiece(CurrentPiece, rowDelta, columnDelta);
         }
 
@@ -142,7 +134,7 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        private PieceMovedArgs MovePiece(int rowDelta, int columnDelta) {
+        internal PieceMovedArgs MovePiece(int rowDelta, int columnDelta) {
             CurrentPiece.Position.Row += rowDelta;
             CurrentPiece.Position.Column += columnDelta;
             Coordinates pos = CurrentPiece.Position;
