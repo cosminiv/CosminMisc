@@ -146,8 +146,7 @@ namespace CosminIv.Games.Tetris
         }
 
         internal PieceRotatedArgs RotatePiece() {
-            TetrisPiece pieceBeforeRotation = new TetrisPiece(CurrentPiece.Piece.MaxSize);
-            pieceBeforeRotation.CopyFrom(CurrentPiece.Piece);
+            TetrisPiece pieceBeforeRotation = (TetrisPiece)CurrentPiece.Piece.Clone();
 
             CurrentPiece.Piece.Rotate90DegreesClockwise();
             Coordinates pos = CurrentPiece.Position;

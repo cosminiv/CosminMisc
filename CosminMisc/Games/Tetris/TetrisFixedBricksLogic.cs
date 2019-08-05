@@ -45,7 +45,7 @@ namespace CosminIv.Games.Tetris
                     if (brick != null) {
                         int rowRelativeToBoard = row + pieceWithPos.Position.Row;
                         int columnRelativeToBoard = column + pieceWithPos.Position.Column;
-                        Bricks[rowRelativeToBoard][columnRelativeToBoard] = brick;
+                        Bricks[rowRelativeToBoard][columnRelativeToBoard] = (TetrisBrick)brick.Clone();
                     }
                 }
             }
@@ -54,7 +54,7 @@ namespace CosminIv.Games.Tetris
         public TetrisFixedBricksState GetState() {
             TetrisFixedBricksState result = new TetrisFixedBricksState();
             result.RowsStartIndex = GetIndexOfTopMostNonEmptyRow();
-            result.Rows = Bricks.Where(row => !IsEmptyRow(row)).ToList();
+            result.Rows = Bricks.Where((row, index) => index >= result.RowsStartIndex).ToList();
             return result;
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CosminIv.Games.Tetris.DTO
 {
-    public class TetrisPiece {
+    public class TetrisPiece : ICloneable {
         TetrisBrick[][] Bricks;
         IColor _color;
 
@@ -74,14 +74,18 @@ namespace CosminIv.Games.Tetris.DTO
             return result;
         }
 
-        internal void CopyFrom(TetrisPiece other) {
+        public object Clone() {
+            TetrisPiece newPiece = new TetrisPiece(this.MaxSize);
+
             for (int rowIndex = 0; rowIndex < this.Bricks.Length; rowIndex++) {
                 for (int colIndex = 0; colIndex < this.Bricks[rowIndex].Length; colIndex++) {
-                    this.Bricks[rowIndex][colIndex] = other.Bricks[rowIndex][colIndex];
+                    newPiece.Bricks[rowIndex][colIndex] = this.Bricks[rowIndex][colIndex];
                 }
             }
 
-            Color = other.Color;
+            newPiece.Color = this.Color;
+
+            return newPiece;
         }
 
         public override string ToString() {

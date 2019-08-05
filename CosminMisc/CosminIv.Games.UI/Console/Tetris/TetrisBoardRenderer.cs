@@ -40,13 +40,13 @@ namespace CosminIv.Games.UI.Console.Tetris
             PieceRenderer.Delete(piece, windowCoord);
         }
 
-        public void UpdateRows(TetrisFixedBricksState modifiedRows) {
-            if (modifiedRows.DeletedRowsIndexes.Count == 0)
+        public void UpdateRows(TetrisFixedBricksState fixedBricks) {
+            if (fixedBricks.DeletedRowsIndexes.Count == 0)
                 return;
 
-            for (int rowIndex = 0; rowIndex < modifiedRows.Rows.Count; rowIndex++) {
-                TetrisBrick[] brickRow = modifiedRows.Rows[rowIndex];
-                int rowIndexRelativeToBoard = rowIndex + modifiedRows.RowsStartIndex;
+            for (int rowIndex = 0; rowIndex < fixedBricks.Rows.Count; rowIndex++) {
+                TetrisBrick[] brickRow = fixedBricks.Rows[rowIndex];
+                int rowIndexRelativeToBoard = rowIndex + fixedBricks.RowsStartIndex;
 
                 for (int columnIndex = 0; columnIndex < brickRow.Length; columnIndex++) {
                     TetrisBrick brick = brickRow[columnIndex];

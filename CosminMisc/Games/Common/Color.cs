@@ -2,20 +2,8 @@
 
 namespace CosminIv.Games.Common
 {
-    public class IColor
+    public interface IColor : ICloneable
     {
-        //public Color() {
-        //}
-
-        //public Color(byte red, byte green, byte blue) {
-        //    Red = red;
-        //    Green = green;
-        //    Blue = blue;
-        //}
-
-        //public byte Red { get; set; }
-        //public byte Green { get; set; }
-        //public byte Blue { get; set; }
     }
 
     public class ConsoleColor2 : IColor
@@ -25,5 +13,9 @@ namespace CosminIv.Games.Common
         }
 
         public ConsoleColor Value { get; set; }
+
+        public object Clone() {
+            return new ConsoleColor2(this.Value);
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace CosminIv.Games.Tetris.DTO
         public Coordinates Position { get; set; } = new Coordinates(0, 0);
 
         public void CopyFrom(TetrisPieceWithPosition other) {
-            this.Piece.CopyFrom(other.Piece);
+            this.Piece = (TetrisPiece)other.Piece.Clone();
             this.Position.CopyFrom(other.Position);
         }
     }
