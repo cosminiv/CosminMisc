@@ -12,6 +12,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly Coordinates BoardWindowOrigin = new Coordinates(2, 20);
         readonly TetrisBoardRenderer BoardRenderer;
         readonly TetrisTextRenderer TextRenderer;
+        readonly object DrawLock = new object();
 
         public TetrisConsoleUI(TetrisEngine engine) {
             Engine = engine;
@@ -39,42 +40,64 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void Engine_GameInitialized(GameInitializedArgs args) {
-            System.Console.Clear();
-            BoardRenderer.DisplayBoard(args);
-            TextRenderer.DisplayInitial(Engine.Speed);
+            SafeDraw(() => {
+                System.Console.Clear();
+                BoardRenderer.DisplayBoard(args);
+                TextRenderer.DisplayInitial(Engine.Speed);
+            });
+        }
+
+        private void SafeDraw(Action action) {
+            lock (DrawLock) {
+                action();
+            }
         }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
-            BoardRenderer.DisplayPiece(arg.Piece, arg.Position);
-            TextRenderer.DeleteNextPiece(arg.Piece);
-            TextRenderer.DisplayNextPiece(arg.NextPiece);
+            SafeDraw(() => {
+                BoardRenderer.DisplayPiece(arg.Piece, arg.Position);
+                TextRenderer.DeleteNextPiece(arg.Piece);
+                TextRenderer.DisplayNextPiece(arg.NextPiece);
+            });
         }
 
         private void Engine_PieceMoved(PieceMovedArgs args) {
-            BoardRenderer.DeletePiece(args.Piece, args.OldCoordinates);
-            BoardRenderer.DisplayPiece(args.Piece, args.NewCoordinates);
+            SafeDraw(() => {
+                BoardRenderer.DeletePiece(args.Piece, args.OldCoordinates);
+                BoardRenderer.DisplayPiece(args.Piece, args.NewCoordinates);
+            });
         }
 
         private void Engine_RowsDeleted(TetrisFixedBricksState rowsDeleted) {
-            BoardRenderer.UpdateRows(rowsDeleted);
+            SafeDraw(() => {
+                BoardRenderer.UpdateRows(rowsDeleted);
+            });
         }
 
         private void Engine_PieceRotated(PieceRotatedArgs args) {
-            BoardRenderer.DeletePiece(args.PieceBeforeRotation, args.Coordinates);
-            BoardRenderer.DisplayPiece(args.PieceAfterRotation, args.Coordinates);
+            SafeDraw(() => {
+                BoardRenderer.DeletePiece(args.PieceBeforeRotation, args.Coordinates);
+                BoardRenderer.DisplayPiece(args.PieceAfterRotation, args.Coordinates);
+            });
         }
 
         private void Engine_ScoreChanged(ScoreChangedArgs args) {
-            TextRenderer.DisplayScore(args.Score);
-            TextRenderer.DisplayLineCount(args.LineCount);
+            SafeDraw(() => {
+                TextRenderer.DisplayScore(args.Score);
+                TextRenderer.DisplayLineCount(args.LineCount);
+            });
         }
 
         private void Engine_GameEnded() {
-            TextRenderer.DisplayMessage(TetrisMessage.GameEnded);
+            SafeDraw(() => {
+                TextRenderer.DisplayMessage(TetrisMessage.GameEnded);
+            });
         }
 
         private void Engine_SpeedChanged(SpeedChangedArgs args) {
-            TextRenderer.DisplaySpeed(args.Speed);
+            SafeDraw(() => {
+                TextRenderer.DisplaySpeed(args.Speed);
+            });
         }
 
         private void MonitorKeyboard() {
