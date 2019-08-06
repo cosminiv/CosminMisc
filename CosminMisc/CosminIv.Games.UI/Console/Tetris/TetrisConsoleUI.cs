@@ -13,11 +13,9 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly TetrisBoardRenderer BoardRenderer;
         readonly TetrisTextRenderer TextRenderer;
 
-        readonly int BorderWidth = 1;
-
         public TetrisConsoleUI(TetrisEngine engine) {
             Engine = engine;
-            BoardRenderer = new TetrisBoardRenderer(engine, BoardWindowOrigin, BorderWidth);
+            BoardRenderer = new TetrisBoardRenderer(engine, BoardWindowOrigin);
             TextRenderer = new TetrisTextRenderer();
             WireEventHandlers();
         }

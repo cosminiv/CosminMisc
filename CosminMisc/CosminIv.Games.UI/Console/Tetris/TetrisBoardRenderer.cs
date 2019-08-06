@@ -12,16 +12,16 @@ namespace CosminIv.Games.UI.Console.Tetris
 {
     internal class TetrisBoardRenderer
     {
-        TetrisEngine Engine;
-        int BorderWidth;
-        Coordinates BoardWindowOrigin;
+        readonly TetrisEngine Engine;
+        readonly int BorderWidth;
+        readonly Coordinates BoardWindowOrigin;
         TetrisFixedBricksState FixedBricks;
-        TetrisPieceRenderer PieceRenderer;
+        readonly TetrisPieceRenderer PieceRenderer;
 
-        public TetrisBoardRenderer(TetrisEngine engine, Coordinates topLeft, int borderWidth) {
+        public TetrisBoardRenderer(TetrisEngine engine, Coordinates topLeft) {
             Engine = engine;
             BoardWindowOrigin = topLeft;
-            BorderWidth = borderWidth;
+            BorderWidth = 1;
             PieceRenderer = new TetrisPieceRenderer();
         }
 
