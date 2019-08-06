@@ -4,6 +4,7 @@ using CosminIv.Games.Tetris.DTO;
 using CosminIv.Games.Tetris.DTO.EventArg;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -72,7 +73,8 @@ namespace CosminIv.Games.UI.Console.Tetris
             System.Console.ForegroundColor = ConsoleColor.White;
             
             DisplayBoardHorizontalBorder(BoardWindowOrigin.Row);
-            string blankRowText = new string(Enumerable.Range(1, Engine.Columns).Select(i => ' ').ToArray());
+            string blankRowText = new string(Enumerable.Range(1, Engine.Columns)
+                .Select(i => TetrisConsoleConstants.Space[0]).ToArray());
             string borderRowText = TetrisConsoleConstants.VerticalBorder + blankRowText + TetrisConsoleConstants.VerticalBorder;
 
             for (int row = 0; row < Engine.Rows; row++) {
@@ -94,27 +96,29 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         private void DisplayFixedBrickCharacter(int row, int column) {
             if (FixedBricks.RowsStartIndex < 0) {
-                System.Console.Write(" ");
+                System.Console.Write(TetrisConsoleConstants.Space);
                 return;
             }
 
             int row2 = row - FixedBricks.RowsStartIndex;
             if (row2 < 0) {
-                System.Console.Write(" ");
+                System.Console.Write(TetrisConsoleConstants.Space);
                 return;
             }
 
             TetrisBrick brick = FixedBricks.Rows[row2][column];
 
+            int windowColumn = column + BoardWindowOrigin.Column + BorderWidth;
+            int windowRow = row + BoardWindowOrigin.Row + BorderWidth;
+            System.Console.SetCursorPosition(left: windowColumn, top: windowRow);
+
             if (brick != null) {
-                int windowColumn = column + BoardWindowOrigin.Column + BorderWidth;
-                int windowRow = row + BoardWindowOrigin.Row + BorderWidth;
-                System.Console.SetCursorPosition(left: windowColumn, top: windowRow);
                 System.Console.ForegroundColor = (brick.Color as ConsoleColor2).Value;
                 System.Console.Write(TetrisConsoleConstants.Brick);
             }
-            else
+            else {
                 System.Console.Write(TetrisConsoleConstants.Space);
+            }
         }
 
         private void DisplayBoardHorizontalBorder(int windowRow) {
