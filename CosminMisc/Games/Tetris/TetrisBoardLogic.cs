@@ -132,14 +132,9 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        internal TetrisState MovePiece(int rowDelta, int columnDelta) {
+        internal void MovePiece(int rowDelta, int columnDelta) {
             CurrentPiece.Position.Row += rowDelta;
             CurrentPiece.Position.Column += columnDelta;
-            Coordinates pos = CurrentPiece.Position;
-
-            TetrisState result = GetState();
-
-            return result;
         }
 
         public TetrisState GetState() {
