@@ -30,13 +30,17 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         private void WireEventHandlers() {
             Engine.GameInitialized += Engine_GameInitialized;
-            Engine.PieceAppeared += Engine_PieceAppeared;
-            Engine.PieceMoved += Engine_PieceMoved;
-            Engine.RowsDeleted += Engine_RowsDeleted;
+            Engine.StateChanged += Engine_StateChanged;
             Engine.PieceRotated += Engine_PieceRotated;
             Engine.GameEnded += Engine_GameEnded;
             Engine.ScoreChanged += Engine_ScoreChanged;
             Engine.SpeedChanged += Engine_SpeedChanged;
+        }
+
+        private void Engine_StateChanged(TetrisState state) {
+            SafeDraw(() => {
+                BoardRenderer.DisplayBoard(state);
+            });
         }
 
         private void Engine_GameInitialized(GameInitializedArgs args) {
@@ -51,27 +55,6 @@ namespace CosminIv.Games.UI.Console.Tetris
             lock (DrawLock) {
                 action();
             }
-        }
-
-        private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
-            SafeDraw(() => {
-                BoardRenderer.DisplayPiece(arg.Piece, arg.Position);
-                TextRenderer.DeleteNextPiece(arg.Piece);
-                TextRenderer.DisplayNextPiece(arg.NextPiece);
-            });
-        }
-
-        private void Engine_PieceMoved(PieceMovedArgs args) {
-            SafeDraw(() => {
-                BoardRenderer.DeletePiece(args.Piece, args.OldCoordinates);
-                BoardRenderer.DisplayPiece(args.Piece, args.NewCoordinates);
-            });
-        }
-
-        private void Engine_RowsDeleted(TetrisFixedBricksState rowsDeleted) {
-            SafeDraw(() => {
-                BoardRenderer.UpdateRows(rowsDeleted);
-            });
         }
 
         private void Engine_PieceRotated(PieceRotatedArgs args) {
@@ -125,6 +108,9 @@ namespace CosminIv.Games.UI.Console.Tetris
                         break;
                     case ConsoleKey.Spacebar:
                         Engine.MovePieceAllTheWayDown();
+                        break;
+                    case ConsoleKey.Q:
+                        Environment.Exit(0);
                         break;
                 }
             }

@@ -8,7 +8,7 @@ namespace CosminIv.Games.Common.Color
             Value = value;
         }
 
-        public ConsoleColor Value { get; set; }
+        public ConsoleColor Value { get; }
 
         public object Clone() {
             return new ConsoleColor2(this.Value);

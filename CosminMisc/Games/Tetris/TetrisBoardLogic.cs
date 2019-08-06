@@ -34,28 +34,25 @@ namespace CosminIv.Games.Tetris
         internal TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
             lock (PieceMoveLock) {
                 TryMovePieceResult result = new TryMovePieceResult();
-                result.Moved = false;
-
                 bool canMove = CanMovePiece(rowDelta, columnDelta);
 
                 if (canMove) {
-                    PieceMovedArgs pieceMovedArgs = MovePiece(rowDelta, columnDelta);
+                    MovePiece(rowDelta, columnDelta);
                     result.Moved = true;
-                    result.PieceMovedArgs = pieceMovedArgs;
                 }
                 else {
                     bool tryingToMoveDown = rowDelta > 0;
                     if (tryingToMoveDown)
-                        result.FixedBricks = StickPiece();
+                        result.DeletedRows = StickPiece();
                 }
 
+                result.State = GetState();
                 return result;
             }
         }
 
         internal TryMovePieceResult MovePieceAllTheWayDownAndStick() {
             lock (PieceMoveLock) {
-                TryMovePieceResult result = new TryMovePieceResult();
                 int rowDelta = 1;
 
                 while (CollisionDetector.CanMovePiece(CurrentPiece, rowDelta, 0))
@@ -63,10 +60,14 @@ namespace CosminIv.Games.Tetris
 
                 rowDelta--;
 
-                PieceMovedArgs pieceMovedArgs = MovePiece(rowDelta, 0);
-                result.Moved = true;
-                result.PieceMovedArgs = pieceMovedArgs;
-                result.FixedBricks = StickPiece();
+                MovePiece(rowDelta, 0);
+
+                int deletedRows = StickPiece();
+
+                TryMovePieceResult result = new TryMovePieceResult {
+                    DeletedRows = deletedRows,
+                    State = GetState()
+                };
 
                 return result;
             }
@@ -86,11 +87,11 @@ namespace CosminIv.Games.Tetris
             return result;
         }
 
-        internal TetrisFixedBricksState StickPiece() {
+        internal int StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
             TetrisFixedBricksState modifiedRows = FixedBricks.DeleteFullRows();
 
-            return modifiedRows;
+            return modifiedRows.DeletedRowsIndexes.Count();
         }
 
         public TetrisFixedBricksState GetFixedBricks() {
@@ -131,18 +132,46 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        internal PieceMovedArgs MovePiece(int rowDelta, int columnDelta) {
+        internal TetrisState MovePiece(int rowDelta, int columnDelta) {
             CurrentPiece.Position.Row += rowDelta;
             CurrentPiece.Position.Column += columnDelta;
             Coordinates pos = CurrentPiece.Position;
 
-            PieceMovedArgs result = new PieceMovedArgs {
-                Piece = CurrentPiece.Piece,
-                OldCoordinates = new Coordinates(pos.Row - rowDelta, pos.Column - columnDelta),
-                NewCoordinates = new Coordinates(pos.Row, pos.Column)
-            };
+            TetrisState result = GetState();
 
             return result;
+        }
+
+        public TetrisState GetState() {
+            TetrisState state = new TetrisState(Rows, Columns);
+            CopyFixedBricksInState(state);
+            CopyCurrentPieceInState(state);
+            return state;
+        }
+
+        private void CopyFixedBricksInState(TetrisState state) {
+            TetrisFixedBricksState fixedBricks = FixedBricks.GetState();
+
+            for (int row = 0; row < fixedBricks.Rows.Count; row++) {
+                for (int col = 0; col < Columns; col++) {
+                    TetrisBrick fixedBrick = fixedBricks.Rows[row][col];
+                    if (fixedBrick != null)
+                        state.Bricks[row + fixedBricks.RowsStartIndex][col] = (TetrisBrick)fixedBrick.Clone();
+                }
+            }
+        }
+
+        private void CopyCurrentPieceInState(TetrisState state) {
+            for (int row = 0; row < CurrentPiece.Piece.MaxSize; row++) {
+                for (int col = 0; col < CurrentPiece.Piece.MaxSize; col++) {
+                    int boardRow = row + CurrentPiece.Position.Row;
+                    int boardCol = col + CurrentPiece.Position.Column;
+                    TetrisBrick brick = CurrentPiece.Piece[row, col];
+
+                    if (brick != null)
+                        state.Bricks[boardRow][boardCol] = (TetrisBrick)brick.Clone();
+                }
+            }
         }
 
         internal PieceRotatedArgs RotatePiece() {

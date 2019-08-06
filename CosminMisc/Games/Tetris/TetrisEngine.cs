@@ -60,7 +60,7 @@ namespace CosminIv.Games.Tetris
         public void MovePieceDown() {
             TryMovePieceResult result = TryMovePiece(1, 0);
             if (!result.Moved)
-                AfterStickPiece(result.FixedBricks);
+                AfterStickPiece(result.DeletedRows);
         }
 
         public void MovePieceAllTheWayDown() {
@@ -68,17 +68,14 @@ namespace CosminIv.Games.Tetris
                 return;
 
             TryMovePieceResult result = Board.MovePieceAllTheWayDownAndStick();
-            PieceMoved?.Invoke(result.PieceMovedArgs);
-            AfterStickPiece(result.FixedBricks);
+            AfterStickPiece(result.DeletedRows);
+            StateChanged?.Invoke(result.State);
         }
 
-        private void AfterStickPiece(TetrisFixedBricksState fixedBricks) {
-            int fullRowCount = fixedBricks.DeletedRowsIndexes.Count;
-
-            if (fullRowCount > 0) {
-                RowsDeleted?.Invoke(fixedBricks);
-                UpdateScoreAfterFullRows(fullRowCount);
-                UpdateSpeedAfterFullRows(fullRowCount);
+        private void AfterStickPiece(int deletedRows) {
+            if (deletedRows > 0) {
+                UpdateScoreAfterFullRows(deletedRows);
+                UpdateSpeedAfterFullRows(deletedRows);
             }
 
             MakeNewPiece();
@@ -115,17 +112,11 @@ namespace CosminIv.Games.Tetris
 
         #region Public events
 
-        public delegate void PieceAppearedHandler(TetrisPieceWithPosition pieceWithPos);
-        public event PieceAppearedHandler PieceAppeared;
-
-        public delegate void PieceMovedHandler(PieceMovedArgs args);
-        public event PieceMovedHandler PieceMoved;
+        public delegate void StateChangedHandler(TetrisState state);
+        public event StateChangedHandler StateChanged;
 
         public delegate void PieceRotatedHandler(PieceRotatedArgs args);
         public event PieceRotatedHandler PieceRotated;
-
-        public delegate void RowsDeletedHandler(TetrisFixedBricksState modifiedRows);
-        public event RowsDeletedHandler RowsDeleted;
 
         public delegate void ScoreChangedHandler(ScoreChangedArgs args);
         public event ScoreChangedHandler ScoreChanged;
@@ -160,11 +151,8 @@ namespace CosminIv.Games.Tetris
                 return new TryMovePieceResult { Moved = false };
 
             TryMovePieceResult result = Board.TryMovePiece(rowDelta, columnDelta);
-
-            if (result.Moved) {
-                Debug.Assert(result.PieceMovedArgs != null);
-                PieceMoved?.Invoke(result.PieceMovedArgs);
-            }
+            if (result.Moved)
+                StateChanged?.Invoke(result.State);
 
             return result;
         }
@@ -198,7 +186,7 @@ namespace CosminIv.Games.Tetris
             TetrisPieceWithPosition piece = Board.MakeNewPiece();
 
             if (piece != null)
-                PieceAppeared?.Invoke(piece);
+                StateChanged?.Invoke(Board.GetState());
             else
                 End();
         }

@@ -17,7 +17,8 @@ namespace CosminIv.Games.Tetris
         Random Random = new Random();
 
         public TetrisFixedBricksLogic(int rows, int columns, int populatedRows) {
-            InitalizeBrickMatrix(rows, columns);
+            //InitalizeBrickMatrix(rows, columns);
+            Bricks = new MatrixUtil<TetrisBrick>().Init(rows, columns);
             PopulateRows(populatedRows);
             FullRowsDeleter = new TetrisFullRowsDeleter(Bricks);
         }
@@ -98,12 +99,12 @@ namespace CosminIv.Games.Tetris
             return row.All(brick => brick == null);
         }
 
-        private void InitalizeBrickMatrix(int rows, int columns) {
-            Bricks = new TetrisBrick[rows][];
-            for (int i = 0; i < rows; i++) {
-                Bricks[i] = new TetrisBrick[columns];
-            }
-        }
+        //private void InitalizeBrickMatrix(int rows, int columns) {
+        //    Bricks = new TetrisBrick[rows][];
+        //    for (int i = 0; i < rows; i++) {
+        //        Bricks[i] = new TetrisBrick[columns];
+        //    }
+        //}
 
         private void PopulateRows(int rowCount) {
             for (int rowIndex = Bricks.Length - 1; rowIndex >= 0 && rowCount > 0; rowIndex--) {

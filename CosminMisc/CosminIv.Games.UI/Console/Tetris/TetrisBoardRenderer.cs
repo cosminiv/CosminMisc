@@ -37,6 +37,10 @@ namespace CosminIv.Games.UI.Console.Tetris
             PieceRenderer.Display(piece, windowCoord);
         }
 
+        public void DisplayBoard(TetrisState state) {
+            DisplayBricks(state);
+        }
+
         public void DeletePiece(TetrisPiece piece, Coordinates boardCoord) {
             Coordinates windowCoord = MakeWindowCoordinates(boardCoord);
             PieceRenderer.Delete(piece, windowCoord, false);
@@ -87,11 +91,35 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplayBoardHorizontalBorder(BoardWindowOrigin.Row + BorderWidth + Engine.Rows);
         }
 
+        private void DisplayBricks(TetrisState state) {
+            for (int row = 0; row < state.Rows; row++) {
+                for (int column = 0; column < state.Columns; column++) {
+                    DisplayBrickCharacter(state, row, column);
+                }
+            }
+        }
+
         private void DisplayFixedBricks() {
             for (int row = 0; row < Engine.Rows; row++) {
                 for (int column = 0; column < Engine.Columns; column++) {
                     DisplayFixedBrickCharacter(row, column);
                 }
+            }
+        }
+
+        private void DisplayBrickCharacter(TetrisState state, int row, int column) {
+            TetrisBrick brick = state.Bricks[row][column];
+
+            int windowColumn = column + BoardWindowOrigin.Column + BorderWidth;
+            int windowRow = row + BoardWindowOrigin.Row + BorderWidth;
+            System.Console.SetCursorPosition(left: windowColumn, top: windowRow);
+
+            if (brick != null) {
+                System.Console.ForegroundColor = (brick.Color as ConsoleColor2).Value;
+                System.Console.Write(TetrisConsoleConstants.Brick);
+            }
+            else {
+                System.Console.Write(TetrisConsoleConstants.Space);
             }
         }
 
