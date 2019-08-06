@@ -3,8 +3,6 @@ using CosminIv.Games.Tetris;
 using CosminIv.Games.Tetris.DTO;
 using CosminIv.Games.Tetris.DTO.EventArg;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {
@@ -32,6 +30,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void WireEventHandlers() {
+            Engine.GameInitialized += Engine_GameInitialized;
             Engine.PieceAppeared += Engine_PieceAppeared;
             Engine.PieceMoved += Engine_PieceMoved;
             Engine.RowsDeleted += Engine_RowsDeleted;
@@ -39,7 +38,12 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine.GameEnded += Engine_GameEnded;
             Engine.ScoreChanged += Engine_ScoreChanged;
             Engine.SpeedChanged += Engine_SpeedChanged;
-            Engine.GameInitialized += Engine_GameInitialized;
+        }
+
+        private void Engine_GameInitialized(GameInitializedArgs args) {
+            System.Console.Clear();
+            BoardRenderer.DisplayBoard(args);
+            TextRenderer.DisplayInitial(Engine.Speed);
         }
 
         private void Engine_PieceAppeared(TetrisPieceWithPosition arg) {
@@ -75,11 +79,6 @@ namespace CosminIv.Games.UI.Console.Tetris
             TextRenderer.DisplaySpeed(args.Speed);
         }
 
-        private void Engine_GameInitialized(GameInitializedArgs args) {
-            BoardRenderer.DisplayBoard(args);
-            TextRenderer.DisplayInitial(Engine.Speed);
-        }
-
         private void MonitorKeyboard() {
             while (true) {
                 ConsoleKeyInfo keyInfo = System.Console.ReadKey(true);
@@ -101,7 +100,6 @@ namespace CosminIv.Games.UI.Console.Tetris
                         Engine.TogglePause();
                         break;
                     case ConsoleKey.R:
-                        TextRenderer.DisplayMessage("                                 ");
                         Engine.Restart();
                         break;
                     case ConsoleKey.Spacebar:

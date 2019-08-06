@@ -13,14 +13,15 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         public void Display(TetrisPiece piece, Coordinates coordinates) {
-            DisplayInPlaceOfPiece(piece, coordinates, TetrisConsoleConstants.Brick);
+            DisplayInPlaceOfPiece(piece, coordinates, TetrisConsoleConstants.Brick, "");
         }
 
-        public void Delete(TetrisPiece piece, Coordinates coordinates) {
-            DisplayInPlaceOfPiece(piece, coordinates, TetrisConsoleConstants.Space);
+        public void Delete(TetrisPiece piece, Coordinates coordinates, bool printSpaces) {
+            string blank = printSpaces ? TetrisConsoleConstants.Space : "";
+            DisplayInPlaceOfPiece(piece, coordinates, TetrisConsoleConstants.Space, blank);
         }
 
-        private void DisplayInPlaceOfPiece(TetrisPiece piece, Coordinates coord, string displayChar) {
+        private void DisplayInPlaceOfPiece(TetrisPiece piece, Coordinates coord, string displayChar, string blankChar) {
             System.Console.ForegroundColor = (piece.Color as ConsoleColor2).Value;
 
             for (int pieceRow = 0; pieceRow < piece.MaxSize; pieceRow++) {
@@ -30,7 +31,7 @@ namespace CosminIv.Games.UI.Console.Tetris
                     bool isBrick = piece[pieceRow, pieceColumn] != null;
 
                     System.Console.SetCursorPosition(windowColumn, windowRow);
-                    System.Console.Write(isBrick ? displayChar.ToString() : "");
+                    System.Console.Write(isBrick ? displayChar.ToString() : blankChar);
                 }
             }
         }

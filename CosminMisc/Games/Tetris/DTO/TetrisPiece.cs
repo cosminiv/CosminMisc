@@ -8,7 +8,7 @@ namespace CosminIv.Games.Tetris.DTO
 {
     public class TetrisPiece : ICloneable {
         TetrisBrick[][] Bricks;
-        IColor _color;
+        IColor _color = new ConsoleColor2(ConsoleColor.White);
 
         public TetrisPiece(int maxSize) {
             MaxSize = maxSize;

@@ -38,7 +38,7 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         public void DeletePiece(TetrisPiece piece, Coordinates boardCoord) {
             Coordinates windowCoord = MakeWindowCoordinates(boardCoord);
-            PieceRenderer.Delete(piece, windowCoord);
+            PieceRenderer.Delete(piece, windowCoord, false);
         }
 
         public void UpdateRows(TetrisFixedBricksState fixedBricks) {

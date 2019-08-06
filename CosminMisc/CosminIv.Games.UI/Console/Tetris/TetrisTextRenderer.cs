@@ -50,7 +50,7 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         internal void DeleteNextPiece(TetrisPiece piece) {
             Coordinates coord = new Coordinates(NextPieceLine, NextPieceText.Length);
-            PieceRender.Delete(piece, coord);
+            PieceRender.Delete(piece, coord, true);
         }
 
         private void DisplayMessage(string message, int line) {

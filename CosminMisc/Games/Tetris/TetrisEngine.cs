@@ -50,10 +50,10 @@ namespace CosminIv.Games.Tetris
 
         public void Start() {
             if (State == GameState.Paused) {
-                MakeNewPiece();
                 Timer.Enabled = true;
                 State = GameState.Running;
                 GameInitialized?.Invoke(new GameInitializedArgs { FixedBricks = Board.GetFixedBricks() });
+                MakeNewPiece();
             }
         }
 
