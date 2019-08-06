@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CosminIv.Games.Common
+namespace CosminIv.Games.Common.Color
 {
     class ConsoleColorFactory
     {

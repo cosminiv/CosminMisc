@@ -1,11 +1,7 @@
 ﻿using System;
 
-namespace CosminIv.Games.Common
+namespace CosminIv.Games.Common.Color
 {
-    public interface IColor : ICloneable
-    {
-    }
-
     public class ConsoleColor2 : IColor
     {
         public ConsoleColor2(ConsoleColor value) {
