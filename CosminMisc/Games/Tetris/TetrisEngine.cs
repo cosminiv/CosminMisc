@@ -94,12 +94,8 @@ namespace CosminIv.Games.Tetris
         }
 
         public void TogglePause() {
-            Timer.Enabled = !Timer.Enabled;
-
-            if (State == GameState.Running)
-                State = GameState.Paused;
-            else if (State == GameState.Paused)
-                State = GameState.Running;
+            ToggleTimerState();
+            ToggleGameState();
         }
 
         public void Restart() {
@@ -209,6 +205,17 @@ namespace CosminIv.Games.Tetris
         int ComputeTimerInterval() {
             double interval = 1000 * (1 - (Speed - 1) * 0.1);
             return (int)interval;
+        }
+
+        private void ToggleGameState() {
+            if (State == GameState.Running)
+                State = GameState.Paused;
+            else if (State == GameState.Paused)
+                State = GameState.Running;
+        }
+
+        private void ToggleTimerState() {
+            Timer.Enabled = !Timer.Enabled;
         }
 
         #endregion

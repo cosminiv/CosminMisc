@@ -77,7 +77,8 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void DisplayBoardBorder() {
             System.Console.ForegroundColor = ConsoleColor.White;
             
-            DisplayBoardHorizontalBorder(BoardWindowOrigin.Row);
+            DisplayBoardHorizontalBorder(BoardWindowOrigin.Row, TetrisConsoleConstants.BorderCornerUpLeft,
+                TetrisConsoleConstants.BorderCornerUpRight);
             string blankRowText = new string(Enumerable.Range(1, Engine.Columns)
                 .Select(i => TetrisConsoleConstants.Space[0]).ToArray());
             string borderRowText = TetrisConsoleConstants.VerticalBorder + blankRowText + TetrisConsoleConstants.VerticalBorder;
@@ -88,7 +89,7 @@ namespace CosminIv.Games.UI.Console.Tetris
                 System.Console.Write(borderRowText);
             }
 
-            DisplayBoardHorizontalBorder(BoardWindowOrigin.Row + BorderWidth + Engine.Rows);
+            DisplayBoardHorizontalBorder(BoardWindowOrigin.Row + BorderWidth + Engine.Rows, TetrisConsoleConstants.BorderCornerDownLeft, TetrisConsoleConstants.BorderCornerDownRight);
         }
 
         private void DisplayBricks(TetrisState state) {
@@ -150,12 +151,12 @@ namespace CosminIv.Games.UI.Console.Tetris
             }
         }
 
-        private void DisplayBoardHorizontalBorder(int windowRow) {
+        private void DisplayBoardHorizontalBorder(int windowRow, string leftCorner, string rightCorner) {
             System.Console.SetCursorPosition(left: BoardWindowOrigin.Column, top: windowRow);
-            
-            for (int i = 0; i < Engine.Columns + 2 * BorderWidth; i++) {
+            System.Console.Write(leftCorner);
+            for (int i = 0; i < Engine.Columns; i++) 
                 System.Console.Write(TetrisConsoleConstants.HorizontalBorder);
-            }
+            System.Console.Write(rightCorner);
         }
     }
 }

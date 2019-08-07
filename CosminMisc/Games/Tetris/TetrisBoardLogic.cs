@@ -18,6 +18,7 @@ namespace CosminIv.Games.Tetris
         TetrisPieceWithPosition CurrentPiece;
         TetrisPieceWithPosition GhostPiece;
         bool ShowGhost;
+        readonly int MinGhostDistance = 7;
         TetrisPiece NextPiece;
         TetrisCollisionDetector CollisionDetector;
         TetrisPieceFactory PieceFactory = new TetrisPieceFactory();
@@ -62,12 +63,12 @@ namespace CosminIv.Games.Tetris
 
         internal TryMovePieceResult MovePieceAllTheWayDownAndStick() {
             lock (PieceMoveLock) {
-                bool moved = MovePieceAllTheWayDown(CurrentPiece);
+                int rowDeltaMoved = MovePieceAllTheWayDown(CurrentPiece);
                 int deletedRows = StickPiece();
                 MakeNewPiece();
 
                 TryMovePieceResult result = new TryMovePieceResult {
-                    Moved = moved,
+                    Moved = rowDeltaMoved > 0,
                     DeletedRows = deletedRows,
                     State = GetState(),
                     IsGameEnd = CurrentPiece == null
@@ -77,7 +78,7 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        bool MovePieceAllTheWayDown(TetrisPieceWithPosition piece) {
+        int MovePieceAllTheWayDown(TetrisPieceWithPosition piece) {
             int rowDelta = 1;
 
             while (CollisionDetector.CanMovePiece(piece, rowDelta, 0))
@@ -85,7 +86,7 @@ namespace CosminIv.Games.Tetris
 
             rowDelta--;
             MovePiece(piece, rowDelta, 0);
-            return rowDelta > 0;
+            return rowDelta;
         }
 
         internal TryRotatePieceResult TryRotatePiece() {
@@ -156,7 +157,7 @@ namespace CosminIv.Games.Tetris
             piece.Position.Row += rowDelta;
             piece.Position.Column += columnDelta;
 
-            if (columnDelta != 0)
+            if (piece != GhostPiece)
                 ComputeGhost();
         }
 
@@ -166,7 +167,9 @@ namespace CosminIv.Games.Tetris
             GhostPiece = (TetrisPieceWithPosition)CurrentPiece.Clone();
             // TODO: remove console color (not general enough)
             GhostPiece.Piece.Color = new ConsoleColor2(ConsoleColor.DarkGray);   
-            MovePieceAllTheWayDown(GhostPiece);
+            int rowDelta = MovePieceAllTheWayDown(GhostPiece);
+            if (rowDelta < MinGhostDistance)
+                GhostPiece = null;
         }
 
         public TetrisState GetState() {
