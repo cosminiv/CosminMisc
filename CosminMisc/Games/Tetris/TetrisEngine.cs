@@ -112,6 +112,9 @@ namespace CosminIv.Games.Tetris
 
         #region Public events
 
+        public delegate void GameInitializedHandler(GameInitializedArgs args);
+        public event GameInitializedHandler GameInitialized;
+
         public delegate void StateChangedHandler(TetrisState state);
         public event StateChangedHandler StateChanged;
 
@@ -123,9 +126,6 @@ namespace CosminIv.Games.Tetris
 
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
-
-        public delegate void GameInitializedHandler(GameInitializedArgs args);
-        public event GameInitializedHandler GameInitialized;
 
         #endregion
 

@@ -80,11 +80,12 @@ namespace CosminIv.Games.Tetris.DTO
 
             for (int rowIndex = 0; rowIndex < this.Bricks.Length; rowIndex++) {
                 for (int colIndex = 0; colIndex < this.Bricks[rowIndex].Length; colIndex++) {
-                    newPiece.Bricks[rowIndex][colIndex] = this.Bricks[rowIndex][colIndex];
+                    TetrisBrick brick = Bricks[rowIndex][colIndex];
+                    newPiece.Bricks[rowIndex][colIndex] = (brick != null ? (TetrisBrick)brick.Clone() : null);
                 }
             }
 
-            newPiece.Color = this.Color;
+            newPiece.Color = (IColor)Color.Clone();
 
             return newPiece;
         }

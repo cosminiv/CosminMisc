@@ -1,6 +1,8 @@
-﻿namespace CosminIv.Games.Common
+﻿using System;
+
+namespace CosminIv.Games.Common
 {
-    public class Coordinates
+    public class Coordinates : ICloneable
     {
         public Coordinates(int row, int column) {
             Row = row;
@@ -9,6 +11,10 @@
 
         public int Row { get; set; }
         public int Column { get; set; }
+
+        public object Clone() {
+            return new Coordinates(Row, Column);
+        }
 
         public void CopyFrom(Coordinates other) {
             this.Row = other.Row;
