@@ -19,7 +19,7 @@ namespace ConsoleApp_Core
 
         private static void RunTetris() {
             TetrisEngineSettings settings = new TetrisEngineSettings {
-                Columns = 8,
+                Columns = 16,
                 Logger = new DebugLogger(),
                 Rows = 15,
                 Speed = 3,

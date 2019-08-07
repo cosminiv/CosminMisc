@@ -65,6 +65,7 @@ namespace CosminIv.Games.Tetris
                 int deletedRows = StickPiece();
 
                 TryMovePieceResult result = new TryMovePieceResult {
+                    Moved = rowDelta > 0,
                     DeletedRows = deletedRows,
                     State = GetState()
                 };
@@ -90,6 +91,7 @@ namespace CosminIv.Games.Tetris
         internal int StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
             TetrisFixedBricksState fixedBricks = FixedBricks.DeleteFullRows();
+            CurrentPiece = null;
             return fixedBricks.DeletedRows;
         }
 
@@ -157,6 +159,9 @@ namespace CosminIv.Games.Tetris
         }
 
         private void CopyCurrentPieceInState(TetrisState state) {
+            if (CurrentPiece == null)
+                return;
+
             for (int row = 0; row < CurrentPiece.Piece.MaxSize; row++) {
                 for (int col = 0; col < CurrentPiece.Piece.MaxSize; col++) {
                     int boardRow = row + CurrentPiece.Position.Row;
