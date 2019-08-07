@@ -3,6 +3,7 @@ using CosminIv.Games.Tetris;
 using CosminIv.Games.Tetris.DTO;
 using CosminIv.Games.Tetris.DTO.EventArg;
 using System;
+using System.Diagnostics;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {
@@ -39,6 +40,7 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         private void Engine_StateChanged(TetrisState state) {
             SafeDraw(() => {
+                //Debug.WriteLine("StateChanged");
                 BoardRenderer.DisplayBoard(state);
             });
         }

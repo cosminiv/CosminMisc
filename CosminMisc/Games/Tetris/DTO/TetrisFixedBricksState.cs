@@ -6,7 +6,7 @@ namespace CosminIv.Games.Tetris.DTO
 {
     public class TetrisFixedBricksState
     {
-        public List<int> DeletedRowsIndexes { get; set; } = new List<int>();
+        public int DeletedRows { get; set; }
         public int RowsStartIndex { get; set; }
         public List<TetrisBrick[]> Rows { get; set; } = new List<TetrisBrick[]>();
     }

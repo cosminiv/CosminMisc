@@ -91,7 +91,7 @@ namespace CosminIv.Games.Tetris
             FixedBricks.AddPiece(CurrentPiece);
             TetrisFixedBricksState modifiedRows = FixedBricks.DeleteFullRows();
 
-            return modifiedRows.DeletedRowsIndexes.Count();
+            return modifiedRows.DeletedRows;
         }
 
         public TetrisFixedBricksState GetFixedBricks() {

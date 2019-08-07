@@ -46,7 +46,7 @@ namespace CosminIv.Games.Tetris
         private TetrisFixedBricksState DeleteFullRows(List<int> fullRowsIndexes) {
             if (fullRowsIndexes.Count == 0) {
                 return new TetrisFixedBricksState {
-                    DeletedRowsIndexes = fullRowsIndexes,
+                    DeletedRows = fullRowsIndexes.Count,
                     Rows = new List<TetrisBrick[]>(),
                     RowsStartIndex = 0
                 };
@@ -57,7 +57,7 @@ namespace CosminIv.Games.Tetris
             DeleteRows(copyResult.StartIndex, fullRowsIndexes.Count());
 
             return new TetrisFixedBricksState {
-                DeletedRowsIndexes = fullRowsIndexes,
+                DeletedRows = fullRowsIndexes.Count,
                 RowsStartIndex = copyResult.StartIndex,
                 Rows = Bricks.Where((rows, i) => i >= copyResult.StartIndex && i <= fullRowsIndexes.Max()).ToList()
             };

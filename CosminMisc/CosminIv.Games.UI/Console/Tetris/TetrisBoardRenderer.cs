@@ -47,7 +47,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         public void UpdateRows(TetrisFixedBricksState fixedBricks) {
-            if (fixedBricks.DeletedRowsIndexes.Count == 0)
+            if (fixedBricks.DeletedRows == 0)
                 return;
 
             for (int rowIndex = 0; rowIndex < fixedBricks.Rows.Count; rowIndex++) {
