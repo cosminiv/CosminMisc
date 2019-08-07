@@ -87,9 +87,9 @@ namespace CosminIv.Games.Tetris
 
             lock (PieceMoveLock) {
                 if (CanRotatePiece()) {
-                    PieceRotatedArgs pieceRotatedArgs = RotatePiece();
+                    CurrentPiece.Piece.Rotate90DegreesClockwise();
                     result.Rotated = true;
-                    result.PieceRotatedArgs = pieceRotatedArgs;
+                    result.State = GetState();
                 }
             }
 
@@ -178,21 +178,6 @@ namespace CosminIv.Games.Tetris
                         state.Bricks[boardRow][boardCol] = (TetrisBrick)brick.Clone();
                 }
             }
-        }
-
-        internal PieceRotatedArgs RotatePiece() {
-            TetrisPiece pieceBeforeRotation = (TetrisPiece)CurrentPiece.Piece.Clone();
-
-            CurrentPiece.Piece.Rotate90DegreesClockwise();
-            Coordinates pos = CurrentPiece.Position;
-
-            PieceRotatedArgs result = new PieceRotatedArgs {
-                Coordinates = CurrentPiece.Position,
-                PieceBeforeRotation = pieceBeforeRotation,
-                PieceAfterRotation = CurrentPiece.Piece
-            };
-
-            return result;
         }
     }
 }

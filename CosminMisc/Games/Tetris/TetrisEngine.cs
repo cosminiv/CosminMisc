@@ -115,9 +115,6 @@ namespace CosminIv.Games.Tetris
         public delegate void StateChangedHandler(TetrisState state);
         public event StateChangedHandler StateChanged;
 
-        public delegate void PieceRotatedHandler(PieceRotatedArgs args);
-        public event PieceRotatedHandler PieceRotated;
-
         public delegate void ScoreChangedHandler(ScoreChangedArgs args);
         public event ScoreChangedHandler ScoreChanged;
 
@@ -163,8 +160,7 @@ namespace CosminIv.Games.Tetris
 
             TryRotatePieceResult result = Board.TryRotatePiece();
             if (result.Rotated) {
-                Debug.Assert(result.PieceRotatedArgs != null);
-                PieceRotated?.Invoke(result.PieceRotatedArgs);
+                StateChanged?.Invoke(result.State);
             }
         }
 

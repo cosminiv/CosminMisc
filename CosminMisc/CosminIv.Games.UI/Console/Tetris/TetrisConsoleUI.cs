@@ -31,7 +31,6 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void WireEventHandlers() {
             Engine.GameInitialized += Engine_GameInitialized;
             Engine.StateChanged += Engine_StateChanged;
-            Engine.PieceRotated += Engine_PieceRotated;
             Engine.GameEnded += Engine_GameEnded;
             Engine.ScoreChanged += Engine_ScoreChanged;
             Engine.SpeedChanged += Engine_SpeedChanged;
@@ -57,13 +56,6 @@ namespace CosminIv.Games.UI.Console.Tetris
             lock (DrawLock) {
                 action();
             }
-        }
-
-        private void Engine_PieceRotated(PieceRotatedArgs args) {
-            SafeDraw(() => {
-                BoardRenderer.DeletePiece(args.PieceBeforeRotation, args.Coordinates);
-                BoardRenderer.DisplayPiece(args.PieceAfterRotation, args.Coordinates);
-            });
         }
 
         private void Engine_ScoreChanged(ScoreChangedArgs args) {
