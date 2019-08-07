@@ -42,6 +42,7 @@ namespace CosminIv.Games.UI.Console.Tetris
             SafeDraw(() => {
                 //Debug.WriteLine("StateChanged");
                 BoardRenderer.DisplayBoard(state);
+                TextRenderer.DisplayNextPiece(state.NextPiece);
             });
         }
 

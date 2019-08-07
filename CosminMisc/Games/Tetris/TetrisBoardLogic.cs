@@ -89,9 +89,8 @@ namespace CosminIv.Games.Tetris
 
         internal int StickPiece() {
             FixedBricks.AddPiece(CurrentPiece);
-            TetrisFixedBricksState modifiedRows = FixedBricks.DeleteFullRows();
-
-            return modifiedRows.DeletedRows;
+            TetrisFixedBricksState fixedBricks = FixedBricks.DeleteFullRows();
+            return fixedBricks.DeletedRows;
         }
 
         public TetrisFixedBricksState GetFixedBricks() {
@@ -141,6 +140,7 @@ namespace CosminIv.Games.Tetris
             TetrisState state = new TetrisState(Rows, Columns);
             CopyFixedBricksInState(state);
             CopyCurrentPieceInState(state);
+            state.NextPiece = NextPiece;
             return state;
         }
 

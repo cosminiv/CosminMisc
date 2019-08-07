@@ -13,6 +13,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly int SpeedLine = 3;
         readonly int NextPieceLine = 5;
         readonly string NextPieceText = $"{TetrisMessage.Next}: ";
+        TetrisPiece CurrentNextPiece = null;
 
         readonly TetrisPieceRenderer PieceRender = new TetrisPieceRenderer();
 
@@ -44,11 +45,16 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         internal void DisplayNextPiece(TetrisPiece piece) {
+            if (CurrentNextPiece != null)
+                DeleteNextPiece(CurrentNextPiece);
+
             Coordinates coord = new Coordinates(NextPieceLine, NextPieceText.Length);
             PieceRender.Display(piece, coord);
+
+            CurrentNextPiece = piece;
         }
 
-        internal void DeleteNextPiece(TetrisPiece piece) {
+        private void DeleteNextPiece(TetrisPiece piece) {
             Coordinates coord = new Coordinates(NextPieceLine, NextPieceText.Length);
             PieceRender.Delete(piece, coord, true);
         }
