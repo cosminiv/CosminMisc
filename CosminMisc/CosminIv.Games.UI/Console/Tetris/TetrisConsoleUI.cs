@@ -25,7 +25,6 @@ namespace CosminIv.Games.UI.Console.Tetris
         public void Start() {
             Engine.Start();
             // Rendering is done as a response to Engine_GameInitialized event.
-            System.Console.CursorVisible = false;
             MonitorKeyboard();
         }
 
@@ -40,7 +39,6 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         private void Engine_StateChanged(TetrisState state) {
             SafeDraw(() => {
-                //Debug.WriteLine("StateChanged");
                 BoardRenderer.DisplayBoard(state);
                 TextRenderer.DisplayNextPiece(state.NextPiece);
             });
@@ -49,6 +47,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void Engine_GameInitialized(GameInitializedArgs args) {
             SafeDraw(() => {
                 System.Console.Clear();
+                System.Console.CursorVisible = false;
                 BoardRenderer.DisplayBoard(args);
                 TextRenderer.DisplayInitial(Engine.Speed);
             });
