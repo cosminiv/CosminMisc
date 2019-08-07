@@ -59,7 +59,7 @@ namespace CosminIv.Games.Tetris
         public void MovePieceDown() {
             TryMovePieceResult result = TryMovePiece(1, 0);
             if (!result.Moved)
-                AfterStickPiece(result.DeletedRows);
+                AfterStickPiece(result.DeletedRows, result.IsGameEnd);
         }
 
         public void MovePieceAllTheWayDown() {
@@ -67,17 +67,18 @@ namespace CosminIv.Games.Tetris
                 return;
 
             TryMovePieceResult result = Board.MovePieceAllTheWayDownAndStick();
-            AfterStickPiece(result.DeletedRows);
+            AfterStickPiece(result.DeletedRows, result.IsGameEnd);
             StateChanged?.Invoke(result.State);
         }
 
-        private void AfterStickPiece(int deletedRows) {
+        private void AfterStickPiece(int deletedRows, bool isGameEnd) {
             if (deletedRows > 0) {
                 UpdateScoreAfterFullRows(deletedRows);
                 UpdateSpeedAfterFullRows(deletedRows);
             }
 
-            MakeNewPiece();
+            if (isGameEnd)
+                EndGame();
         }
 
         public void MovePieceLeft() {
@@ -181,13 +182,6 @@ namespace CosminIv.Games.Tetris
             MovePieceDown();
         }
 
-        private void MakeNewPiece() {
-            TetrisPieceWithPosition piece = Board.MakeNewPiece();
-
-            if (piece == null)
-                End();
-        }
-
         private void UpdateScoreAfterFullRows(int newFullRowCount) {
             Debug.Assert(newFullRowCount >= 0 && newFullRowCount <= 4);
             FullLineCount += newFullRowCount;
@@ -210,7 +204,7 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        private void End() {
+        private void EndGame() {
             Timer.Stop();
             State = GameState.Ended;
             GameEnded?.Invoke();

@@ -9,5 +9,6 @@ namespace CosminIv.Games.Tetris.DTO
         public bool Moved { get; set; }
         public TetrisState State { get; set; }
         public int DeletedRows { get; set; }
+        public bool IsGameEnd { get; set; }
     }
 }

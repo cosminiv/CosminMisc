@@ -43,8 +43,12 @@ namespace CosminIv.Games.Tetris
                 }
                 else {
                     bool tryingToMoveDown = rowDelta > 0;
-                    if (tryingToMoveDown)
+                    if (tryingToMoveDown) {
                         result.DeletedRows = StickPiece();
+                        MakeNewPiece();
+                        if (CurrentPiece == null)
+                            result.IsGameEnd = true;
+                    }
                 }
 
                 result.State = GetState();
@@ -65,10 +69,13 @@ namespace CosminIv.Games.Tetris
 
                 int deletedRows = StickPiece();
 
+                MakeNewPiece();
+
                 TryMovePieceResult result = new TryMovePieceResult {
                     Moved = rowDelta > 0,
                     DeletedRows = deletedRows,
-                    State = GetState()
+                    State = GetState(),
+                    IsGameEnd = CurrentPiece == null
                 };
 
                 return result;
@@ -123,15 +130,13 @@ namespace CosminIv.Games.Tetris
             return CollisionDetector.CanRotatePiece(CurrentPiece);
         }
 
-        internal TetrisPieceWithPosition MakeNewPiece() {
+        private void MakeNewPiece() {
             TetrisPieceWithPosition pieceWithPos = MakePieceWithPosition();
 
             if (CollisionDetector.IsCollision(pieceWithPos))
-                return null;
-            else {
+                CurrentPiece = null;
+            else
                 CurrentPiece = pieceWithPos;
-                return pieceWithPos;
-            }
         }
 
         internal void MovePiece(int rowDelta, int columnDelta) {
