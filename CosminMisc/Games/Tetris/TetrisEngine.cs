@@ -53,7 +53,6 @@ namespace CosminIv.Games.Tetris
                 Timer.Enabled = true;
                 State = GameState.Running;
                 GameInitialized?.Invoke(new GameInitializedArgs { FixedBricks = Board.GetFixedBricks() });
-                MakeNewPiece();
             }
         }
 
@@ -185,9 +184,7 @@ namespace CosminIv.Games.Tetris
         private void MakeNewPiece() {
             TetrisPieceWithPosition piece = Board.MakeNewPiece();
 
-            if (piece != null)
-                StateChanged?.Invoke(Board.GetState());
-            else
+            if (piece == null)
                 End();
         }
 

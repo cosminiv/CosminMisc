@@ -29,6 +29,7 @@ namespace CosminIv.Games.Tetris
             Columns = settings.Columns;
             FixedBricks = new TetrisFixedBricksLogic(Rows, Columns, settings.RowsWithFixedBricks);
             CollisionDetector = new TetrisCollisionDetector(FixedBricks, Rows, Columns);
+            MakeNewPiece();
         }
 
         internal TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
