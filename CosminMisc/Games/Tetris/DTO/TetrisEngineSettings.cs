@@ -12,6 +12,5 @@ namespace CosminIv.Games.Tetris.DTO
         public int Speed;
         public ILogger Logger;
         public int RowsWithFixedBricks;
-        public bool ShowGhost;
     }
 }

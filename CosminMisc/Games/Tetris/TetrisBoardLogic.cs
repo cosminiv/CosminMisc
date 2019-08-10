@@ -16,8 +16,6 @@ namespace CosminIv.Games.Tetris
         int Rows { get; }
         int Columns { get; }
         TetrisPieceWithPosition CurrentPiece;
-        TetrisPieceWithPosition GhostPiece;
-        bool ShowGhost;
         readonly int MinGhostDistance = 7;
         TetrisPiece NextPiece;
         TetrisCollisionDetector CollisionDetector;
@@ -31,7 +29,6 @@ namespace CosminIv.Games.Tetris
             Logger = settings.Logger;
             Rows = settings.Rows;
             Columns = settings.Columns;
-            ShowGhost = settings.ShowGhost;
             FixedBricks = new TetrisFixedBricksLogic(Rows, Columns, settings.RowsWithFixedBricks);
             CollisionDetector = new TetrisCollisionDetector(FixedBricks, Rows, Columns);
             MakeNewPiece();
@@ -105,7 +102,6 @@ namespace CosminIv.Games.Tetris
 
         private void RotatePiece() {
             CurrentPiece.Piece.Rotate90DegreesClockwise();
-            ComputeGhost();
         }
 
         internal int StickPiece() {
@@ -149,34 +145,18 @@ namespace CosminIv.Games.Tetris
                 CurrentPiece = null;
             else {
                 CurrentPiece = pieceWithPos;
-                ComputeGhost();
             }
         }
 
         internal void MovePiece(TetrisPieceWithPosition piece, int rowDelta, int columnDelta) {
             piece.Position.Row += rowDelta;
             piece.Position.Column += columnDelta;
-
-            if (piece != GhostPiece)
-                ComputeGhost();
-        }
-
-        private void ComputeGhost() {
-            if (!ShowGhost)
-                return;
-            GhostPiece = (TetrisPieceWithPosition)CurrentPiece.Clone();
-            // TODO: remove console color (not general enough)
-            GhostPiece.Piece.Color = new ConsoleColor2(ConsoleColor.DarkGray);   
-            int rowDelta = MovePieceAllTheWayDown(GhostPiece);
-            if (rowDelta < MinGhostDistance)
-                GhostPiece = null;
         }
 
         public TetrisState GetState() {
             TetrisState state = new TetrisState(Rows, Columns);
             CopyFixedBricksInState(state);
             CopyPieceInState(CurrentPiece, state);
-            CopyPieceInState(GhostPiece, state);
             state.NextPiece = NextPiece;
             return state;
         }

@@ -21,6 +21,8 @@ namespace CosminIv.Games.Tetris.DTO
         public int Score { get; set; }
         public int Lines { get; set; }
         public int Speed { get; set; }
+
+        public TetrisPieceWithPosition CurrentPiece { get; set; }
         public TetrisPiece NextPiece { get; set; }
     }
 }

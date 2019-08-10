@@ -24,7 +24,6 @@ namespace ConsoleApp_Core
                 Rows = 15,
                 Speed = 3,
                 RowsWithFixedBricks = 3,
-                ShowGhost = false
             };
             TetrisEngine tetrisEngine = new TetrisEngine(settings);
             TetrisConsoleUI tetrisUI = new TetrisConsoleUI(tetrisEngine);
