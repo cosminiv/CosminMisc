@@ -74,7 +74,7 @@ namespace CosminIv.Games.UI.Console.Tetris
             return new Coordinates(row, column);
         }
 
-        private void DisplayBoardBorder() {
+        public void DisplayBoardBorder() {
             System.Console.ForegroundColor = ConsoleColor.White;
             
             DisplayBoardHorizontalBorder(BoardWindowOrigin.Row, TetrisConsoleConstants.BorderCornerUpLeft,

@@ -16,7 +16,6 @@ namespace CosminIv.Games.Tetris
         int Rows { get; }
         int Columns { get; }
         TetrisPieceWithPosition CurrentPiece;
-        readonly int MinGhostDistance = 7;
         TetrisPiece NextPiece;
         TetrisCollisionDetector CollisionDetector;
         TetrisPieceFactory PieceFactory = new TetrisPieceFactory();

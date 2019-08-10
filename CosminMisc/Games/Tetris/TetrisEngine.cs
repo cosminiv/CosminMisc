@@ -52,7 +52,6 @@ namespace CosminIv.Games.Tetris
             if (State == GameState.Paused) {
                 Timer.Enabled = Settings.EnableTimer;
                 State = GameState.Running;
-                GameInitialized?.Invoke(new GameInitializedArgs { FixedBricks = Board.GetFixedBricks() });
             }
         }
 
@@ -98,9 +97,6 @@ namespace CosminIv.Games.Tetris
 
 
         #region Public events
-
-        public delegate void GameInitializedHandler(GameInitializedArgs args);
-        public event GameInitializedHandler GameInitialized;
 
         public delegate void StateChangedHandler(TetrisState state);
         public event StateChangedHandler StateChanged;

@@ -17,13 +17,6 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         readonly TetrisPieceRenderer PieceRender = new TetrisPieceRenderer();
 
-        internal void DisplayInitial(int speed) {
-            DisplayScore(0);
-            DisplayLineCount(0);
-            DisplaySpeed(speed);
-            DisplayNextPieceText();
-        }
-
         internal void Update(TetrisState state) {
             DisplayNextPiece(state.NextPiece);
             DisplayScore(state.Score);
@@ -52,6 +45,8 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void DisplayNextPiece(TetrisPiece piece) {
+            DisplayNextPieceText();
+
             if (CurrentNextPiece != null)
                 DeleteNextPiece(CurrentNextPiece);
 
