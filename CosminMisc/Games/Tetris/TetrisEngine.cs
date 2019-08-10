@@ -50,9 +50,8 @@ namespace CosminIv.Games.Tetris
 
         public void Start() {
             if (State == GameState.Paused) {
-                Timer.Enabled = true;
+                Timer.Enabled = Settings.EnableTimer;
                 State = GameState.Running;
-                //StateChanged?.Invoke(Board.GetState());
                 GameInitialized?.Invoke(new GameInitializedArgs { FixedBricks = Board.GetFixedBricks() });
             }
         }
@@ -200,7 +199,8 @@ namespace CosminIv.Games.Tetris
         }
 
         private void ToggleTimerState() {
-            Timer.Enabled = !Timer.Enabled;
+            if (Settings.EnableTimer)
+                Timer.Enabled = !Timer.Enabled;
         }
 
         private void AddEngineSpecificDataToState(TetrisState state) {
