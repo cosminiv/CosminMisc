@@ -24,27 +24,34 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplayNextPieceText();
         }
 
+        internal void Update(TetrisState state) {
+            DisplayNextPiece(state.NextPiece);
+            DisplayScore(state.Score);
+            DisplayLineCount(state.Lines);
+            DisplaySpeed(state.Speed);
+        }
+
         internal void DisplayMessage(string message) {
             DisplayMessage(message, 0);
         }
 
-        internal void DisplayScore(int score) {
+        private void DisplayScore(int score) {
             DisplayMessage($"{TetrisMessage.Score}: {score}", ScoreLine);
         }
 
-        internal void DisplayLineCount(int lineCount) {
+        private void DisplayLineCount(int lineCount) {
             DisplayMessage($"{TetrisMessage.Lines}: {lineCount}", LineCountLine);
         }
 
-        internal void DisplaySpeed(int speed) {
+        private void DisplaySpeed(int speed) {
             DisplayMessage($"{TetrisMessage.Speed}: {speed}", SpeedLine);
         }
 
-        internal void DisplayNextPieceText() {
+        private void DisplayNextPieceText() {
             DisplayMessage(NextPieceText, NextPieceLine);
         }
 
-        internal void DisplayNextPiece(TetrisPiece piece) {
+        private void DisplayNextPiece(TetrisPiece piece) {
             if (CurrentNextPiece != null)
                 DeleteNextPiece(CurrentNextPiece);
 

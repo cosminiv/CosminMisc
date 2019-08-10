@@ -37,10 +37,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void Engine_StateChanged(TetrisState state) {
             SafeDraw(() => {
                 BoardRenderer.DisplayBoard(state);
-                TextRenderer.DisplayNextPiece(state.NextPiece);
-                TextRenderer.DisplayScore(state.Score);
-                TextRenderer.DisplayLineCount(state.Lines);
-                TextRenderer.DisplaySpeed(state.Speed);
+                TextRenderer.Update(state);
             });
         }
 
