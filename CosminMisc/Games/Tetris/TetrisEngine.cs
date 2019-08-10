@@ -1,20 +1,17 @@
 ﻿using CosminIv.Games.Common;
 using CosminIv.Games.Common.Logging;
 using CosminIv.Games.Tetris.DTO;
-using CosminIv.Games.Tetris.DTO.EventArg;
 using System;
 using System.Diagnostics;
 using System.Timers;
 
 namespace CosminIv.Games.Tetris
 {
-    public class TetrisEngine
+    public class TetrisEngine : IDisposable
     {
         #region Data members and properties
 
-        TetrisEngineSettings Settings;
-        public int Rows { get; private set; }
-        public int Columns { get; private set; }
+        public TetrisEngineSettings Settings;
 
         int _speed;
         public int Speed {
@@ -23,14 +20,13 @@ namespace CosminIv.Games.Tetris
         }
 
         int Score { get; set; }
-        int FullLineCount { get; set; }
+        int Lines { get; set; }
 
-        TetrisBoard Board;
+        TetrisBoardLogic BoardLogic;
         Timer Timer;
         ILogger Logger;
         GameState State;
 
-        readonly int FullLinesForLevelUp = 7;
         readonly int MaxSpeed = 10;
 
         #endregion
@@ -65,7 +61,7 @@ namespace CosminIv.Games.Tetris
             if (State != GameState.Running)
                 return;
 
-            TryMovePieceResult result = Board.MovePieceAllTheWayDownAndStick();
+            TryMovePieceResult result = BoardLogic.MovePieceAllTheWayDownAndStick();
             AfterStickPiece(result.DeletedRows, result.IsGameEnd);
             AddEngineSpecificDataToState(result.State);
             StateChanged?.Invoke(result.State);
@@ -93,6 +89,11 @@ namespace CosminIv.Games.Tetris
             Start();
         }
 
+        public void Dispose() {
+            if (Timer != null)
+                Timer.Dispose();
+        }
+
         #endregion
 
 
@@ -111,9 +112,7 @@ namespace CosminIv.Games.Tetris
 
         private void Initialize() {
             Logger = Settings.Logger;
-            Rows = Settings.Rows;
-            Columns = Settings.Columns;
-            Board = new TetrisBoard(Settings);
+            BoardLogic = new TetrisBoardLogic(Settings);
             Speed = Settings.Speed;
             Score = 0;
             State = GameState.Paused;
@@ -124,7 +123,7 @@ namespace CosminIv.Games.Tetris
             if (State != GameState.Running)
                 return new TryMovePieceResult { Moved = false };
 
-            TryMovePieceResult result = Board.TryMovePiece(rowDelta, columnDelta);
+            TryMovePieceResult result = BoardLogic.TryMovePiece(rowDelta, columnDelta);
             if (result.Moved) {
                 AddEngineSpecificDataToState(result.State);
                 StateChanged?.Invoke(result.State);
@@ -137,7 +136,7 @@ namespace CosminIv.Games.Tetris
             if (State != GameState.Running)
                 return;
 
-            TryRotatePieceResult result = Board.TryRotatePiece();
+            TryRotatePieceResult result = BoardLogic.TryRotatePiece();
             if (result.Rotated) {
                 AddEngineSpecificDataToState(result.State);
                 StateChanged?.Invoke(result.State);
@@ -160,15 +159,15 @@ namespace CosminIv.Games.Tetris
 
         private void UpdateScoreAfterFullRows(int newFullRowCount) {
             Debug.Assert(newFullRowCount >= 0 && newFullRowCount <= 4);
-            FullLineCount += newFullRowCount;
+            Lines += newFullRowCount;
             double speedMultiplier = 1 + (Speed - 1) * 0.1;
             int increment = (int)(10 * newFullRowCount * speedMultiplier);
             Score += increment;
         }
 
         private void UpdateSpeedAfterFullRows(int newFullRowCount) {
-            int fullLinesBefore = FullLineCount - newFullRowCount;
-            int diff = FullLineCount / FullLinesForLevelUp - fullLinesBefore / FullLinesForLevelUp;
+            int fullLinesBefore = Lines - newFullRowCount;
+            int diff = Lines / Settings.FullLinesForLevelUp - fullLinesBefore / Settings.FullLinesForLevelUp;
 
             if (diff > 0) {
                 Speed += diff;
@@ -201,7 +200,7 @@ namespace CosminIv.Games.Tetris
 
         private void AddEngineSpecificDataToState(TetrisState state) {
             state.Score = Score;
-            state.Lines = FullLineCount;
+            state.Lines = Lines;
             state.Speed = Speed;
         }
 

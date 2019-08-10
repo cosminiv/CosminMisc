@@ -5,13 +5,12 @@ using System.Text;
 using System.Diagnostics;
 using CosminIv.Games.Common.Logging;
 using CosminIv.Games.Common;
-using CosminIv.Games.Tetris.DTO.EventArg;
 using CosminIv.Games.Tetris.DTO;
 using CosminIv.Games.Common.Color;
 
 namespace CosminIv.Games.Tetris
 {
-    class TetrisBoard
+    class TetrisBoardLogic
     {
         int Rows { get; }
         int Columns { get; }
@@ -24,7 +23,7 @@ namespace CosminIv.Games.Tetris
         readonly ILogger Logger;
         readonly object PieceMoveLock = new object();
 
-        public TetrisBoard(TetrisEngineSettings settings) {
+        public TetrisBoardLogic(TetrisEngineSettings settings) {
             Logger = settings.Logger;
             Rows = settings.Rows;
             Columns = settings.Columns;

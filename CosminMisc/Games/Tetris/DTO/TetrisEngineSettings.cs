@@ -10,8 +10,9 @@ namespace CosminIv.Games.Tetris.DTO
         public int Rows;
         public int Columns;
         public int Speed;
-        public ILogger Logger;
         public int RowsWithFixedBricks;
         public bool EnableTimer = true;
+        public int FullLinesForLevelUp = 7;
+        public ILogger Logger;
     }
 }
