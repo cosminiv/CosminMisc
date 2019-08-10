@@ -29,11 +29,11 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         internal void DisplayScore(int score) {
-            DisplayMessage($"{TetrisMessage.Score}: {score}   ", ScoreLine);
+            DisplayMessage($"{TetrisMessage.Score}: {score}", ScoreLine);
         }
 
         internal void DisplayLineCount(int lineCount) {
-            DisplayMessage($"{TetrisMessage.Lines}: {lineCount}    ", LineCountLine);
+            DisplayMessage($"{TetrisMessage.Lines}: {lineCount}", LineCountLine);
         }
 
         internal void DisplaySpeed(int speed) {

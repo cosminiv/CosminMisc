@@ -52,6 +52,7 @@ namespace CosminIv.Games.Tetris
             if (State == GameState.Paused) {
                 Timer.Enabled = true;
                 State = GameState.Running;
+                //StateChanged?.Invoke(Board.GetState());
                 GameInitialized?.Invoke(new GameInitializedArgs { FixedBricks = Board.GetFixedBricks() });
             }
         }
@@ -68,17 +69,8 @@ namespace CosminIv.Games.Tetris
 
             TryMovePieceResult result = Board.MovePieceAllTheWayDownAndStick();
             AfterStickPiece(result.DeletedRows, result.IsGameEnd);
+            AddEngineSpecificDataToState(result.State);
             StateChanged?.Invoke(result.State);
-        }
-
-        private void AfterStickPiece(int deletedRows, bool isGameEnd) {
-            if (deletedRows > 0) {
-                UpdateScoreAfterFullRows(deletedRows);
-                UpdateSpeedAfterFullRows(deletedRows);
-            }
-
-            if (isGameEnd)
-                EndGame();
         }
 
         public void MovePieceLeft() {
@@ -114,12 +106,6 @@ namespace CosminIv.Games.Tetris
         public delegate void StateChangedHandler(TetrisState state);
         public event StateChangedHandler StateChanged;
 
-        public delegate void ScoreChangedHandler(ScoreChangedArgs args);
-        public event ScoreChangedHandler ScoreChanged;
-
-        public delegate void SpeedChangedHandler(SpeedChangedArgs args);
-        public event SpeedChangedHandler SpeedChanged;
-
         public delegate void GameEndedHandler();
         public event GameEndedHandler GameEnded;
 
@@ -144,8 +130,10 @@ namespace CosminIv.Games.Tetris
                 return new TryMovePieceResult { Moved = false };
 
             TryMovePieceResult result = Board.TryMovePiece(rowDelta, columnDelta);
-            if (result.Moved)
+            if (result.Moved) {
+                AddEngineSpecificDataToState(result.State);
                 StateChanged?.Invoke(result.State);
+            }
 
             return result;
         }
@@ -156,6 +144,7 @@ namespace CosminIv.Games.Tetris
 
             TryRotatePieceResult result = Board.TryRotatePiece();
             if (result.Rotated) {
+                AddEngineSpecificDataToState(result.State);
                 StateChanged?.Invoke(result.State);
             }
         }
@@ -180,9 +169,6 @@ namespace CosminIv.Games.Tetris
             double speedMultiplier = 1 + (Speed - 1) * 0.1;
             int increment = (int)(10 * newFullRowCount * speedMultiplier);
             Score += increment;
-
-            if (increment != 0)
-                ScoreChanged?.Invoke(new ScoreChangedArgs { Score = Score, LineCount = FullLineCount });
         }
 
         private void UpdateSpeedAfterFullRows(int newFullRowCount) {
@@ -192,7 +178,6 @@ namespace CosminIv.Games.Tetris
             if (diff > 0) {
                 Speed += diff;
                 Timer.Interval = ComputeTimerInterval();
-                SpeedChanged?.Invoke(new SpeedChangedArgs { Speed = this.Speed });
             }
         }
 
@@ -216,6 +201,22 @@ namespace CosminIv.Games.Tetris
 
         private void ToggleTimerState() {
             Timer.Enabled = !Timer.Enabled;
+        }
+
+        private void AddEngineSpecificDataToState(TetrisState state) {
+            state.Score = Score;
+            state.Lines = FullLineCount;
+            state.Speed = Speed;
+        }
+
+        private void AfterStickPiece(int deletedRows, bool isGameEnd) {
+            if (deletedRows > 0) {
+                UpdateScoreAfterFullRows(deletedRows);
+                UpdateSpeedAfterFullRows(deletedRows);
+            }
+
+            if (isGameEnd)
+                EndGame();
         }
 
         #endregion

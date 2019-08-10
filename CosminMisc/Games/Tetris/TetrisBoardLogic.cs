@@ -157,7 +157,8 @@ namespace CosminIv.Games.Tetris
             TetrisState state = new TetrisState(Rows, Columns);
             CopyFixedBricksInState(state);
             CopyPieceInState(CurrentPiece, state);
-            state.NextPiece = NextPiece;
+            state.CurrentPiece = (TetrisPieceWithPosition)CurrentPiece.Clone();
+            state.NextPiece = (TetrisPiece)NextPiece.Clone();
             return state;
         }
 

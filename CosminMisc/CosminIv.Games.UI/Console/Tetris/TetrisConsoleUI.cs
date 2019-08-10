@@ -32,14 +32,15 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine.GameInitialized += Engine_GameInitialized;
             Engine.StateChanged += Engine_StateChanged;
             Engine.GameEnded += Engine_GameEnded;
-            Engine.ScoreChanged += Engine_ScoreChanged;
-            Engine.SpeedChanged += Engine_SpeedChanged;
         }
 
         private void Engine_StateChanged(TetrisState state) {
             SafeDraw(() => {
                 BoardRenderer.DisplayBoard(state);
                 TextRenderer.DisplayNextPiece(state.NextPiece);
+                TextRenderer.DisplayScore(state.Score);
+                TextRenderer.DisplayLineCount(state.Lines);
+                TextRenderer.DisplaySpeed(state.Speed);
             });
         }
 
@@ -58,22 +59,9 @@ namespace CosminIv.Games.UI.Console.Tetris
             }
         }
 
-        private void Engine_ScoreChanged(ScoreChangedArgs args) {
-            SafeDraw(() => {
-                TextRenderer.DisplayScore(args.Score);
-                TextRenderer.DisplayLineCount(args.LineCount);
-            });
-        }
-
         private void Engine_GameEnded() {
             SafeDraw(() => {
                 TextRenderer.DisplayMessage(TetrisMessage.GameEnded);
-            });
-        }
-
-        private void Engine_SpeedChanged(SpeedChangedArgs args) {
-            SafeDraw(() => {
-                TextRenderer.DisplaySpeed(args.Speed);
             });
         }
 
