@@ -13,5 +13,14 @@ namespace CosminIv.Games.Common.Color
         public object Clone() {
             return new ConsoleColor2(this.Value);
         }
+
+        public override bool Equals(object obj) {
+            return (obj is ConsoleColor2 && 
+                (obj as ConsoleColor2).Value == this.Value);
+        }
+
+        public override int GetHashCode() {
+            return this.Value.GetHashCode();
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace CosminIv.Games.UI.Console.Tetris
                 System.Console.Clear();
                 System.Console.CursorVisible = false;
                 BoardRenderer.DisplayBoardBorder();
+                BoardRenderer.DisplayBoard(null, GameState);
             });
 
             MonitorKeyboard();
@@ -39,14 +40,16 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine.GameEnded += Engine_GameEnded;
         }
 
-        private void Engine_StateChanged(TetrisState state) {
-            Redraw(state);
+        private void Engine_StateChanged(TetrisState newState) {
+            TetrisState oldState = GameState;
+            GameState = newState;
+            Redraw(oldState, newState);
         }
 
-        private void Redraw(TetrisState state) {
+        private void Redraw(TetrisState oldState, TetrisState newState) {
             SafeDraw(() => {
-                BoardRenderer.DisplayBoard(state);
-                TextRenderer.Update(state);
+                BoardRenderer.DisplayBoard(oldState, newState);
+                TextRenderer.Update(newState);
             });
         }
 
@@ -68,36 +71,38 @@ namespace CosminIv.Games.UI.Console.Tetris
 
                 switch (keyInfo.Key) {
                     case ConsoleKey.LeftArrow:
-                        GameState = Engine.MovePieceLeft(GameState);
-                        Redraw(GameState);
+                        ExecuteCommand((state) => Engine.MovePieceLeft(GameState));
                         break;
                     case ConsoleKey.RightArrow:
-                        GameState = Engine.MovePieceRight(GameState);
-                        Redraw(GameState);
+                        ExecuteCommand((state) => Engine.MovePieceRight(GameState));
                         break;
                     case ConsoleKey.UpArrow:
-                        GameState = Engine.RotatePiece(GameState);
-                        Redraw(GameState);
+                        ExecuteCommand((state) => Engine.RotatePiece(GameState));
                         break;
                     case ConsoleKey.DownArrow:
-                        GameState = Engine.MovePieceDown(GameState);
-                        Redraw(GameState);
+                        ExecuteCommand((state) => Engine.MovePieceDown(GameState));
+                        break;
+                    case ConsoleKey.Spacebar:
+                        ExecuteCommand((state) => Engine.MovePieceAllTheWayDown(GameState));
                         break;
                     case ConsoleKey.P:
                         Engine.TogglePause();
                         break;
                     case ConsoleKey.R:
+                        GameState = null;
                         Engine.Restart();
-                        break;
-                    case ConsoleKey.Spacebar:
-                        GameState = Engine.MovePieceAllTheWayDown(GameState);
-                        Engine_StateChanged(GameState);
                         break;
                     case ConsoleKey.Q:
                         Environment.Exit(0);
                         break;
                 }
             }
+        }
+
+        private void ExecuteCommand(Func<TetrisState, TetrisState> command) {
+            TetrisState oldState = GameState;
+            GameState = command(GameState);
+            Redraw(oldState, GameState);
         }
     }
 }

@@ -17,7 +17,6 @@ namespace CosminIv.Games.Tetris
         Random Random = new Random();
 
         public TetrisFixedBricksLogic(int rows, int columns, int populatedRows) {
-            //InitalizeBrickMatrix(rows, columns);
             Bricks = new MatrixUtil<TetrisBrick>().Init(rows, columns);
             PopulateRows(populatedRows);
             FullRowsDeleter = new TetrisFullRowsDeleter(Bricks);
@@ -99,13 +98,6 @@ namespace CosminIv.Games.Tetris
             return row.All(brick => brick == null);
         }
 
-        //private void InitalizeBrickMatrix(int rows, int columns) {
-        //    Bricks = new TetrisBrick[rows][];
-        //    for (int i = 0; i < rows; i++) {
-        //        Bricks[i] = new TetrisBrick[columns];
-        //    }
-        //}
-
         private void PopulateRows(int rowCount) {
             for (int rowIndex = Bricks.Length - 1; rowIndex >= 0 && rowCount > 0; rowIndex--) {
                 for (int columnIndex = 0; columnIndex < Bricks[rowIndex].Length; columnIndex++) {
@@ -127,5 +119,32 @@ namespace CosminIv.Games.Tetris
             TetrisBrick brick = new TetrisBrick { Color = ColorFactory.MakeRandomColor() };
             return brick;
         }
+
+        public void CopyFixedBricksInState(TetrisState state) {
+            for (int row = 0; row < Bricks.Length; row++) {
+                for (int col = 0; col < Bricks[row].Length; col++) {
+                    TetrisBrick fixedBrick = Bricks[row][col];
+
+                    if (fixedBrick != null)
+                        state.FixedBricks[row][col] = (TetrisBrick)fixedBrick.Clone();
+                    else
+                        state.FixedBricks[row][col] = null;
+                }
+            }
+        }
+
+        internal void CopyFixedBricksFromState(TetrisState state) {
+            for (int row = 0; row < state.Rows; row++) {
+                for (int col = 0; col < state.Columns; col++) {
+                    TetrisBrick brick = state.FixedBricks[row][col];
+
+                    if (brick != null)
+                        Bricks[row][col] = (TetrisBrick)brick.Clone();
+                    else
+                        Bricks[row][col] = null;
+                }
+            }
+        }
+
     }
 }

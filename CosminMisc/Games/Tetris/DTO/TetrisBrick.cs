@@ -26,10 +26,4 @@ namespace CosminIv.Games.Tetris.DTO
             return "#";
         }
     }
-
-    class TetrisBrickWithPosition
-    {
-        public TetrisBrick Brick { get; set; }
-        public Coordinates Position { get; set; }
-    }
 }

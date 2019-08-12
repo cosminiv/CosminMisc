@@ -61,11 +61,9 @@ namespace CosminIv.Games.Tetris
             if (State != GameState.Running)
                 return state;
 
-            TryMovePieceResult result = BoardLogic.MovePieceAllTheWayDownAndStick();
+            TryMovePieceResult result = BoardLogic.MovePieceAllTheWayDownAndStick(state);
             AfterStickPiece(result.DeletedRows, result.IsGameEnd);
             TetrisState newState = GetState();
-
-            StateChanged?.Invoke(newState);
 
             return newState;
         }
@@ -148,9 +146,6 @@ namespace CosminIv.Games.Tetris
 
             TryRotatePieceResult result = BoardLogic.TryRotatePiece(state);
             TetrisState newState = GetState();
-
-            if (result.Rotated)
-                StateChanged?.Invoke(newState);
 
             return newState;
         }

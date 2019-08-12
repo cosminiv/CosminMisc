@@ -34,6 +34,8 @@ namespace CosminIv.Games.Tetris
 
         internal TryMovePieceResult TryMovePiece(TetrisState state, int rowDelta, int columnDelta) {
             lock (PieceMoveLock) {
+                SetState(state);
+
                 TryMovePieceResult result = new TryMovePieceResult();
                 bool canMove = CanMovePiece(rowDelta, columnDelta);
 
@@ -51,13 +53,14 @@ namespace CosminIv.Games.Tetris
                     }
                 }
 
-                //result.State = GetState();
                 return result;
             }
         }
 
-        internal TryMovePieceResult MovePieceAllTheWayDownAndStick() {
+        internal TryMovePieceResult MovePieceAllTheWayDownAndStick(TetrisState state) {
             lock (PieceMoveLock) {
+                SetState(state);
+
                 int rowDeltaMoved = MovePieceAllTheWayDown(CurrentPiece);
                 int deletedRows = StickPiece();
                 MakeNewPiece();
@@ -65,7 +68,6 @@ namespace CosminIv.Games.Tetris
                 TryMovePieceResult result = new TryMovePieceResult {
                     Moved = rowDeltaMoved > 0,
                     DeletedRows = deletedRows,
-                    //State = GetState(),
                     IsGameEnd = CurrentPiece == null
                 };
 
@@ -88,6 +90,8 @@ namespace CosminIv.Games.Tetris
             TryRotatePieceResult result = new TryRotatePieceResult();
 
             lock (PieceMoveLock) {
+                SetState(state);
+
                 if (CanRotatePiece()) {
                     RotatePiece();
                     result.Rotated = true;
@@ -106,10 +110,6 @@ namespace CosminIv.Games.Tetris
             TetrisFixedBricksState fixedBricks = FixedBricksLogic.DeleteFullRows();
             CurrentPiece = null;
             return fixedBricks.DeletedRows;
-        }
-
-        public TetrisFixedBricksState GetFixedBricks() {
-            return FixedBricksLogic.GetState();
         }
 
         private TetrisPieceWithPosition MakePieceWithPosition() {
@@ -152,40 +152,20 @@ namespace CosminIv.Games.Tetris
 
         public TetrisState GetState() {
             TetrisState state = new TetrisState(Rows, Columns);
-            CopyFixedBricksInState(state);
-            //CopyPieceInState(CurrentPiece, state);
+            FixedBricksLogic.CopyFixedBricksInState(state);
             if (CurrentPiece != null)
                 state.CurrentPiece = (TetrisPieceWithPosition)CurrentPiece.Clone();
             state.NextPiece = (TetrisPiece)NextPiece.Clone();
             return state;
         }
 
-        private void CopyFixedBricksInState(TetrisState state) {
-            TetrisFixedBricksState fixedBricks = FixedBricksLogic.GetState();
-
-            for (int row = 0; row < fixedBricks.Rows.Count; row++) {
-                for (int col = 0; col < Columns; col++) {
-                    TetrisBrick fixedBrick = fixedBricks.Rows[row][col];
-                    if (fixedBrick != null)
-                        state.FixedBricks[row + fixedBricks.RowsStartIndex][col] = (TetrisBrick)fixedBrick.Clone();
-                }
-            }
+        private void SetState(TetrisState state) {
+            FixedBricksLogic.CopyFixedBricksFromState(state);
+            if (state.CurrentPiece != null)
+                CurrentPiece = (TetrisPieceWithPosition)state.CurrentPiece.Clone();
+            else
+                CurrentPiece = null;
         }
 
-        //private void CopyPieceInState(TetrisPieceWithPosition pieceWithPos, TetrisState state) {
-        //    if (pieceWithPos == null)
-        //        return;
-
-        //    for (int row = 0; row < pieceWithPos.Piece.MaxSize; row++) {
-        //        for (int col = 0; col < pieceWithPos.Piece.MaxSize; col++) {
-        //            int boardRow = row + pieceWithPos.Position.Row;
-        //            int boardCol = col + pieceWithPos.Position.Column;
-        //            TetrisBrick brick = pieceWithPos.Piece[row, col];
-
-        //            if (brick != null)
-        //                state.FixedBricks[boardRow][boardCol] = (TetrisBrick)brick.Clone();
-        //        }
-        //    }
-        //}
     }
 }
