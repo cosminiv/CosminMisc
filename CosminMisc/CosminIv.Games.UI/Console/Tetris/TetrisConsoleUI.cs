@@ -13,6 +13,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly TetrisBoardRenderer BoardRenderer;
         readonly TetrisTextRenderer TextRenderer;
         readonly object DrawLock = new object();
+        TetrisState GameState;
 
         public TetrisConsoleUI(TetrisEngine engine) {
             Engine = engine;
@@ -22,7 +23,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         public void Start() {
-            Engine.Start();
+            GameState = Engine.Start();
 
             SafeDraw(() => {
                 System.Console.Clear();
@@ -39,6 +40,10 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         private void Engine_StateChanged(TetrisState state) {
+            Redraw(state);
+        }
+
+        private void Redraw(TetrisState state) {
             SafeDraw(() => {
                 BoardRenderer.DisplayBoard(state);
                 TextRenderer.Update(state);
@@ -63,16 +68,20 @@ namespace CosminIv.Games.UI.Console.Tetris
 
                 switch (keyInfo.Key) {
                     case ConsoleKey.LeftArrow:
-                        Engine.MovePieceLeft();
+                        GameState = Engine.MovePieceLeft(GameState);
+                        Redraw(GameState);
                         break;
                     case ConsoleKey.RightArrow:
-                        Engine.MovePieceRight();
+                        GameState = Engine.MovePieceRight(GameState);
+                        Redraw(GameState);
                         break;
                     case ConsoleKey.UpArrow:
-                        Engine.RotatePiece();
+                        GameState = Engine.RotatePiece(GameState);
+                        Redraw(GameState);
                         break;
                     case ConsoleKey.DownArrow:
-                        Engine.MovePieceDown();
+                        GameState = Engine.MovePieceDown(GameState);
+                        Redraw(GameState);
                         break;
                     case ConsoleKey.P:
                         Engine.TogglePause();
@@ -81,7 +90,8 @@ namespace CosminIv.Games.UI.Console.Tetris
                         Engine.Restart();
                         break;
                     case ConsoleKey.Spacebar:
-                        Engine.MovePieceAllTheWayDown();
+                        GameState = Engine.MovePieceAllTheWayDown(GameState);
+                        Engine_StateChanged(GameState);
                         break;
                     case ConsoleKey.Q:
                         Environment.Exit(0);

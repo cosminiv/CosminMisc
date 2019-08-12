@@ -7,12 +7,12 @@ namespace CosminIv.Games.Tetris.DTO
 {
     public class TetrisState : EventArgs
     {
-        public TetrisBrick[][] Bricks;
+        public TetrisBrick[][] FixedBricks;
 
         public TetrisState(int rows, int columns) {
             Rows = rows;
             Columns = columns;
-            Bricks = new MatrixUtil<TetrisBrick>().Init(rows, columns);
+            FixedBricks = new MatrixUtil<TetrisBrick>().Init(rows, columns);
         }
 
         public int Rows { get; set; }
@@ -25,7 +25,6 @@ namespace CosminIv.Games.Tetris.DTO
         public TetrisPieceWithPosition CurrentPiece { get; set; }
         public TetrisPiece NextPiece { get; set; }
 
-        //public bool HasStateChanged { get; set; }
         public bool IsGameEnd { get; set; }
     }
 }

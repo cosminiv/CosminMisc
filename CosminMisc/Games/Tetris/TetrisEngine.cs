@@ -44,41 +44,42 @@ namespace CosminIv.Games.Tetris
 
         #region Public Methods
 
-        public void Start() {
+        public TetrisState Start() {
             if (State == GameState.Paused) {
                 Timer.Enabled = Settings.EnableTimer;
                 State = GameState.Running;
             }
+
+            return GetState();
         }
 
-        public TetrisState MovePieceDown() {
-            TetrisState state = TryMovePiece(1, 0);
-            return state;
+        public TetrisState MovePieceDown(TetrisState state) {
+            return TryMovePiece(state, 1, 0, false);
         }
 
-        public TetrisState MovePieceAllTheWayDown() {
+        public TetrisState MovePieceAllTheWayDown(TetrisState state) {
             if (State != GameState.Running)
-                return GetState();
+                return state;
 
             TryMovePieceResult result = BoardLogic.MovePieceAllTheWayDownAndStick();
             AfterStickPiece(result.DeletedRows, result.IsGameEnd);
-            TetrisState state = GetState();
+            TetrisState newState = GetState();
 
-            StateChanged?.Invoke(state);
+            StateChanged?.Invoke(newState);
 
-            return state;
+            return newState;
         }
 
-        public TetrisState MovePieceLeft() {
-            return TryMovePiece(0, -1);
+        public TetrisState MovePieceLeft(TetrisState state) {
+            return TryMovePiece(state, 0, -1, false);
         }
 
-        public TetrisState MovePieceRight() {
-            return TryMovePiece(0, 1);
+        public TetrisState MovePieceRight(TetrisState state) {
+            return TryMovePiece(state, 0, 1, false);
         }
 
-        public TetrisState RotatePiece() {
-            return TryRotatePiece();
+        public TetrisState RotatePiece(TetrisState state) {
+            return TryRotatePiece(state);
         }
 
         public void TogglePause() {
@@ -121,18 +122,18 @@ namespace CosminIv.Games.Tetris
             MakeTimer();
         }
 
-        private TetrisState TryMovePiece(int rowDelta, int columnDelta) {
+        private TetrisState TryMovePiece(TetrisState state, int rowDelta, int columnDelta, bool fireEvent) {
             if (State != GameState.Running)
-                return GetState();
+                return state;
 
-            TryMovePieceResult result = BoardLogic.TryMovePiece(rowDelta, columnDelta);
+            TryMovePieceResult result = BoardLogic.TryMovePiece(state, rowDelta, columnDelta);
             AfterStickPiece(result.DeletedRows, result.IsGameEnd);
-            TetrisState state = GetState();
+            TetrisState newState = GetState();
 
-            if (result.Moved || result.DeletedRows > 0)
-                StateChanged?.Invoke(state);
+            if (fireEvent && (result.Moved || result.DeletedRows > 0))
+                StateChanged?.Invoke(newState);
 
-            return state;
+            return newState;
         }
 
         TetrisState GetState() {
@@ -141,17 +142,17 @@ namespace CosminIv.Games.Tetris
             return state;
         }
 
-        private TetrisState TryRotatePiece() {
+        private TetrisState TryRotatePiece(TetrisState state) {
             if (State != GameState.Running)
-                return GetState();
+                return state;
 
-            TryRotatePieceResult result = BoardLogic.TryRotatePiece();
-            TetrisState state = GetState();
+            TryRotatePieceResult result = BoardLogic.TryRotatePiece(state);
+            TetrisState newState = GetState();
 
             if (result.Rotated)
-                StateChanged?.Invoke(state);
+                StateChanged?.Invoke(newState);
 
-            return state;
+            return newState;
         }
 
         private void MakeTimer() {
@@ -165,7 +166,7 @@ namespace CosminIv.Games.Tetris
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-            MovePieceDown();
+            TryMovePiece(GetState(), 1, 0, true);
         }
 
         private void UpdateScoreAfterFullRows(int newFullRowCount) {

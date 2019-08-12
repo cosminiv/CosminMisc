@@ -32,7 +32,7 @@ namespace CosminIv.Games.Tetris
             MakeNewPiece();
         }
 
-        internal TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
+        internal TryMovePieceResult TryMovePiece(TetrisState state, int rowDelta, int columnDelta) {
             lock (PieceMoveLock) {
                 TryMovePieceResult result = new TryMovePieceResult();
                 bool canMove = CanMovePiece(rowDelta, columnDelta);
@@ -84,7 +84,7 @@ namespace CosminIv.Games.Tetris
             return rowDelta;
         }
 
-        internal TryRotatePieceResult TryRotatePiece() {
+        internal TryRotatePieceResult TryRotatePiece(TetrisState state) {
             TryRotatePieceResult result = new TryRotatePieceResult();
 
             lock (PieceMoveLock) {
@@ -153,7 +153,7 @@ namespace CosminIv.Games.Tetris
         public TetrisState GetState() {
             TetrisState state = new TetrisState(Rows, Columns);
             CopyFixedBricksInState(state);
-            CopyPieceInState(CurrentPiece, state);
+            //CopyPieceInState(CurrentPiece, state);
             if (CurrentPiece != null)
                 state.CurrentPiece = (TetrisPieceWithPosition)CurrentPiece.Clone();
             state.NextPiece = (TetrisPiece)NextPiece.Clone();
@@ -167,25 +167,25 @@ namespace CosminIv.Games.Tetris
                 for (int col = 0; col < Columns; col++) {
                     TetrisBrick fixedBrick = fixedBricks.Rows[row][col];
                     if (fixedBrick != null)
-                        state.Bricks[row + fixedBricks.RowsStartIndex][col] = (TetrisBrick)fixedBrick.Clone();
+                        state.FixedBricks[row + fixedBricks.RowsStartIndex][col] = (TetrisBrick)fixedBrick.Clone();
                 }
             }
         }
 
-        private void CopyPieceInState(TetrisPieceWithPosition pieceWithPos, TetrisState state) {
-            if (pieceWithPos == null)
-                return;
+        //private void CopyPieceInState(TetrisPieceWithPosition pieceWithPos, TetrisState state) {
+        //    if (pieceWithPos == null)
+        //        return;
 
-            for (int row = 0; row < pieceWithPos.Piece.MaxSize; row++) {
-                for (int col = 0; col < pieceWithPos.Piece.MaxSize; col++) {
-                    int boardRow = row + pieceWithPos.Position.Row;
-                    int boardCol = col + pieceWithPos.Position.Column;
-                    TetrisBrick brick = pieceWithPos.Piece[row, col];
+        //    for (int row = 0; row < pieceWithPos.Piece.MaxSize; row++) {
+        //        for (int col = 0; col < pieceWithPos.Piece.MaxSize; col++) {
+        //            int boardRow = row + pieceWithPos.Position.Row;
+        //            int boardCol = col + pieceWithPos.Position.Column;
+        //            TetrisBrick brick = pieceWithPos.Piece[row, col];
 
-                    if (brick != null)
-                        state.Bricks[boardRow][boardCol] = (TetrisBrick)brick.Clone();
-                }
-            }
-        }
+        //            if (brick != null)
+        //                state.FixedBricks[boardRow][boardCol] = (TetrisBrick)brick.Clone();
+        //        }
+        //    }
+        //}
     }
 }

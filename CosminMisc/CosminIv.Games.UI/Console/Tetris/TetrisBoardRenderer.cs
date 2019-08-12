@@ -33,7 +33,8 @@ namespace CosminIv.Games.UI.Console.Tetris
         }
 
         public void DisplayBoard(TetrisState state) {
-            DisplayBricks(state);
+            DisplayFixedBricks(state);
+            DisplayCurrentPiece(state.CurrentPiece);
         }
 
         public void DeletePiece(TetrisPiece piece, Coordinates boardCoord) {
@@ -65,17 +66,29 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplayBoardHorizontalBorder(BoardWindowOrigin.Row + BorderWidth + Rows, TetrisConsoleConstants.BorderCornerDownLeft, TetrisConsoleConstants.BorderCornerDownRight);
         }
 
-        private void DisplayBricks(TetrisState state) {
+        private void DisplayFixedBricks(TetrisState state) {
             for (int row = 0; row < state.Rows; row++) {
                 for (int column = 0; column < state.Columns; column++) {
-                    DisplayBrickCharacter(state, row, column);
+                    TetrisBrick brick = state.FixedBricks[row][column];
+                    DisplayBrickCharacter(brick, row, column, TetrisConsoleConstants.Space);
                 }
             }
         }
 
-        private void DisplayBrickCharacter(TetrisState state, int row, int column) {
-            TetrisBrick brick = state.Bricks[row][column];
+        private void DisplayCurrentPiece(TetrisPieceWithPosition pieceWithPos) {
+            TetrisPiece piece = pieceWithPos.Piece;
 
+            for (int row = 0; row < piece.MaxSize; row++) {
+                for (int column = 0; column < piece.MaxSize; column++) {
+                    TetrisBrick brick = piece[row, column];
+                    int rowRelativeToBoard = row + pieceWithPos.Position.Row;
+                    int columnRelativeToBoard = column + pieceWithPos.Position.Column;
+                    DisplayBrickCharacter(brick, rowRelativeToBoard, columnRelativeToBoard, "");
+                }
+            }
+        }
+
+        private void DisplayBrickCharacter(TetrisBrick brick, int row, int column, string blank) {
             int windowColumn = column + BoardWindowOrigin.Column + BorderWidth;
             int windowRow = row + BoardWindowOrigin.Row + BorderWidth;
             System.Console.SetCursorPosition(left: windowColumn, top: windowRow);
@@ -85,7 +98,7 @@ namespace CosminIv.Games.UI.Console.Tetris
                 System.Console.Write(TetrisConsoleConstants.Brick);
             }
             else {
-                System.Console.Write(TetrisConsoleConstants.Space);
+                System.Console.Write(blank);
             }
         }
 
