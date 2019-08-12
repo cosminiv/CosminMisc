@@ -51,32 +51,34 @@ namespace CosminIv.Games.Tetris
             }
         }
 
-        public void MovePieceDown() {
-            TryMovePieceResult result = TryMovePiece(1, 0);
-            if (!result.Moved)
-                AfterStickPiece(result.DeletedRows, result.IsGameEnd);
+        public TetrisState MovePieceDown() {
+            TetrisState state = TryMovePiece(1, 0);
+            return state;
         }
 
-        public void MovePieceAllTheWayDown() {
+        public TetrisState MovePieceAllTheWayDown() {
             if (State != GameState.Running)
-                return;
+                return GetState();
 
             TryMovePieceResult result = BoardLogic.MovePieceAllTheWayDownAndStick();
             AfterStickPiece(result.DeletedRows, result.IsGameEnd);
-            AddEngineSpecificDataToState(result.State);
-            StateChanged?.Invoke(result.State);
+            TetrisState state = GetState();
+
+            StateChanged?.Invoke(state);
+
+            return state;
         }
 
-        public void MovePieceLeft() {
-            TryMovePiece(0, -1);
+        public TetrisState MovePieceLeft() {
+            return TryMovePiece(0, -1);
         }
 
-        public void MovePieceRight() {
-            TryMovePiece(0, 1);
+        public TetrisState MovePieceRight() {
+            return TryMovePiece(0, 1);
         }
 
-        public void RotatePiece() {
-            TryRotatePiece();
+        public TetrisState RotatePiece() {
+            return TryRotatePiece();
         }
 
         public void TogglePause() {
@@ -119,28 +121,37 @@ namespace CosminIv.Games.Tetris
             MakeTimer();
         }
 
-        private TryMovePieceResult TryMovePiece(int rowDelta, int columnDelta) {
+        private TetrisState TryMovePiece(int rowDelta, int columnDelta) {
             if (State != GameState.Running)
-                return new TryMovePieceResult { Moved = false };
+                return GetState();
 
             TryMovePieceResult result = BoardLogic.TryMovePiece(rowDelta, columnDelta);
-            if (result.Moved) {
-                AddEngineSpecificDataToState(result.State);
-                StateChanged?.Invoke(result.State);
-            }
+            AfterStickPiece(result.DeletedRows, result.IsGameEnd);
+            TetrisState state = GetState();
 
-            return result;
+            if (result.Moved || result.DeletedRows > 0)
+                StateChanged?.Invoke(state);
+
+            return state;
         }
 
-        private void TryRotatePiece() {
+        TetrisState GetState() {
+            TetrisState state = BoardLogic.GetState();
+            AddEngineSpecificDataToState(state);
+            return state;
+        }
+
+        private TetrisState TryRotatePiece() {
             if (State != GameState.Running)
-                return;
+                return GetState();
 
             TryRotatePieceResult result = BoardLogic.TryRotatePiece();
-            if (result.Rotated) {
-                AddEngineSpecificDataToState(result.State);
-                StateChanged?.Invoke(result.State);
-            }
+            TetrisState state = GetState();
+
+            if (result.Rotated)
+                StateChanged?.Invoke(state);
+
+            return state;
         }
 
         private void MakeTimer() {

@@ -18,7 +18,7 @@ namespace CosminIv.Games.Tetris
         TetrisPiece NextPiece;
         TetrisCollisionDetector CollisionDetector;
         TetrisPieceFactory PieceFactory = new TetrisPieceFactory();
-        TetrisFixedBricksLogic FixedBricks;
+        TetrisFixedBricksLogic FixedBricksLogic;
         Random Random = new Random();
         readonly ILogger Logger;
         readonly object PieceMoveLock = new object();
@@ -27,8 +27,8 @@ namespace CosminIv.Games.Tetris
             Logger = settings.Logger;
             Rows = settings.Rows;
             Columns = settings.Columns;
-            FixedBricks = new TetrisFixedBricksLogic(Rows, Columns, settings.RowsWithFixedBricks);
-            CollisionDetector = new TetrisCollisionDetector(FixedBricks, Rows, Columns);
+            FixedBricksLogic = new TetrisFixedBricksLogic(Rows, Columns, settings.RowsWithFixedBricks);
+            CollisionDetector = new TetrisCollisionDetector(FixedBricksLogic, Rows, Columns);
             MakeNewPiece();
         }
 
@@ -51,7 +51,7 @@ namespace CosminIv.Games.Tetris
                     }
                 }
 
-                result.State = GetState();
+                //result.State = GetState();
                 return result;
             }
         }
@@ -65,7 +65,7 @@ namespace CosminIv.Games.Tetris
                 TryMovePieceResult result = new TryMovePieceResult {
                     Moved = rowDeltaMoved > 0,
                     DeletedRows = deletedRows,
-                    State = GetState(),
+                    //State = GetState(),
                     IsGameEnd = CurrentPiece == null
                 };
 
@@ -91,7 +91,6 @@ namespace CosminIv.Games.Tetris
                 if (CanRotatePiece()) {
                     RotatePiece();
                     result.Rotated = true;
-                    result.State = GetState();
                 }
             }
 
@@ -103,14 +102,14 @@ namespace CosminIv.Games.Tetris
         }
 
         internal int StickPiece() {
-            FixedBricks.AddPiece(CurrentPiece);
-            TetrisFixedBricksState fixedBricks = FixedBricks.DeleteFullRows();
+            FixedBricksLogic.AddPiece(CurrentPiece);
+            TetrisFixedBricksState fixedBricks = FixedBricksLogic.DeleteFullRows();
             CurrentPiece = null;
             return fixedBricks.DeletedRows;
         }
 
         public TetrisFixedBricksState GetFixedBricks() {
-            return FixedBricks.GetState();
+            return FixedBricksLogic.GetState();
         }
 
         private TetrisPieceWithPosition MakePieceWithPosition() {
@@ -155,13 +154,14 @@ namespace CosminIv.Games.Tetris
             TetrisState state = new TetrisState(Rows, Columns);
             CopyFixedBricksInState(state);
             CopyPieceInState(CurrentPiece, state);
-            state.CurrentPiece = (TetrisPieceWithPosition)CurrentPiece.Clone();
+            if (CurrentPiece != null)
+                state.CurrentPiece = (TetrisPieceWithPosition)CurrentPiece.Clone();
             state.NextPiece = (TetrisPiece)NextPiece.Clone();
             return state;
         }
 
         private void CopyFixedBricksInState(TetrisState state) {
-            TetrisFixedBricksState fixedBricks = FixedBricks.GetState();
+            TetrisFixedBricksState fixedBricks = FixedBricksLogic.GetState();
 
             for (int row = 0; row < fixedBricks.Rows.Count; row++) {
                 for (int col = 0; col < Columns; col++) {

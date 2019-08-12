@@ -24,5 +24,8 @@ namespace CosminIv.Games.Tetris.DTO
 
         public TetrisPieceWithPosition CurrentPiece { get; set; }
         public TetrisPiece NextPiece { get; set; }
+
+        //public bool HasStateChanged { get; set; }
+        public bool IsGameEnd { get; set; }
     }
 }
