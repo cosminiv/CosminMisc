@@ -85,9 +85,10 @@ namespace CosminIv.Games.Tetris
             ToggleGameState();
         }
 
-        public void Restart() {
+        public TetrisState Restart() {
             Initialize();
-            Start();
+            TetrisState state = Start();
+            return state;
         }
 
         public void Dispose() {
@@ -116,6 +117,7 @@ namespace CosminIv.Games.Tetris
             BoardLogic = new TetrisBoardLogic(Settings);
             Speed = Settings.Speed;
             Score = 0;
+            Lines = 0;
             State = GameState.Paused;
             MakeTimer();
         }

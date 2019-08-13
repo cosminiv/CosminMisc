@@ -17,11 +17,11 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         readonly TetrisPieceRenderer PieceRender = new TetrisPieceRenderer();
 
-        internal void Update(TetrisState state) {
-            DisplayNextPiece(state.NextPiece);
-            DisplayScore(state.Score);
-            DisplayLineCount(state.Lines);
-            DisplaySpeed(state.Speed);
+        internal void Update(TetrisState newState) {
+            DisplayNextPiece(newState.NextPiece);
+            DisplayScore(newState.Score);
+            DisplayLineCount(newState.Lines);
+            DisplaySpeed(newState.Speed);
         }
 
         internal void DisplayMessage(string message) {

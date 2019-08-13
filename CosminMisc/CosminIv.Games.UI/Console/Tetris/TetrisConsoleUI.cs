@@ -24,15 +24,15 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         public void Start() {
             GameState = Engine.Start();
-
-            SafeDraw(() => {
-                System.Console.Clear();
-                System.Console.CursorVisible = false;
-                BoardRenderer.DisplayBoardBorder();
-                BoardRenderer.DisplayBricks(null, GameState);
-            });
-
+            SafeDraw(() => DrawInitial());
             MonitorKeyboard();
+        }
+
+        private void DrawInitial() {
+            System.Console.Clear();
+            System.Console.CursorVisible = false;
+            BoardRenderer.DisplayBoardBorder();
+            BoardRenderer.DisplayBricks(null, GameState);
         }
 
         private void WireEventHandlers() {
@@ -89,8 +89,8 @@ namespace CosminIv.Games.UI.Console.Tetris
                         Engine.TogglePause();
                         break;
                     case ConsoleKey.R:
-                        GameState = null;
-                        Engine.Restart();
+                        GameState = Engine.Restart();
+                        SafeDraw(() => DrawInitial());
                         break;
                     case ConsoleKey.Q:
                         Environment.Exit(0);
