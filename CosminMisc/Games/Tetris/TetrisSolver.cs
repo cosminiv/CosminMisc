@@ -18,48 +18,49 @@ namespace CosminIv.Games.Tetris
             });
         }
 
-        public TetrisSolution Solve(TetrisState state) {
-            return GetBestSolution(state);
+        public TetrisMoves Solve(TetrisState state) {
+            return GetBestMoves(state);
         }
 
-        private TetrisSolution GetBestSolution(TetrisState state) {
+        private TetrisMoves GetBestMoves(TetrisState state) {
             double maxScore = double.MinValue;
-            TetrisSolution bestSolution = null;
+            TetrisMoves bestMoves = null;
 
-            foreach (TetrisSolution solution in MakePossibleSolutions(state)) {
-                Debug.WriteLine(solution);
-                double score = ComputeScore(solution);
+            foreach (TetrisMoves moves in MakePossibleSolutions(state)) {
+                Debug.WriteLine(moves);
+                TetrisState solutionState = ComputeStateAfterMoves(state, moves);
+                double score = ComputeScore(solutionState);
 
                 if (score > maxScore) {
-                    bestSolution = solution;
+                    bestMoves = moves;
                     maxScore = score;
                 }
             }
 
-            return bestSolution;
+            return bestMoves;
         }
 
-        private IEnumerable<TetrisSolution> MakePossibleSolutions(TetrisState state) {
+        private IEnumerable<TetrisMoves> MakePossibleSolutions(TetrisState state) {
             int crtPieceColumn = state.CurrentPiece.Position.Column;
 
             for (int rotations = 0; rotations < 4; rotations++) {
-                TetrisSolution sol = MakeSolution(rotations, 0, 0);
-                yield return sol;
+                TetrisMoves solution = MakeSolution(rotations, 0, 0);
+                yield return solution;
 
                 for (int leftMoves = 1; leftMoves < crtPieceColumn; leftMoves++) {
-                    TetrisSolution solLeft = MakeSolution(rotations, leftMoves, 0);
-                    yield return solLeft;
+                    TetrisMoves solutionsLeft = MakeSolution(rotations, leftMoves, 0);
+                    yield return solutionsLeft;
                 }
 
                 for (int rightMoves = 1; rightMoves < state.Columns - crtPieceColumn; rightMoves++) {
-                    TetrisSolution solRight = MakeSolution(rotations, 0, rightMoves);
-                    yield return solRight;
+                    TetrisMoves solutionsRight = MakeSolution(rotations, 0, rightMoves);
+                    yield return solutionsRight;
                 }
             }
         }
 
-        private TetrisSolution MakeSolution(int rotations, int leftMoves, int rightMoves) {
-            TetrisSolution solution = new TetrisSolution();
+        private TetrisMoves MakeSolution(int rotations, int leftMoves, int rightMoves) {
+            TetrisMoves solution = new TetrisMoves();
 
             for (int i = 0; i < rotations; i++)
                 solution.Moves.Add(TetrisMove.Rotate);
@@ -73,7 +74,45 @@ namespace CosminIv.Games.Tetris
             return solution;
         }
 
-        private double ComputeScore(TetrisSolution solution) {
+        private TetrisState ComputeStateAfterMoves(TetrisState initialState, TetrisMoves moves) {
+            TetrisState prevState = initialState;
+            TetrisState finalState = initialState;
+
+            foreach (TetrisMove move in moves.Moves) {
+                finalState = ComputeStateAfterOneMove(initialState, move);
+                prevState = finalState;
+            }
+
+            return finalState;
+        }
+
+        private TetrisState ComputeStateAfterOneMove(TetrisState initialState, TetrisMove move) {
+            TetrisState finalState = null;
+
+            switch (move) {
+                case TetrisMove.MoveLeft:
+                    finalState = Engine.MovePieceLeft(initialState);
+                    break;
+                case TetrisMove.MoveRight:
+                    finalState = Engine.MovePieceRight(initialState);
+                    break;
+                case TetrisMove.MoveDown:
+                    finalState = Engine.MovePieceDown(initialState);
+                    break;
+                case TetrisMove.MoveAllTheWayDown:
+                    finalState = Engine.MovePieceAllTheWayDown(initialState);
+                    break;
+                case TetrisMove.Rotate:
+                    finalState = Engine.RotatePiece(initialState);
+                    break;
+                default:
+                    throw new Exception($"Unknown move: {move}");
+            }
+
+            return finalState;
+        }
+
+        private double ComputeScore(TetrisState state) {
             return 0;
         }
     }

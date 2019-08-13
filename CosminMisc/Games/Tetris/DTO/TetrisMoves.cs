@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CosminIv.Games.Tetris.DTO
 {
-    public class TetrisSolution
+    public class TetrisMoves
     {
         public List<TetrisMove> Moves { get; set; } = new List<TetrisMove>();
 
