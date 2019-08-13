@@ -10,7 +10,9 @@ namespace CosminIv.Games.Tetris
         internal double ComputeScore(TetrisState state) {
             double brickScore = ComputeBrickScore(state);
             double holeScore = ComputeHoleScore(state);
-            double score = brickScore + holeScore;
+            double heightScore = ComputeHeightScore(state);
+
+            double score = brickScore + holeScore + heightScore;
             return score;
         }
 
@@ -48,12 +50,35 @@ namespace CosminIv.Games.Tetris
                     if (brick != null)
                         foundBrick = true;
 
-                    if (brick == null && foundBrick)
+                    if (foundBrick && brick == null)
                         holes++;
                 }
             }
 
             return holes;
+        }
+
+        private double ComputeHeightScore(TetrisState state) {
+            double result = 0 - ComputeAverageBrickHeight(state);
+            return result;
+        }
+
+        private static double ComputeAverageBrickHeight(TetrisState state) {
+            int totalHeight = 0;
+            int brickCount = 0;
+
+            for (int row = 0; row < state.FixedBricks.Length; row++) {
+                for (int col = 0; col < state.FixedBricks[row].Length; col++) {
+                    if (state.FixedBricks[row][col] != null) {
+                        int brickHeight = state.Rows - row + 1;
+                        totalHeight += brickHeight;
+                        brickCount++;
+                    }
+                }
+            }
+
+            double avgHeight = ((double)totalHeight) / brickCount;
+            return avgHeight;
         }
     }
 }
