@@ -70,14 +70,14 @@ namespace CosminIv.Games.Tetris
             for (int row = 0; row < state.FixedBricks.Length; row++) {
                 for (int col = 0; col < state.FixedBricks[row].Length; col++) {
                     if (state.FixedBricks[row][col] != null) {
-                        int brickHeight = state.Rows - row + 1;
+                        int brickHeight = state.Rows - row;
                         totalHeight += brickHeight;
                         brickCount++;
                     }
                 }
             }
 
-            double avgHeight = ((double)totalHeight) / brickCount;
+            double avgHeight = brickCount > 0 ? ((double)totalHeight) / brickCount : 0;
             return avgHeight;
         }
     }

@@ -3,6 +3,7 @@ using CosminIv.Games.Tetris;
 using CosminIv.Games.Tetris.DTO;
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {
@@ -12,6 +13,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly Coordinates BoardWindowOrigin = new Coordinates(2, 20);
         readonly TetrisBoardRenderer BoardRenderer;
         readonly TetrisTextRenderer TextRenderer;
+        readonly TetrisSolver Solver;
         readonly object DrawLock = new object();
         TetrisState GameState;
 
@@ -19,17 +21,15 @@ namespace CosminIv.Games.UI.Console.Tetris
             Engine = engine;
             BoardRenderer = new TetrisBoardRenderer(engine, BoardWindowOrigin);
             TextRenderer = new TetrisTextRenderer();
+            Solver = new TetrisSolver(Engine.Settings.Rows, Engine.Settings.Columns);
             WireEventHandlers();
         }
 
         public void Start() {
             GameState = Engine.Start();
-
-            TetrisSolver solver = new TetrisSolver(Engine.Settings.Rows, Engine.Settings.Columns);
-            TetrisMoves solution = solver.Solve(GameState);
-
             SafeDraw(() => DrawInitial());
-            MonitorKeyboard();
+            //MonitorKeyboard();
+            ExecuteSolverCommands();
         }
 
         private void DrawInitial() {
@@ -107,6 +107,37 @@ namespace CosminIv.Games.UI.Console.Tetris
             TetrisState oldState = GameState;
             GameState = command(GameState);
             Redraw(oldState, GameState);
+        }
+
+        private void ExecuteSolverCommands() {
+            while (true) {
+                Thread.Sleep(2000);
+                TetrisMoves moves = Solver.Solve(GameState);
+
+                foreach (TetrisMove move in moves.Moves) {
+                    switch (move) {
+                        case TetrisMove.MoveLeft:
+                            ExecuteCommand((state) => Engine.MovePieceLeft(GameState));
+                            break;
+                        case TetrisMove.MoveRight:
+                            ExecuteCommand((state) => Engine.MovePieceRight(GameState));
+                            break;
+                        case TetrisMove.MoveDown:
+                            ExecuteCommand((state) => Engine.MovePieceDown(GameState));
+                            break;
+                        case TetrisMove.MoveAllTheWayDown:
+                            ExecuteCommand((state) => Engine.MovePieceAllTheWayDown(GameState));
+                            break;
+                        case TetrisMove.Rotate:
+                            ExecuteCommand((state) => Engine.RotatePiece(GameState));
+                            break;
+                        default:
+                            throw new Exception($"Unknown move: {move}");
+                    }
+
+                    Thread.Sleep(300);
+                }
+            }
         }
     }
 }

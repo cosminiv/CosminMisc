@@ -17,6 +17,7 @@ namespace CosminIv.Games.Tetris
                 Columns = columns,
                 EnableTimer = false
             });
+            Engine.Start();
             ScoreComputer = new TetrisSolverScoreComputer();
         }
 
