@@ -23,24 +23,24 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplaySpeed(newState.Speed);
         }
 
-        internal void DisplayMessage(string message) {
-            DisplayMessage(message, 0);
+        internal void DisplayText(string text) {
+            DisplayText(text, 0);
         }
 
         private void DisplayScore(int score) {
-            DisplayMessage($"{TetrisMessage.Score}: {score}", ScoreLine);
+            DisplayText($"{TetrisMessage.Score}: {score}", ScoreLine);
         }
 
         private void DisplayLineCount(int lineCount) {
-            DisplayMessage($"{TetrisMessage.Lines}: {lineCount}", LineCountLine);
+            DisplayText($"{TetrisMessage.Lines}: {lineCount}", LineCountLine);
         }
 
         private void DisplaySpeed(int speed) {
-            DisplayMessage($"{TetrisMessage.Speed}: {speed}", SpeedLine);
+            DisplayText($"{TetrisMessage.Speed}: {speed}", SpeedLine);
         }
 
         private void DisplayNextPieceText() {
-            DisplayMessage(NextPieceText, NextPieceLine);
+            DisplayText(NextPieceText, NextPieceLine);
         }
 
         private void DisplayNextPiece(TetrisPiece oldPiece, TetrisPiece newPiece) {
@@ -65,10 +65,10 @@ namespace CosminIv.Games.UI.Console.Tetris
             PieceRender.Delete(piece, coord, true);
         }
 
-        private void DisplayMessage(string message, int line) {
+        private void DisplayText(string text, int line) {
             System.Console.ForegroundColor = ConsoleColor.White;
             System.Console.SetCursorPosition(left: 0, top: line);
-            System.Console.Write(message);
+            System.Console.Write(text);
         }
     }
 }

@@ -61,7 +61,7 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         private void Engine_GameEnded() {
             SafeDraw(() => {
-                TextRenderer.DisplayMessage(TetrisMessage.GameEnded);
+                TextRenderer.DisplayText(TetrisMessage.GameEnded);
             });
         }
 
