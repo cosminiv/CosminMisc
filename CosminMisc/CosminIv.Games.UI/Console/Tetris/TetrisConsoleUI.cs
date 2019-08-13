@@ -24,6 +24,10 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         public void Start() {
             GameState = Engine.Start();
+
+            TetrisSolver solver = new TetrisSolver(Engine.Settings.Rows, Engine.Settings.Columns);
+            TetrisSolution solution = solver.Solve(GameState);
+
             SafeDraw(() => DrawInitial());
             MonitorKeyboard();
         }
