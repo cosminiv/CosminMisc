@@ -27,12 +27,12 @@ namespace CosminIv.Games.Tetris
 
         private TetrisMoves GetBestMoves(TetrisState state) {
             double maxScore = double.MinValue;
-            TetrisMoves bestMoves = null;
+            TetrisMoves bestMoves = new TetrisMoves();
 
             foreach (TetrisMoves moves in MakePossibleSolutions(state)) {
-                Debug.WriteLine(moves);
                 TetrisState solutionState = ComputeStateAfterMoves(state, moves);
                 double score = ScoreComputer.ComputeScore(solutionState);
+                //Debug.WriteLine($"{moves} {score}");
 
                 if (score > maxScore) {
                     bestMoves = moves;
@@ -44,13 +44,16 @@ namespace CosminIv.Games.Tetris
         }
 
         private IEnumerable<TetrisMoves> MakePossibleSolutions(TetrisState state) {
+            if (state.CurrentPiece == null)
+                yield break;
+
             int crtPieceColumn = state.CurrentPiece.Position.Column;
 
             for (int rotations = 0; rotations < 4; rotations++) {
                 TetrisMoves solution = MakeSolution(rotations, 0, 0);
                 yield return solution;
 
-                for (int leftMoves = 1; leftMoves < crtPieceColumn; leftMoves++) {
+                for (int leftMoves = 1; leftMoves < crtPieceColumn + 2; leftMoves++) {
                     TetrisMoves solutionsLeft = MakeSolution(rotations, leftMoves, 0);
                     yield return solutionsLeft;
                 }
@@ -84,7 +87,7 @@ namespace CosminIv.Games.Tetris
             TetrisState finalState = initialState;
 
             foreach (TetrisMove move in moves.Moves) {
-                finalState = ComputeStateAfterOneMove(initialState, move);
+                finalState = ComputeStateAfterOneMove(prevState, move);
                 prevState = finalState;
             }
 

@@ -111,7 +111,7 @@ namespace CosminIv.Games.UI.Console.Tetris
 
         private void ExecuteSolverCommands() {
             while (true) {
-                Thread.Sleep(2000);
+                Thread.Sleep(600 - 100 * (GameState.Speed - 4));
                 TetrisMoves moves = Solver.Solve(GameState);
 
                 foreach (TetrisMove move in moves.Moves) {
@@ -135,7 +135,7 @@ namespace CosminIv.Games.UI.Console.Tetris
                             throw new Exception($"Unknown move: {move}");
                     }
 
-                    Thread.Sleep(300);
+                    Thread.Sleep(Math.Max(0, 150 - 30 * (GameState.Speed - 4)));
                 }
             }
         }
