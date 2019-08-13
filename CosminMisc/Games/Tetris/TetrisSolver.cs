@@ -9,6 +9,7 @@ namespace CosminIv.Games.Tetris
     public class TetrisSolver
     {
         TetrisEngine Engine;
+        TetrisSolverScoreComputer ScoreComputer;
 
         public TetrisSolver(int rows, int columns) {
             Engine = new TetrisEngine(new TetrisEngineSettings {
@@ -16,6 +17,7 @@ namespace CosminIv.Games.Tetris
                 Columns = columns,
                 EnableTimer = false
             });
+            ScoreComputer = new TetrisSolverScoreComputer();
         }
 
         public TetrisMoves Solve(TetrisState state) {
@@ -29,7 +31,7 @@ namespace CosminIv.Games.Tetris
             foreach (TetrisMoves moves in MakePossibleSolutions(state)) {
                 Debug.WriteLine(moves);
                 TetrisState solutionState = ComputeStateAfterMoves(state, moves);
-                double score = ComputeScore(solutionState);
+                double score = ScoreComputer.ComputeScore(solutionState);
 
                 if (score > maxScore) {
                     bestMoves = moves;
@@ -70,6 +72,8 @@ namespace CosminIv.Games.Tetris
 
             for (int i = 0; i < rightMoves; i++)
                 solution.Moves.Add(TetrisMove.MoveRight);
+
+            solution.Moves.Add(TetrisMove.MoveAllTheWayDown);
 
             return solution;
         }
@@ -112,8 +116,5 @@ namespace CosminIv.Games.Tetris
             return finalState;
         }
 
-        private double ComputeScore(TetrisState state) {
-            return 0;
-        }
     }
 }
