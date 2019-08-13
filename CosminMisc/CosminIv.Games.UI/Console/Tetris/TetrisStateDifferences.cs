@@ -38,9 +38,9 @@ namespace CosminIv.Games.UI.Console.Tetris
                     TetrisBrick newBrick = newState.FixedBricks[row][column];
                     bool areBricksDifferent = AreBricksDifferent(oldBrick, newBrick);
 
-                    if (areBricksDifferent && newBrick != null) {
+                    if (areBricksDifferent) {
                         diffList.Add(new TetrisBrickWithPosition {
-                            Brick = (TetrisBrick)newBrick.Clone(),
+                            Brick = newBrick != null ? (TetrisBrick)newBrick.Clone() : null,
                             Position = new Coordinates(row, column)
                         });
                     }
