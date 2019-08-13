@@ -13,12 +13,11 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly int SpeedLine = 3;
         readonly int NextPieceLine = 5;
         readonly string NextPieceText = $"{TetrisMessage.Next}: ";
-        TetrisPiece CurrentNextPiece = null;
 
         readonly TetrisPieceRenderer PieceRender = new TetrisPieceRenderer();
 
-        internal void Update(TetrisState newState) {
-            DisplayNextPiece(newState.NextPiece);
+        internal void Update(TetrisState oldState, TetrisState newState) {
+            DisplayNextPiece(oldState?.NextPiece, newState.NextPiece);
             DisplayScore(newState.Score);
             DisplayLineCount(newState.Lines);
             DisplaySpeed(newState.Speed);
@@ -44,16 +43,21 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplayMessage(NextPieceText, NextPieceLine);
         }
 
-        private void DisplayNextPiece(TetrisPiece piece) {
+        private void DisplayNextPiece(TetrisPiece oldPiece, TetrisPiece newPiece) {
             DisplayNextPieceText();
 
-            if (CurrentNextPiece != null)
-                DeleteNextPiece(CurrentNextPiece);
+            bool arePiecesDifferent = 
+                (oldPiece == null && newPiece != null) ||
+                (oldPiece != null && newPiece == null) ||
+                (oldPiece != null && newPiece != null && !oldPiece.Equals(newPiece));
 
-            Coordinates coord = new Coordinates(NextPieceLine, NextPieceText.Length);
-            PieceRender.Display(piece, coord);
+            if (arePiecesDifferent && oldPiece != null)
+                DeleteNextPiece(oldPiece);
 
-            CurrentNextPiece = piece;
+            if (arePiecesDifferent && newPiece != null) {
+                Coordinates coord = new Coordinates(NextPieceLine, NextPieceText.Length);
+                PieceRender.Display(newPiece, coord);
+            }
         }
 
         private void DeleteNextPiece(TetrisPiece piece) {

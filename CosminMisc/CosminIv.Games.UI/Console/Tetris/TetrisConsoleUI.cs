@@ -32,7 +32,7 @@ namespace CosminIv.Games.UI.Console.Tetris
             System.Console.Clear();
             System.Console.CursorVisible = false;
             BoardRenderer.DisplayBoardBorder();
-            BoardRenderer.DisplayBricks(null, GameState);
+            Redraw(null, GameState);
         }
 
         private void WireEventHandlers() {
@@ -49,7 +49,7 @@ namespace CosminIv.Games.UI.Console.Tetris
         private void Redraw(TetrisState oldState, TetrisState newState) {
             SafeDraw(() => {
                 BoardRenderer.DisplayBricks(oldState, newState);
-                TextRenderer.Update(newState);
+                TextRenderer.Update(oldState, newState);
             });
         }
 

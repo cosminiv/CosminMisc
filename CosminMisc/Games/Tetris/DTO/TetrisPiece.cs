@@ -105,5 +105,46 @@ namespace CosminIv.Games.Tetris.DTO
 
             return sb.ToString();
         }
+
+        public override bool Equals(object other) {
+
+            if (!(other is TetrisPiece otherPiece))
+                return false;
+
+            if (otherPiece.MaxSize != this.MaxSize)
+                return false;
+
+            for (int row = 0; row < MaxSize; row++) {
+                for (int col = 0; col < MaxSize; col++) {
+                    TetrisBrick brick = Bricks[row][col];
+                    TetrisBrick otherBrick = otherPiece.Bricks[row][col];
+
+                    if (brick == null && otherBrick != null)
+                        return false;
+
+                    if (brick == null && otherBrick == null)
+                        continue;
+
+                    if (!brick.Equals(otherBrick))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                int hash = 19;
+                for (int row = 0; row < MaxSize; row++) {
+                    for (int col = 0; col < MaxSize; col++) {
+                        TetrisBrick brick = Bricks[row][col];
+                        int brickHash = brick != null ? brick.GetHashCode() : 0;
+                        hash = hash * 31 + brickHash;
+                    }
+                }
+                return hash;
+            }
+        }
     }
 }

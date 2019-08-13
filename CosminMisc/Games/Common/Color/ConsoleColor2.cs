@@ -20,7 +20,7 @@ namespace CosminIv.Games.Common.Color
         }
 
         public override int GetHashCode() {
-            return this.Value.GetHashCode();
+            return Value.GetHashCode();
         }
     }
 }

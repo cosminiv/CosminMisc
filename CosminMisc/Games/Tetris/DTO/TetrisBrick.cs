@@ -25,5 +25,19 @@ namespace CosminIv.Games.Tetris.DTO
         public override string ToString() {
             return "#";
         }
+
+        public override bool Equals(object other) {
+            if (!(other is TetrisBrick otherBrick))
+                return false;
+
+            if (!Color.Equals(otherBrick.Color))
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode() {
+            return Color.GetHashCode();
+        }
     }
 }
