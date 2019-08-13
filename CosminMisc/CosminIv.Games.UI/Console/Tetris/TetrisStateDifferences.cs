@@ -36,11 +36,10 @@ namespace CosminIv.Games.UI.Console.Tetris
                 for (int column = 0; column < newState.Columns; column++) {
                     TetrisBrick oldBrick = oldState?.FixedBricks[row][column];
                     TetrisBrick newBrick = newState.FixedBricks[row][column];
-                    bool areBricksDifferent = AreBricksDifferent(oldBrick, newBrick);
 
-                    if (areBricksDifferent) {
+                    if (AreBricksDifferent(oldBrick, newBrick)) {
                         diffList.Add(new TetrisBrickWithPosition {
-                            Brick = newBrick != null ? (TetrisBrick)newBrick.Clone() : null,
+                            Brick = (newBrick != null) ? (TetrisBrick)newBrick.Clone() : null,
                             Position = new Coordinates(row, column)
                         });
                     }
@@ -78,14 +77,17 @@ namespace CosminIv.Games.UI.Console.Tetris
 
             for (int row = 0; row < oldPieceWithPos.Piece.MaxSize; row++) {
                 for (int column = 0; column < oldPieceWithPos.Piece.MaxSize; column++) {
-                    int rowRelativeToBoard = row + oldPieceWithPos.Position.Row;
-                    int columnRelativeToBoard = column + oldPieceWithPos.Position.Column;
-                    TetrisBrick newBrick = oldPieceWithPos.Piece[row, column];
+                    TetrisBrick oldBrick = oldPieceWithPos.Piece[row, column];
 
-                    diffList.Add(new TetrisBrickWithPosition {
-                        Brick = null,
-                        Position = new Coordinates(rowRelativeToBoard, columnRelativeToBoard)
-                    });
+                    if (oldBrick != null) {
+                        int rowRelativeToBoard = row + oldPieceWithPos.Position.Row;
+                        int columnRelativeToBoard = column + oldPieceWithPos.Position.Column;
+
+                        diffList.Add(new TetrisBrickWithPosition {
+                            Brick = null,
+                            Position = new Coordinates(rowRelativeToBoard, columnRelativeToBoard)
+                        });
+                    }
                 }
             }
         }
