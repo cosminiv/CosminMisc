@@ -28,28 +28,6 @@ namespace CosminIv.Games.UI.Console.Tetris
             StateDifferences = new TetrisStateDifferences(Rows, Columns);
         }
 
-        public void DisplayPiece(TetrisPiece piece, Coordinates boardCoord) {
-            Coordinates windowCoord = MakeWindowCoordinates(boardCoord);
-            PieceRenderer.Display(piece, windowCoord);
-        }
-
-        public void DisplayBoard(TetrisState oldState, TetrisState newState) {
-            List<TetrisBrickWithPosition> changedBricks = StateDifferences.ComputeDifferences(oldState, newState);
-            DisplayDifferences(changedBricks);
-        }
-
-        private void DisplayDifferences(List<TetrisBrickWithPosition> diffList) {
-            foreach (TetrisBrickWithPosition brickWithPos in diffList) {
-                DisplayBrickCharacter(brickWithPos.Brick, brickWithPos.Position.Row, brickWithPos.Position.Column);
-            }
-        }
-
-        private Coordinates MakeWindowCoordinates(Coordinates boardCoord) {
-            int row = BoardWindowOrigin.Row + BorderWidth + boardCoord.Row;
-            int column = BoardWindowOrigin.Column + BorderWidth + boardCoord.Column;
-            return new Coordinates(row, column);
-        }
-
         public void DisplayBoardBorder() {
             System.Console.ForegroundColor = ConsoleColor.White;
             
@@ -68,6 +46,25 @@ namespace CosminIv.Games.UI.Console.Tetris
             DisplayBoardHorizontalBorder(BoardWindowOrigin.Row + BorderWidth + Rows, TetrisConsoleConstants.BorderCornerDownLeft, TetrisConsoleConstants.BorderCornerDownRight);
         }
 
+        private void DisplayBoardHorizontalBorder(int windowRow, string leftCorner, string rightCorner) {
+            System.Console.SetCursorPosition(left: BoardWindowOrigin.Column, top: windowRow);
+            System.Console.Write(leftCorner);
+            for (int i = 0; i < Columns; i++)
+                System.Console.Write(TetrisConsoleConstants.HorizontalBorder);
+            System.Console.Write(rightCorner);
+        }
+
+        public void DisplayBricks(TetrisState oldState, TetrisState newState) {
+            List<TetrisBrickWithPosition> changedBricks = StateDifferences.ComputeDifferences(oldState, newState);
+            DisplayDifferences(changedBricks);
+        }
+
+        private void DisplayDifferences(List<TetrisBrickWithPosition> diffList) {
+            foreach (TetrisBrickWithPosition brickWithPos in diffList) {
+                DisplayBrickCharacter(brickWithPos.Brick, brickWithPos.Position.Row, brickWithPos.Position.Column);
+            }
+        }
+
         private void DisplayBrickCharacter(TetrisBrick brick, int row, int column) {
             int windowColumn = column + BoardWindowOrigin.Column + BorderWidth;
             int windowRow = row + BoardWindowOrigin.Row + BorderWidth;
@@ -80,14 +77,6 @@ namespace CosminIv.Games.UI.Console.Tetris
             else {
                 System.Console.Write(TetrisConsoleConstants.Space);
             }
-        }
-
-        private void DisplayBoardHorizontalBorder(int windowRow, string leftCorner, string rightCorner) {
-            System.Console.SetCursorPosition(left: BoardWindowOrigin.Column, top: windowRow);
-            System.Console.Write(leftCorner);
-            for (int i = 0; i < Columns; i++) 
-                System.Console.Write(TetrisConsoleConstants.HorizontalBorder);
-            System.Console.Write(rightCorner);
         }
     }
 }
