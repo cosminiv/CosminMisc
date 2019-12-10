@@ -159,6 +159,8 @@
     <Compile Include="Leet\Leet_048.cs" />
     <Compile Include="Leet\Leet_049.cs" />
     <Compile Include="Leet\Leet_051.cs" />
+    <Compile Include="Leet\Leet_054.cs" />
+    <Compile Include="Leet\Leet_055.cs" />
     <Compile Include="Leet\Leet_101.cs" />
     <Compile Include="Leet\Leet_125.cs" />
     <Compile Include="Leet\Leet_206.cs" />

@@ -19,8 +19,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new DownloadMp3s().Download_DW_Misc();
-            //MinHeap<int>.Test();
+            new Leet_054().Solve();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
