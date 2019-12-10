@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ConsoleApp1.Leet
 {
@@ -14,7 +13,7 @@ namespace ConsoleApp1.Leet
         private int _currentColumn;
         private Direction _currentDirection;
 
-        public void Solve()
+        public IList<int> Solve()
         {
             var matrix = new[]
             {
@@ -24,6 +23,7 @@ namespace ConsoleApp1.Leet
             };
 
             IList<int> result = SpiralOrder(matrix);
+            return result;
         }
 
         public IList<int> SpiralOrder(int[][] matrix)
@@ -43,29 +43,29 @@ namespace ConsoleApp1.Leet
                 while (_currentDirection == Direction.Right)
                 {
                     bool couldMove = GoRight();
-                    couldMoveRightAtLeastOnce = couldMove || couldMoveRightAtLeastOnce;
                     if (!couldMove) _currentDirection = Direction.Down;
+                    couldMoveRightAtLeastOnce = couldMove || couldMoveRightAtLeastOnce;
                 }
 
                 while (_currentDirection == Direction.Down)
                 {
                     bool couldMove = GoDown();
-                    couldMoveDownAtLeastOnce = couldMove || couldMoveDownAtLeastOnce;
                     if (!couldMove) _currentDirection = Direction.Left;
+                    couldMoveDownAtLeastOnce = couldMove || couldMoveDownAtLeastOnce;
                 }
 
                 while (_currentDirection == Direction.Left)
                 {
                     bool couldMove = GoLeft();
-                    couldMoveLeftAtLeastOnce = couldMove || couldMoveLeftAtLeastOnce;
                     if (!couldMove) _currentDirection = Direction.Up;
+                    couldMoveLeftAtLeastOnce = couldMove || couldMoveLeftAtLeastOnce;
                 }
 
                 while (_currentDirection == Direction.Up)
                 {
                     bool couldMove = GoUp();
-                    couldMoveUpAtLeastOnce = couldMove || couldMoveUpAtLeastOnce;
                     if (!couldMove) _currentDirection = Direction.Right;
+                    couldMoveUpAtLeastOnce = couldMove || couldMoveUpAtLeastOnce;
                 }
             } while (couldMoveRightAtLeastOnce || couldMoveDownAtLeastOnce || couldMoveLeftAtLeastOnce || couldMoveUpAtLeastOnce);
 
