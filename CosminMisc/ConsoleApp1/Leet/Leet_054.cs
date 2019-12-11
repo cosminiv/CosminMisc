@@ -31,43 +31,40 @@ namespace ConsoleApp1.Leet
             bool ok = InitState(matrix);
             if (!ok) return new List<int>();
 
-            bool couldMoveRightAtLeastOnce, couldMoveDownAtLeastOnce, couldMoveLeftAtLeastOnce, couldMoveUpAtLeastOnce;
+            bool couldMoveAtLeastOnce;
 
             do
             {
-                couldMoveRightAtLeastOnce = false;
-                couldMoveDownAtLeastOnce = false;
-                couldMoveLeftAtLeastOnce = false;
-                couldMoveUpAtLeastOnce = false;
+                couldMoveAtLeastOnce = false;
 
                 while (_currentDirection == Direction.Right)
                 {
                     bool couldMove = GoRight();
                     if (!couldMove) _currentDirection = Direction.Down;
-                    couldMoveRightAtLeastOnce = couldMove || couldMoveRightAtLeastOnce;
+                    couldMoveAtLeastOnce = couldMove || couldMoveAtLeastOnce;
                 }
 
                 while (_currentDirection == Direction.Down)
                 {
                     bool couldMove = GoDown();
                     if (!couldMove) _currentDirection = Direction.Left;
-                    couldMoveDownAtLeastOnce = couldMove || couldMoveDownAtLeastOnce;
+                    couldMoveAtLeastOnce = couldMove || couldMoveAtLeastOnce;
                 }
 
                 while (_currentDirection == Direction.Left)
                 {
                     bool couldMove = GoLeft();
                     if (!couldMove) _currentDirection = Direction.Up;
-                    couldMoveLeftAtLeastOnce = couldMove || couldMoveLeftAtLeastOnce;
+                    couldMoveAtLeastOnce = couldMove || couldMoveAtLeastOnce;
                 }
 
                 while (_currentDirection == Direction.Up)
                 {
                     bool couldMove = GoUp();
                     if (!couldMove) _currentDirection = Direction.Right;
-                    couldMoveUpAtLeastOnce = couldMove || couldMoveUpAtLeastOnce;
+                    couldMoveAtLeastOnce = couldMove || couldMoveAtLeastOnce;
                 }
-            } while (couldMoveRightAtLeastOnce || couldMoveDownAtLeastOnce || couldMoveLeftAtLeastOnce || couldMoveUpAtLeastOnce);
+            } while (couldMoveAtLeastOnce);
 
             return _result;
         }

@@ -19,7 +19,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new Leet_054().Solve();
+            new Leet_056().Solve();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
