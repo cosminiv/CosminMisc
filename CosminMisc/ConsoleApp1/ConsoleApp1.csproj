@@ -170,6 +170,7 @@
     <Compile Include="Leet\Leet_056.cs" />
     <Compile Include="Leet\Leet_057.cs" />
     <Compile Include="Leet\Leet_058.cs" />
+    <Compile Include="Leet\Leet_059.cs" />
     <Compile Include="Leet\Leet_101.cs" />
     <Compile Include="Leet\Leet_125.cs" />
     <Compile Include="Leet\Leet_206.cs" />
