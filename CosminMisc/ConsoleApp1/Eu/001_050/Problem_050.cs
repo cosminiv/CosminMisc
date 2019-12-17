@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_050
     {
@@ -16,7 +14,7 @@ namespace ConsoleApp1.Eu
         private static long Solve2() {
             int MAX = (int)1E+6;
 
-            var primesSet = Tools.GetPrimesUpTo(MAX);
+            var primesSet = _Common.Tools.GetPrimesUpTo(MAX);
             var primesInOrder = primesSet.OrderBy(a => a).ToList();
             int maxLength = 0;
             long sumForMaxLength = 0;
@@ -73,7 +71,7 @@ namespace ConsoleApp1.Eu
         private static long Solve1() {
             int MAX = (int)1E+6;
 
-            var primesSet = Tools.GetPrimesUpTo(MAX);
+            var primesSet = _Common.Tools.GetPrimesUpTo(MAX);
             var primesInOrder = primesSet.OrderBy(a => a).ToList();
             int maxLength = 0;
             long sumForMaxLength = 0;

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_041
     {
@@ -22,7 +19,7 @@ namespace ConsoleApp1.Eu
                 List<long> perm = GeneratePermutations(digits);
 
                 foreach (long a in perm)
-                    if (Tools.IsPrime(a))
+                    if (_Common.Tools.IsPrime(a))
                         return a;
 
                 digitCount--;
@@ -36,7 +33,7 @@ namespace ConsoleApp1.Eu
             List<long> result = new List<long>();
             if (n < 10) { result.Add(n); goto end; }
 
-            int digits = Tools.GetDigitCount(n);
+            int digits = _Common.Tools.GetDigitCount(n);
             result = new List<long>(digits * (digits - 1));
             int firstDigit = (int)(n / (long)Math.Pow(10, digits - 1));
             long restOfDigits = n % (long)Math.Pow(10, digits - 1);

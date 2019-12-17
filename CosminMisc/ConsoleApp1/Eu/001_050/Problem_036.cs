@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleApp1.Eu
+﻿namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_036
     {
@@ -13,7 +7,7 @@ namespace ConsoleApp1.Eu
             long sum = 0;
 
             for (int i = 1; i < 1000000; i++)
-                if (Tools.IsPalindrome(i, 10) && Tools.IsPalindrome(i, 2))
+                if (_Common.Tools.IsPalindrome(i, 10) && _Common.Tools.IsPalindrome(i, 2))
                     sum += i;
 
             return sum;

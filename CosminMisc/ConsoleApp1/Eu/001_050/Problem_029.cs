@@ -1,11 +1,7 @@
-﻿using ConsoleApp1.Eu.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using ConsoleApp1.Eu._Common;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_029
     {

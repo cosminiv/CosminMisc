@@ -1,12 +1,9 @@
-﻿using ConsoleApp1.Eu.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._Common
 {
     public class Tools
     {

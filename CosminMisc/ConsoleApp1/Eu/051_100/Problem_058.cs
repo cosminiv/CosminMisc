@@ -20,9 +20,9 @@ namespace ConsoleApp1.Eu._051_100
                 long n3 = n2 + i - 1;
 
                 // A sieve would need to be too big, just check each number individually.
-                if (Tools.IsPrime(n)) primes++; else nonPrimes++;
-                if (Tools.IsPrime(n2)) primes++; else nonPrimes++;
-                if (Tools.IsPrime(n3)) primes++; else nonPrimes++;
+                if (_Common.Tools.IsPrime(n)) primes++; else nonPrimes++;
+                if (_Common.Tools.IsPrime(n2)) primes++; else nonPrimes++;
+                if (_Common.Tools.IsPrime(n3)) primes++; else nonPrimes++;
                 nonPrimes++;  // one of the corners of the square is always a square number
 
                 ratio = (float)primes / (float)(nonPrimes + primes);

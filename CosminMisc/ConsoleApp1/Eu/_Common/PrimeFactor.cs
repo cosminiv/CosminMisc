@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu.Common
+namespace ConsoleApp1.Eu._Common
 {
     public class PrimeFactor
     {

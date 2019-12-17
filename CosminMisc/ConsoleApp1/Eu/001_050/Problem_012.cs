@@ -1,12 +1,7 @@
-﻿using ConsoleApp1.Eu.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_012
     {
@@ -15,13 +10,13 @@ namespace ConsoleApp1.Eu
             int targetDivisorCount = 500;   // 1800: 15s with 100k primes
             int primesToPrecompute = 10000;
             long n = 0;
-            HashSet<long> primes = Tools.GetPrimes(primesToPrecompute);
+            HashSet<long> primes = _Common.Tools.GetPrimes(primesToPrecompute);
 
             for (long i = 1; ; i++)
             {
                 n += i;
 
-                long count = Tools.GetDivisorCount(n, primes);
+                long count = _Common.Tools.GetDivisorCount(n, primes);
                 
                 if (count > targetDivisorCount)
                 {

@@ -4,12 +4,10 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
-namespace ConsoleApp1
+namespace ConsoleApp1.PerformanceMonitor
 {
     public class PerformanceMonitor
     {

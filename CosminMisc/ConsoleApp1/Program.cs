@@ -5,17 +5,22 @@ using CosminIv.Games.Engine.Common;
 using CosminIv.Games.Engine.Common.Logging;
 using CosminIv.Games.Engine.Tetris;
 using CosminIv.Games.Engine.Tetris.DTO;
-using CosminIv.Games.Tetris;
 using CosminIv.Games.UI.Console.Tetris;
 
 namespace ConsoleApp1
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            RunTetris();
+            // RunPracticeSolver();
 
+             RunTetris();
+        }
+
+        private static void RunPracticeSolver()
+        {
             Stopwatch sw = Stopwatch.StartNew();
 
             new Leet_060().Solve();

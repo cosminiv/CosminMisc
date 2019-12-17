@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_011
     {
@@ -52,7 +48,7 @@ namespace ConsoleApp1.Eu
         {
             for (int i = 0; i < data.Length; i++)
             {
-                long crtProduct = Tools.MaxProduct(data[i], _factorCount);
+                long crtProduct = _Common.Tools.MaxProduct(data[i], _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
@@ -66,7 +62,7 @@ namespace ConsoleApp1.Eu
                 for (int i = 0; i < data.Length; i++)
                     columnData[i] = data[i][j];
 
-                long crtProduct = Tools.MaxProduct(columnData, _factorCount);
+                long crtProduct = _Common.Tools.MaxProduct(columnData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
@@ -84,7 +80,7 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2++][j++];
 
-                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
+                long crtProduct = _Common.Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
@@ -101,7 +97,7 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2++][j2++];
 
-                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
+                long crtProduct = _Common.Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
@@ -119,7 +115,7 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2--][j++];
 
-                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
+                long crtProduct = _Common.Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }
@@ -136,7 +132,7 @@ namespace ConsoleApp1.Eu
                 for (int k = 0; k < diagLength; k++)
                     diagData[k] = data[i2--][j2++];
 
-                long crtProduct = Tools.MaxProduct(diagData, _factorCount);
+                long crtProduct = _Common.Tools.MaxProduct(diagData, _factorCount);
                 if (crtProduct > maxProduct)
                     maxProduct = crtProduct;
             }

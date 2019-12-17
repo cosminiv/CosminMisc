@@ -1,12 +1,7 @@
-﻿using ConsoleApp1.Eu.Common;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu {
+namespace ConsoleApp1.Eu._001_050 {
     public class Problem_047 
     {
         // TODO: Try to make it faster by generating numbers starting from prime numbers, 
@@ -14,12 +9,12 @@ namespace ConsoleApp1.Eu {
 
         public static long Solve() {
             long MAX = 1000000;
-            var primes = Tools.GetPrimesUpTo((int)MAX).OrderBy(a => a).ToList();
+            var primes = _Common.Tools.GetPrimesUpTo((int)MAX).OrderBy(a => a).ToList();
             long result = 0;
             int numbersWithFourFactors = 0;
 
             for (long n = 2; n < MAX; n++) {
-                bool has4factors = Tools.GetPrimeFactors(n, primes).Count == 4;
+                bool has4factors = _Common.Tools.GetPrimeFactors(n, primes).Count == 4;
                 if (has4factors) {
                     if (++numbersWithFourFactors == 4) {
                         result = n - 3;
@@ -30,7 +25,7 @@ namespace ConsoleApp1.Eu {
             }
 
             for (int i = 0; i < 4; i++) {
-                Console.WriteLine($"{result + i} = " + string.Join(" x ", Tools.GetPrimeFactors(result + i, primes)));
+                Console.WriteLine($"{result + i} = " + string.Join(" x ", _Common.Tools.GetPrimeFactors(result + i, primes)));
             }
 
             return result;

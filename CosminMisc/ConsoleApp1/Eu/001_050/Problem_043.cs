@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_043
     {
@@ -39,7 +34,7 @@ namespace ConsoleApp1.Eu
         static long GetSubNumber(long n, int pos, int howMany)
         {
             long result = 0;
-            int digits = Tools.GetDigitCount(n);
+            int digits = _Common.Tools.GetDigitCount(n);
             n = (long)(n % Math.Pow(10, digits - pos));
             digits -= pos;
 

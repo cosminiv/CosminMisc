@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_008
     {
@@ -15,7 +11,7 @@ namespace ConsoleApp1.Eu
             int factorCount = 13;
             byte[] data = _data.Where(d => char.IsDigit(d)).Select(d => byte.Parse(d.ToString())).ToArray();
 
-            return Tools.MaxProduct(data, factorCount);
+            return _Common.Tools.MaxProduct(data, factorCount);
         }
     }
 }

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_049
     {
         public static long Solve()
         {
-            HashSet<long> primes = Tools.GetPrimesUpTo(9999);
+            HashSet<long> primes = _Common.Tools.GetPrimesUpTo(9999);
 
             foreach (long prime in primes)
             {

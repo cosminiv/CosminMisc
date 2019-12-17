@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleApp1.Eu
+﻿namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_007
     {
@@ -16,7 +9,7 @@ namespace ConsoleApp1.Eu
  
             for (long i = 3; ; i += 2)
             {
-                if (Tools.IsPrime(i))
+                if (_Common.Tools.IsPrime(i))
                     primesFound++;
 
                 if (primesFound == target)

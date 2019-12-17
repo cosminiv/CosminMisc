@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_027
     {
@@ -14,7 +9,7 @@ namespace ConsoleApp1.Eu
             int maxPrimeCount = 0;
             int maxA = 0;
             int maxB = 0;
-            HashSet<long> primes = Tools.GetPrimesUpTo(1000000);
+            HashSet<long> primes = _Common.Tools.GetPrimesUpTo(1000000);
 
             for (int a = -999; a <= 999; a++)
             {

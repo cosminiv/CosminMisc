@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_023
     {
@@ -15,13 +12,13 @@ namespace ConsoleApp1.Eu
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            HashSet<long> primes = Tools.GetPrimes(10000);
+            HashSet<long> primes = _Common.Tools.GetPrimes(10000);
             List<long> abundantList = new List<long>();
             var duration1 = sw.ElapsedMilliseconds;
 
             for (int i = 1; i <= max; i++)
             {
-                var divisors = Tools.GetDivisors(i, primes).Where(d => d < i);
+                var divisors = _Common.Tools.GetDivisors(i, primes).Where(d => d < i);
 
                 if (divisors.Sum() > i)
                 {

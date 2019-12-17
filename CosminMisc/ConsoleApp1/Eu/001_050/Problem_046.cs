@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1.Eu
+namespace ConsoleApp1.Eu._001_050
 {
     public class Problem_046
     {
         public static long Solve() {
             int MAX = 1000000;
-            HashSet<long> primes = Tools.GetPrimesUpTo(MAX);
+            HashSet<long> primes = _Common.Tools.GetPrimesUpTo(MAX);
             List<long> primesList = primes.OrderBy(a => a).ToList();
             
             for (int n = 3; n < MAX; n+=2) {
