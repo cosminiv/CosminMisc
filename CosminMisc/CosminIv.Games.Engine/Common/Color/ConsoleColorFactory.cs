@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace CosminIv.Games.Common.Color
+namespace CosminIv.Games.Engine.Common.Color
 {
     class ConsoleColorFactory
     {
-        IColor[] Colors = MakePrototypeColors();
-        Random Random = new Random();
+        readonly IColor[] _colors = MakePrototypeColors();
+        readonly Random _random = new Random();
 
         public IColor MakeRandomColor() {
-            int colorIndex = Random.Next(Colors.Length);
-            IColor color = Colors[colorIndex];
+            int colorIndex = _random.Next(_colors.Length);
+            IColor color = _colors[colorIndex];
             return color;
         }
 

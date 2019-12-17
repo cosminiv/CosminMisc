@@ -1,9 +1,9 @@
-﻿using CosminIv.Games.Common;
-using CosminIv.Games.Tetris;
-using CosminIv.Games.Tetris.DTO;
+﻿using CosminIv.Games.Tetris;
 using System;
-using System.Diagnostics;
 using System.Threading;
+using CosminIv.Games.Engine.Common;
+using CosminIv.Games.Engine.Tetris;
+using CosminIv.Games.Engine.Tetris.DTO;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {

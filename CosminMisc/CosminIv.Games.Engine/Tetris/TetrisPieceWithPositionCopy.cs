@@ -1,9 +1,7 @@
-﻿using CosminIv.Games.Tetris.DTO;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using CosminIv.Games.Engine.Tetris.DTO;
 
-namespace CosminIv.Games.Tetris
+namespace CosminIv.Games.Engine.Tetris
 {
     internal class TetrisPieceWithPositionCopy
     {

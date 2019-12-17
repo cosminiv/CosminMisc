@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CosminIv.Games.Common
+namespace CosminIv.Games.Engine.Common
 {
     public class Coordinates : ICloneable
     {

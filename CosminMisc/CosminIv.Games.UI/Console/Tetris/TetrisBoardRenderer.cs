@@ -1,12 +1,11 @@
-﻿using CosminIv.Games.Common;
-using CosminIv.Games.Common.Color;
-using CosminIv.Games.Tetris;
-using CosminIv.Games.Tetris.DTO;
+﻿using CosminIv.Games.Tetris;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using CosminIv.Games.Engine.Common;
+using CosminIv.Games.Engine.Common.Color;
+using CosminIv.Games.Engine.Tetris;
+using CosminIv.Games.Engine.Tetris.DTO;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {

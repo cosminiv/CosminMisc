@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace CosminIv.Games.Tetris.DTO
+namespace CosminIv.Games.Engine.Tetris.DTO
 {
     public class TetrisFixedBricksState
     {

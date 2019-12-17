@@ -1,13 +1,8 @@
-﻿using CosminIv.Games.Common;
-using CosminIv.Games.Common.Color;
-using CosminIv.Games.Tetris.DTO;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System;
+using CosminIv.Games.Engine.Common.Color;
+using CosminIv.Games.Engine.Tetris.DTO;
 
-namespace CosminIv.Games.Tetris
+namespace CosminIv.Games.Engine.Tetris
 {
     public class TetrisPieceFactory
     {

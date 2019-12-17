@@ -1,11 +1,11 @@
-﻿using CosminIv.Games.Common;
-using CosminIv.Games.Common.Logging;
-using CosminIv.Games.Tetris.DTO;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Timers;
+using CosminIv.Games.Engine.Common;
+using CosminIv.Games.Engine.Common.Logging;
+using CosminIv.Games.Engine.Tetris.DTO;
 
-namespace CosminIv.Games.Tetris
+namespace CosminIv.Games.Engine.Tetris
 {
     public class TetrisEngine : IDisposable
     {

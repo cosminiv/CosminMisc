@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Diagnostics;
 
-namespace CosminIv.Games.Common.Logging
+namespace CosminIv.Games.Engine.Common.Logging
 {
     /// <summary>
     /// Logs to Debug

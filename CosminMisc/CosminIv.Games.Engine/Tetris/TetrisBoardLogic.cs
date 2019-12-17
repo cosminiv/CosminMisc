@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-using CosminIv.Games.Common.Logging;
-using CosminIv.Games.Common;
-using CosminIv.Games.Tetris.DTO;
-using CosminIv.Games.Common.Color;
+using CosminIv.Games.Engine.Common;
+using CosminIv.Games.Engine.Common.Logging;
+using CosminIv.Games.Engine.Tetris.DTO;
+using CosminIv.Games.Tetris;
 
-namespace CosminIv.Games.Tetris
+namespace CosminIv.Games.Engine.Tetris
 {
     class TetrisBoardLogic
     {

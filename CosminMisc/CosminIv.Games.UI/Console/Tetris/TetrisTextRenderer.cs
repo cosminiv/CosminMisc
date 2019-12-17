@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CosminIv.Games.Common;
-using CosminIv.Games.Tetris.DTO;
+using CosminIv.Games.Engine.Common;
+using CosminIv.Games.Engine.Tetris.DTO;
 
 namespace CosminIv.Games.UI.Console.Tetris
 {

@@ -1,19 +1,11 @@
-﻿using ConsoleApp1.Algorithms;
-using ConsoleApp1.Arrays;
-using ConsoleApp1.HackerRank;
-using ConsoleApp1.Leet;
-using ConsoleApp1.Misc;
-using ConsoleApp1.Trees;
+﻿using ConsoleApp1.Leet;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CosminIv.Games.Common;
-using CosminIv.Games.Common.Logging;
+using CosminIv.Games.Engine.Common;
+using CosminIv.Games.Engine.Common.Logging;
+using CosminIv.Games.Engine.Tetris;
+using CosminIv.Games.Engine.Tetris.DTO;
 using CosminIv.Games.Tetris;
-using CosminIv.Games.Tetris.DTO;
 using CosminIv.Games.UI.Console.Tetris;
 
 namespace ConsoleApp1

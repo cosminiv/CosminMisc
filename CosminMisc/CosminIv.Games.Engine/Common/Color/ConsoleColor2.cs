@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CosminIv.Games.Common.Color
+namespace CosminIv.Games.Engine.Common.Color
 {
     public class ConsoleColor2 : IColor
     {

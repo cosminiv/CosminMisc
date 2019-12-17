@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CosminIv.Games.Tetris.DTO
+﻿namespace CosminIv.Games.Engine.Tetris.DTO
 {
     internal class TryMovePieceResult {
         public bool Moved { get; set; }

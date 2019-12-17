@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CosminIv.Games.Tetris.DTO
+﻿namespace CosminIv.Games.Engine.Tetris.DTO
 {
     class TryRotatePieceResult
     {

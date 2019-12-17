@@ -1,9 +1,7 @@
-﻿using CosminIv.Games.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using CosminIv.Games.Engine.Common;
 
-namespace CosminIv.Games.Tetris.DTO
+namespace CosminIv.Games.Engine.Tetris.DTO
 {
     public class TetrisState : EventArgs
     {

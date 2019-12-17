@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CosminIv.Games.Common.Logging
+﻿namespace CosminIv.Games.Engine.Common.Logging
 {
     public interface ILogger
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CosminIv.Games.Common
+﻿namespace CosminIv.Games.Engine.Common
 {
     internal class MatrixUtil<T> {
         public T[][] Init(int rows, int columns) {

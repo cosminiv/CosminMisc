@@ -1,9 +1,6 @@
-﻿using CosminIv.Games.Common.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CosminIv.Games.Engine.Common.Logging;
 
-namespace CosminIv.Games.Tetris.DTO
+namespace CosminIv.Games.Engine.Tetris.DTO
 {
     public class TetrisEngineSettings
     {

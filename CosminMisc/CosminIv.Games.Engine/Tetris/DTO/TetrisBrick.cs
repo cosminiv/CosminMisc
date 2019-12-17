@@ -1,10 +1,7 @@
-﻿using CosminIv.Games.Common;
-using CosminIv.Games.Common.Color;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using CosminIv.Games.Engine.Common.Color;
 
-namespace CosminIv.Games.Tetris.DTO
+namespace CosminIv.Games.Engine.Tetris.DTO
 {
     public class TetrisBrick : ICloneable
     {
