@@ -4,7 +4,6 @@ using System.Text;
 using CosminIv.Games.Engine.Common;
 using CosminIv.Games.Engine.Common.Color;
 using CosminIv.Games.Engine.Tetris.DTO;
-using CosminIv.Games.Tetris;
 
 namespace CosminIv.Games.Engine.Tetris
 {
