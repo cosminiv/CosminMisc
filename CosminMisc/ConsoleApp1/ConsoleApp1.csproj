@@ -213,6 +213,16 @@
   <ItemGroup>
     <Content Include="TextFile1.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CosminIv.Games.Engine\CosminIv.Games.Engine.csproj">
+      <Project>{f82c37b9-36f4-434d-aa6a-c72a4712469d}</Project>
+      <Name>CosminIv.Games.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CosminIv.Games.UI\CosminIv.Games.UI.csproj">
+      <Project>{cb17f485-6d17-42ee-b950-b9c93864642d}</Project>
+      <Name>CosminIv.Games.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

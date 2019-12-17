@@ -10,6 +10,7 @@ namespace CosminIv.Games.UI.Console.Tetris
     public class TetrisConsoleUI
     {
         readonly TetrisEngine Engine;
+        private readonly GameMode Mode;
         readonly Coordinates BoardWindowOrigin = new Coordinates(2, 20);
         readonly TetrisBoardRenderer BoardRenderer;
         readonly TetrisTextRenderer TextRenderer;
@@ -17,8 +18,9 @@ namespace CosminIv.Games.UI.Console.Tetris
         readonly object DrawLock = new object();
         TetrisState GameState;
 
-        public TetrisConsoleUI(TetrisEngine engine) {
+        public TetrisConsoleUI(TetrisEngine engine, GameMode mode) {
             Engine = engine;
+            Mode = mode;
             BoardRenderer = new TetrisBoardRenderer(engine, BoardWindowOrigin);
             TextRenderer = new TetrisTextRenderer();
             Solver = new TetrisSolver(Engine.Settings.Rows, Engine.Settings.Columns);
@@ -28,8 +30,11 @@ namespace CosminIv.Games.UI.Console.Tetris
         public void Start() {
             GameState = Engine.Start();
             SafeDraw(() => DrawInitial());
-            //MonitorKeyboard();
-            ExecuteSolverCommands();
+
+            if (Mode == GameMode.Interactive)
+                MonitorKeyboard();
+            else
+                ExecuteSolverCommands();
         }
 
         private void DrawInitial() {

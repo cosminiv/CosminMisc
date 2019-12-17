@@ -10,6 +10,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CosminIv.Games.Common;
+using CosminIv.Games.Common.Logging;
+using CosminIv.Games.Tetris;
+using CosminIv.Games.Tetris.DTO;
+using CosminIv.Games.UI.Console.Tetris;
 
 namespace ConsoleApp1
 {
@@ -17,6 +22,8 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
+            RunTetris();
+
             Stopwatch sw = Stopwatch.StartNew();
 
             new Leet_060().Solve();
@@ -29,20 +36,22 @@ namespace ConsoleApp1
             Debug.Print($"Took {duration}ms");
         }
 
-        private static void VerifyNumbersAreSorted(int[] arr) {
-            for (int i = 1; i < arr.Length; i++) {
-                if (arr[i] < arr[i - 1])
-                    Debug.Assert(false);
-            }
-        }
+        private static void RunTetris()
+        {
+            TetrisEngineSettings settings = new TetrisEngineSettings
+            {
+                Columns = 16,
+                Logger = new DebugLogger(),
+                Rows = 15,
+                Speed = 4,
+                RowsWithFixedBricks = 0,
+                EnableTimer = true
+            };
 
-        private static int[] MakeRandomNumbers(int min, int max, int howMany) {
-            int[] result = new int[howMany];
-            Random rnd = new Random();
-            for (int i = 0; i < howMany; i++) {
-                result[i] = rnd.Next(max);
-            }
-            return result;
+            TetrisEngine tetrisEngine = new TetrisEngine(settings);
+            TetrisConsoleUI tetrisUI = new TetrisConsoleUI(tetrisEngine, GameMode.Interactive);
+
+            tetrisUI.Start();
         }
     }
 }

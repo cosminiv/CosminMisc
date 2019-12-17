@@ -24,3 +24,5 @@ CosminMisc/WpfApp1/bin/
 /CosminMisc/ConsoleApp_Core
 /CosminMisc/CosminIv.Games.UI/bin/Release/netcoreapp2.1
 /CosminMisc/Games/bin/Release/netcoreapp2.1
+/CosminMisc/CosminIv.Games.Engine/obj/Debug
+/CosminMisc/CosminIv.Games.UI2/obj/Debug

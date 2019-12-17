@@ -10,4 +10,10 @@ namespace CosminIv.Games.Common
         Paused,
         Ended
     }
+
+    public enum GameMode
+    {
+        Interactive,
+        Automatic
+    }
 }
