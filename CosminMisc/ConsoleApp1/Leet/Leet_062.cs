@@ -28,12 +28,14 @@ namespace ConsoleApp1.Leet
                 _cacheMatrix[i] = new long[N];
             }
 
+            // Fill bottom and right edges with ones.
             for (int i = 0; i < N; i++)
             {
                 _cacheMatrix[N - 1][i] = 1;
                 _cacheMatrix[i][N - 1] = 1;
             }
 
+            // Starting from the bottom-right corner, compute the reset of the numbers.
             for (int row = N - 2; row >= 0; row--)
             {
                 for (int col = N - 2; col >= 0; col--)
