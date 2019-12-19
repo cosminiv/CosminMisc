@@ -13,9 +13,11 @@ namespace CosminIv.Games.UI.WinForms.Pool
         private double _ballOldY;
 
         private double _ballSpeed = 7;
-        private double _ballAngle = -1;
+        private double _ballAngle = 0.2;
+        private readonly int _ballRadius = 12;
 
-        private readonly int _ballWidth = 25;
+        private readonly double _frictionCoefficient = 0.005;
+
         private readonly SolidBrush _ballBrush = new SolidBrush(Color.DarkBlue);
         private readonly SolidBrush _ballDeleteBrush = new SolidBrush(DefaultBackColor);
 
@@ -32,39 +34,56 @@ namespace CosminIv.Games.UI.WinForms.Pool
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {
-            UpdateBallPosition();
-
-            panel1.Invalidate();
+            if (UpdateBallPosition())
+                panel1.Invalidate();
         }
 
-        private void UpdateBallPosition()
+        private bool UpdateBallPosition()
         {
+            if (_ballSpeed < 0.06)
+            {
+                _ballSpeed = 0;
+                return false;
+            }
+
             _ballOldX = _ballX;
             _ballOldY = _ballY;
 
             _ballX += _ballSpeed * Math.Cos(_ballAngle);
             _ballY += _ballSpeed * Math.Sin(_ballAngle);
 
-            if (_ballX < 0)
+            _ballSpeed *= 1 - _frictionCoefficient;
+
+            if (_ballX + _ballRadius >= panel1.Width)
             {
-                _ballX = 0;
-                //_ballAngle = ...;
+                _ballX = panel1.Width - _ballRadius;
+                _ballAngle = Math.PI - _ballAngle;
             }
 
+            return true;
         }
 
         private void DrawBall()
         {
+            int ballDiameter = 2 * _ballRadius;
+            double ballOldYWindow = ToWindowCoordinates(_ballOldY);
+            double ballYWindow = ToWindowCoordinates(_ballY);
+
             using (Graphics graphics = panel1.CreateGraphics())
             {
-                graphics.FillEllipse(_ballDeleteBrush, (int)_ballOldX, (int)_ballOldY, _ballWidth, _ballWidth);
-                graphics.FillEllipse(_ballBrush, (int)_ballX, (int)_ballY, _ballWidth, _ballWidth);
+                graphics.FillEllipse(_ballDeleteBrush, (int)_ballOldX - _ballRadius, (int)ballOldYWindow - _ballRadius, ballDiameter, ballDiameter);
+                graphics.FillEllipse(_ballBrush, (int)_ballX - _ballRadius, (int)ballYWindow - _ballRadius, ballDiameter, ballDiameter);
             }
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             DrawBall();
+        }
+
+        double ToWindowCoordinates(double y)
+        {
+            return panel1.Height - y;
         }
 
         // This stops flickering
