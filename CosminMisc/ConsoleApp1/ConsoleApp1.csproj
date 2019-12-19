@@ -155,6 +155,7 @@
     <Compile Include="HackerRank\MinAbsDiff.cs" />
     <Compile Include="HackerRank\NonDivisibleSubset.cs" />
     <Compile Include="HackerRank\SherlockAndAnagrams.cs" />
+    <Compile Include="Leet\Leet_061.cs" />
     <Compile Include="Leet\Leet_060.cs" />
     <Compile Include="Leet\Leet_002.cs" />
     <Compile Include="Leet\Leet_011.cs" />
