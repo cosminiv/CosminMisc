@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace ConsoleApp1.Leet
 {
+    [TestFixture]
     class Leet_060
     {
         private static Dictionary<int, List<int>> _permutationsBySize;
@@ -58,15 +60,26 @@ namespace ConsoleApp1.Leet
             return newPermutations;
         }
 
-        private static int InsertDigit(int number, int newDigit, int insertionIndex)
+        [TestCase(1, 2, 0, ExpectedResult = 21)]
+        [TestCase(1, 2, 1, ExpectedResult = 12)]
+        [TestCase(12, 3, 0, ExpectedResult = 312)]
+        [TestCase(12, 3, 1, ExpectedResult = 132)]
+        [TestCase(12, 3, 2, ExpectedResult = 123)]
+        [TestCase(123, 4, 0, ExpectedResult = 4123)]
+        [TestCase(123, 4, 1, ExpectedResult = 1423)]
+        [TestCase(123, 4, 2, ExpectedResult = 1243)]
+        [TestCase(123, 4, 3, ExpectedResult = 1234)]
+        [TestCase(12345, 6, 2, ExpectedResult = 126345)]
+        public static int InsertDigit(int number, int newDigit, int insertionIndex)
         {
-            if (insertionIndex == newDigit - 1)
-                return 10 * number + newDigit;
-
+            int numberFactor = insertionIndex == 0 ? 1 : 10;
             int powerOfTen = (int)Math.Pow(10, newDigit - insertionIndex - 1);
             int result = 0;
 
-            result += number / powerOfTen * powerOfTen;
+            int multipliedNumber = number * numberFactor;
+            int digitsAtStart = multipliedNumber - multipliedNumber % (powerOfTen * 10);
+
+            result += digitsAtStart;
             result += newDigit * powerOfTen;
             result += number % powerOfTen;
 

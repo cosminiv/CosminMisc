@@ -14,9 +14,9 @@ namespace ConsoleApp1
         [STAThread]
         static void Main(string[] args)
         {
-            // RunPracticeSolver();
+             RunPracticeSolver();
 
-             RunTetris();
+             // RunTetris();
         }
 
         private static void RunPracticeSolver()
