@@ -71,6 +71,7 @@
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathAStarNode.cs" />
     <Compile Include="AppliedAlgorithms\PathFinding\GeometricPathTestCase.cs" />
     <Compile Include="Arrays\FairSplit.cs" />
+    <Compile Include="Common\Tools.cs" />
     <Compile Include="Eu\051_100\Problem_051.cs" />
     <Compile Include="Eu\051_100\Problem_052.cs" />
     <Compile Include="Eu\051_100\Problem_053.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Leet\Leet_058.cs" />
     <Compile Include="Leet\Leet_059.cs" />
     <Compile Include="Leet\Leet_062.cs" />
+    <Compile Include="Leet\Leet_063.cs" />
     <Compile Include="Leet\Leet_101.cs" />
     <Compile Include="Leet\Leet_125.cs" />
     <Compile Include="Leet\Leet_206.cs" />
@@ -226,6 +228,7 @@
       <Name>CosminIv.Games.UI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
