@@ -20,7 +20,7 @@ namespace ConsoleApp1.Leet
             for (int i = 0; i < rows; i++)
                 matrix[i] = new int[cols];
 
-            InitEdges(grid, rows, cols, matrix);
+            InitBottomAndLeftEdges(grid, rows, cols, matrix);
 
             // Build the rest of the matrix starting from the edges.
             for (int row = rows - 2; row >= 0; row--)
@@ -39,7 +39,7 @@ namespace ConsoleApp1.Leet
             return matrix;
         }
 
-        private static void InitEdges(int[][] grid, int rows, int cols, int[][] matrix)
+        private static void InitBottomAndLeftEdges(int[][] grid, int rows, int cols, int[][] matrix)
         {
             // Init bottom-right element
             matrix[rows - 1][cols - 1] = grid[rows - 1][cols - 1];
