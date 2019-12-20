@@ -14,12 +14,13 @@ namespace ConsoleApp1.Leet
         private int _rows;
         private int _cols;
         private int[][] _dungeon;
+
         // paths with maximum of the minimum hp on the path
         private Dictionary<Coords, Path> _bestPathsWithEnding = new Dictionary<Coords, Path>();
 
         public void Solve()
         {
-            int[][] dungeon = LoadDungeon();
+            int[][] dungeon2 = LoadDungeon();
 
             int[][] dungeon4 =
             {
@@ -28,37 +29,14 @@ namespace ConsoleApp1.Leet
                 new [] {10, 30, -5},
             };
 
-            int[][] dungeon2 =
+            int[][] dungeon =
             {
                 new [] {1, -3, 3},
                 new [] {0, -2, 0},
                 new [] {-3, -3, -3},
             };
 
-            int[][] dungeon3 =
-            {
-                new [] {-5, 10},
-                new [] {-100, -2},
-            };
-
             int result = CalculateMinimumHP(dungeon);
-        }
-
-        private int[][] LoadDungeon()
-        {
-            string file = @"C:\Temp\aaaa 2.txt";
-            string[] lines = File.ReadAllLines(file).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
-            int rows = lines.Length;
-            int[][] dungeon = new int[rows][];
-            int lineIndex = 0;
-
-            foreach (string line in lines)
-            {
-                dungeon[lineIndex] = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries).Select(x => int.Parse(x.Trim())).ToArray();
-                lineIndex++;
-            }
-
-            return dungeon;
         }
 
         public int CalculateMinimumHP(int[][] dungeon)
@@ -101,7 +79,7 @@ namespace ConsoleApp1.Leet
             // Breadth-first search
             while (queue.Count > 0)
             {
-                Write($"{queue.Count}  ");
+                //Write($"{queue.Count}  ");
                 Path path = queue.Dequeue();
 
                 Coords lastCoords = path.Coordinates[path.Coordinates.Count - 1];
@@ -109,7 +87,8 @@ namespace ConsoleApp1.Leet
                 // If there's a better path to this cell, don't expand the current one.
                 if (_bestPathsWithEnding.TryGetValue(lastCoords, out Path bestPath) && bestPath.MinHp > path.MinHp)
                 {
-                    //WriteLine($"Path is not good enough, skipping: {PathToString(path)}  ({bestPath.MinHp} > {path.MinHp})");
+                    WriteLine($"Path is not good enough, skipping: {PathToString(path)}  ({bestPath.MinHp} > {path.MinHp})");
+                    WriteLine($"Best: {PathToString(bestPath)}");
                     continue;
                 }
 
@@ -143,13 +122,26 @@ namespace ConsoleApp1.Leet
             // If there's a better path to this cell, don't add the current one.
             if (_bestPathsWithEnding.TryGetValue(newCoords, out Path existingBestPath) && existingBestPath.MinHp > newPath.MinHp)
             {
-                //WriteLine($"Path doesn't beat best:\t\t\t{PathToString(newPath)}");
+                WriteLine($"Path doesn't beat best:\t\t\t{PathToString(newPath)}");
                 return;
             }
 
-            //WriteLine($"Path is best, adding to queue:\t{PathToString(newPath)}");
+            WriteLine($"Path is best, adding to queue:\t{PathToString(newPath)}");
             _bestPathsWithEnding[newCoords] = newPath;
             queue.Enqueue(newPath);
+        }
+
+        public static List<T> CopyAndAdd<T>(List<T> sourceList, T newElement)
+        {
+            List<T> result = new List<T>(sourceList.Count + 1);
+
+            foreach (T elem in sourceList)
+            {
+                result.Add(elem);
+            }
+
+            result.Add(newElement);
+            return result;
         }
 
         private class Path
@@ -160,7 +152,7 @@ namespace ConsoleApp1.Leet
 
             public Path(Path other, Coords newCoords, int dungeonValue)
             {
-                Coordinates = other.Coordinates.CopyAndAdd(newCoords);
+                Coordinates = CopyAndAdd(other.Coordinates, newCoords);
                 MinHp = other.MinHp;
                 Hp = other.Hp + dungeonValue;
             }
@@ -195,6 +187,11 @@ namespace ConsoleApp1.Leet
 
                 return true;
             }
+
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
         }
 
         private class Coords
@@ -223,14 +220,31 @@ namespace ConsoleApp1.Leet
             }
         }
 
+        private int[][] LoadDungeon()
+        {
+            string file = @"C:\Temp\aaaa 2.txt";
+            string[] lines = File.ReadAllLines(file).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
+            int rows = lines.Length;
+            int[][] dungeon = new int[rows][];
+            int lineIndex = 0;
+
+            foreach (string line in lines)
+            {
+                dungeon[lineIndex] = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries).Select(x => int.Parse(x.Trim())).ToArray();
+                lineIndex++;
+            }
+
+            return dungeon;
+        }
+
         void Write(string text)
         {
-            //Debug.Write(text);
+            Debug.Write(text);
         }
 
         void WriteLine(string text)
         {
-            //Debug.WriteLine(text);
+            Debug.WriteLine(text);
         }
 
         private void WritePath(Path path)
