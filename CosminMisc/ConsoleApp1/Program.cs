@@ -29,7 +29,7 @@ namespace ConsoleApp1
             Console.WriteLine();
             //Console.WriteLine($"Result: {a}");
             Console.WriteLine($"Took {duration}ms");
-            Console.ReadLine();
+            //Console.ReadLine();
             Debug.Print($"Took {duration}ms");
         }
 

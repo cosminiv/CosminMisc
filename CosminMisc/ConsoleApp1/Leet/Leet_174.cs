@@ -10,24 +10,25 @@ namespace ConsoleApp1.Leet
     {
         private int _rows;
         private int _cols;
+        private int[][] _dungeon;
 
         public void Solve()
         {
-            int[][] dungeon =
+            int[][] dungeon3 =
             {
                 new [] {-2, -3, 3},
                 new [] {-5, -10, 1},
                 new [] {10, 30, -5},
             };
 
-            int[][] dungeon3 =
+            int[][] dungeon2 =
             {
                 new [] {1, -3, 3},
                 new [] {0, -2, 0},
                 new [] {-3, -3, -3},
             };
 
-            int[][] dungeon2 =
+            int[][] dungeon =
             {
                 new [] {-5, 10},
                 new [] {-100, -2},
@@ -38,36 +39,64 @@ namespace ConsoleApp1.Leet
 
         public int CalculateMinimumHP(int[][] dungeon)
         {
+            _dungeon = dungeon;
             _rows = dungeon.Length;
             _cols = dungeon[0].Length;
 
-            foreach (Path path in GenerateAllPaths(dungeon))
+            int maxMinHp = int.MinValue;
+
+            foreach (Path path in GenerateAllPaths())
             {
-                PrintPath(path, dungeon);
+                PrintPath(path);
+                int minHp = ComputeMinimumAdditiveHp(path);
+
+                if (minHp > maxMinHp)
+                    maxMinHp = minHp;
+
+                Debug.Write($"minHp: {minHp} \n");
             }
 
-            //int result = minHp > 0 ? 1 : (-1 * minHp + 1);
+            int result = maxMinHp > 0 ? 1 : (-1 * maxMinHp + 1);
 
-            return 0;
+            Debug.WriteLine($"\nResult = {result}");
+
+            return result;
         }
 
-        private void PrintPath(Path path, int[][] dungeon)
+        private int ComputeMinimumAdditiveHp(Path path)
+        {
+            int sum = 0;
+            int minSum = int.MaxValue;
+
+            for (int i = path.Coordinates.Count - 1; i >= 0; i--)
+            {
+                Coords coords = path.Coordinates[i];
+                int val = _dungeon[coords.Row][coords.Col];
+                sum += val;
+                if (sum < minSum)
+                    minSum = sum;
+            }
+
+            return minSum;
+        }
+
+        private void PrintPath(Path path)
         {
             foreach (Coords coords in path.Coordinates)
             {
-                Debug.Write($"{dungeon[coords.Row][coords.Col]} ");
+                Debug.Write($"{_dungeon[coords.Row][coords.Col]} ");
             }
-            Debug.WriteLine($"({path.Hp})");
+            Debug.Write($"({path.Hp}) ");
         }
 
-        IEnumerable<Path> GenerateAllPaths(int[][] dungeon)
+        IEnumerable<Path> GenerateAllPaths()
         {
             Queue<Path> queue = new Queue<Path>();
 
             // Add last cell as path
             Path path0 = new Path();
             path0.Coordinates.Add(new Coords { Row = _rows - 1, Col = _cols - 1 });
-            path0.Hp = dungeon[_rows - 1][_cols - 1];
+            path0.Hp = _dungeon[_rows - 1][_cols - 1];
             queue.Enqueue(path0);
 
             // Breadth-first search
@@ -83,14 +112,14 @@ namespace ConsoleApp1.Leet
                 if (lastCoords.Col > 0)
                 {
                     var newCoordsList = CopyAndAdd(path.Coordinates, new Coords { Row = lastCoords.Row, Col = lastCoords.Col - 1 });
-                    Path path2 = new Path { Coordinates = newCoordsList, Hp = path.Hp + dungeon[lastCoords.Row][lastCoords.Col - 1] };
+                    Path path2 = new Path { Coordinates = newCoordsList, Hp = path.Hp + _dungeon[lastCoords.Row][lastCoords.Col - 1] };
                     queue.Enqueue(path2);
                 }
 
                 if (lastCoords.Row > 0)
                 {
                     var newCoordsList = CopyAndAdd(path.Coordinates, new Coords { Row = lastCoords.Row - 1, Col = lastCoords.Col });
-                    Path path2 = new Path { Coordinates = newCoordsList, Hp = path.Hp + dungeon[lastCoords.Row - 1][lastCoords.Col] };
+                    Path path2 = new Path { Coordinates = newCoordsList, Hp = path.Hp + _dungeon[lastCoords.Row - 1][lastCoords.Col] };
                     queue.Enqueue(path2);
                 }
             }
