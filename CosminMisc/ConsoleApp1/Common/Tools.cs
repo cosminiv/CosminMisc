@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace ConsoleApp1.Common
 {
-    public class Tools
+    public static class Tools
     {
         public static void PrintMatrix(int[][] matrix)
         {
@@ -20,6 +21,19 @@ namespace ConsoleApp1.Common
             }
 
             Debug.Print(sb.ToString());
+        }
+
+        public static List<T> CopyAndAdd<T>(this List<T> sourceList, T newElement)
+        {
+            List<T> result = new List<T>(sourceList.Count + 1);
+
+            foreach (T elem in sourceList)
+            {
+                result.Add(elem);
+            }
+
+            result.Add(newElement);
+            return result;
         }
     }
 }
