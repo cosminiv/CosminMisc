@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace ConsoleApp1.Leet
 {
@@ -10,14 +13,21 @@ namespace ConsoleApp1.Leet
 
         public void Solve()
         {
-            int[][] dungeon = new[]
+            int[][] dungeon =
+            {
+                new [] {-2, -3, 3},
+                new [] {-5, -10, 1},
+                new [] {10, 30, -5},
+            };
+
+            int[][] dungeon3 =
             {
                 new [] {1, -3, 3},
                 new [] {0, -2, 0},
                 new [] {-3, -3, -3},
             };
 
-            int[][] dungeon2 = new []
+            int[][] dungeon2 =
             {
                 new [] {-5, 10},
                 new [] {-100, -2},
@@ -31,10 +41,84 @@ namespace ConsoleApp1.Leet
             _rows = dungeon.Length;
             _cols = dungeon[0].Length;
 
-            int[][] additiveHpMatrix = MakeAdditiveHpMatrix(dungeon);
-            int[] bestAdditiveHpVector = GetBestRouteHpVector(additiveHpMatrix, dungeon, out int minHp);
-            int result = minHp > 0 ? 1 : (-1 * minHp + 1);
+            foreach (Path path in GenerateAllPaths(dungeon))
+            {
+                PrintPath(path, dungeon);
+            }
+
+            //int result = minHp > 0 ? 1 : (-1 * minHp + 1);
+
+            return 0;
+        }
+
+        private void PrintPath(Path path, int[][] dungeon)
+        {
+            foreach (Coords coords in path.Coordinates)
+            {
+                Debug.Write($"{dungeon[coords.Row][coords.Col]} ");
+            }
+            Debug.WriteLine($"({path.Hp})");
+        }
+
+        IEnumerable<Path> GenerateAllPaths(int[][] dungeon)
+        {
+            Queue<Path> queue = new Queue<Path>();
+
+            // Add last cell as path
+            Path path0 = new Path();
+            path0.Coordinates.Add(new Coords { Row = _rows - 1, Col = _cols - 1 });
+            path0.Hp = dungeon[_rows - 1][_cols - 1];
+            queue.Enqueue(path0);
+
+            // Breadth-first search
+            while (queue.Count > 0)
+            {
+                Path path = queue.Dequeue();
+
+                if (path.Coordinates.Count == _rows + _cols - 1)
+                    yield return path;
+
+                Coords lastCoords = path.Coordinates[path.Coordinates.Count - 1];
+
+                if (lastCoords.Col > 0)
+                {
+                    var newCoordsList = CopyAndAdd(path.Coordinates, new Coords { Row = lastCoords.Row, Col = lastCoords.Col - 1 });
+                    Path path2 = new Path { Coordinates = newCoordsList, Hp = path.Hp + dungeon[lastCoords.Row][lastCoords.Col - 1] };
+                    queue.Enqueue(path2);
+                }
+
+                if (lastCoords.Row > 0)
+                {
+                    var newCoordsList = CopyAndAdd(path.Coordinates, new Coords { Row = lastCoords.Row - 1, Col = lastCoords.Col });
+                    Path path2 = new Path { Coordinates = newCoordsList, Hp = path.Hp + dungeon[lastCoords.Row - 1][lastCoords.Col] };
+                    queue.Enqueue(path2);
+                }
+            }
+        }
+
+        List<T> CopyAndAdd<T>(List<T> sourceList, T newElement)
+        {
+            List<T> result = new List<T>(sourceList.Count + 1);
+
+            foreach (T elem in sourceList)
+            {
+                result.Add(elem);
+            }
+
+            result.Add(newElement);
             return result;
+        }
+
+        class Path
+        {
+            public List<Coords> Coordinates = new List<Coords>();
+            public int Hp { get; set; }
+        }
+
+        class Coords
+        {
+            public int Row { get; set; }
+            public int Col { get; set; }
         }
 
         private int[] GetBestRouteHpVector(int[][] additiveHpMatrix, int[][] dungeon, out int minHp)
