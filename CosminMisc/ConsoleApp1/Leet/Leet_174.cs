@@ -1,35 +1,25 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Text;
 using ConsoleApp1.Common;
 
 namespace ConsoleApp1.Leet
 {
     class Leet_174
     {
-        private int _rows;
-        private int _cols;
-        private int[][] _dungeon;
-
-        // paths with maximum of the minimum hp on the path
-        private Dictionary<Coords, Path> _bestPathsWithEnding = new Dictionary<Coords, Path>();
-
         public void Solve()
         {
-            int[][] dungeon2 = LoadDungeon();
+            int[][] dungeon = LoadBigDungeon();
 
-            int[][] dungeon4 =
+            int[][] dungeon2 =
             {
                 new [] {-2, -3, 3},
                 new [] {-5, -10, 1},
                 new [] {10, 30, -5},
             };
 
-            int[][] dungeon =
+            int[][] dungeon4 =
             {
                 new [] {1, -3, 3},
                 new [] {0, -2, 0},
@@ -41,186 +31,60 @@ namespace ConsoleApp1.Leet
 
         public int CalculateMinimumHP(int[][] dungeon)
         {
-            _dungeon = dungeon;
-            _rows = dungeon.Length;
-            _cols = dungeon[0].Length;
+            int rows = dungeon.Length;
+            int cols = dungeon[0].Length;
 
-            int maxMinHp = int.MinValue;
+            int[][] solution = MakeMatrix<int>(rows, cols);
 
-            foreach (Path path in GeneratePaths())
+            // Compute last solution element
+            solution[rows - 1][cols - 1] = dungeon[rows - 1][cols - 1] > 0 ? 1 : 0 - dungeon[rows - 1][cols - 1] + 1;
+
+            // Compute last column
+            int row;
+            int col = cols - 1;
+            for (row = rows - 2; row >= 0; row--)
             {
-                Write("\n");
-                WritePath(path);
-
-                if (path.MinHp > maxMinHp)
-                    maxMinHp = path.MinHp;
-
-                Write($"\tMinHp: {path.MinHp} \n");
+                int dungeonElem = dungeon[row][col];
+                int prevSolutionElem = solution[row + 1][col];
+                solution[row][col] = Math.Max(prevSolutionElem - dungeonElem, 1);
             }
 
-            int result = maxMinHp > 0 ? 1 : (-1 * maxMinHp + 1);
+            // Compute last row
+            row = rows - 1;
+            for (col = cols - 2; col >= 0; col--)
+            {
+                int dungeonElem = dungeon[row][col];
+                int prevSolutionElem = solution[row][col + 1];
+                solution[row][col] = Math.Max(prevSolutionElem - dungeonElem, 1);
+            }
 
-            WriteLine($"\nResult = {result}");
+            // Compute the rest of the solution
+            for (row = rows - 2; row >= 0; row--)
+            {
+                for (col = cols - 2; col >= 0; col--)
+                {
+                    int dungeonElem = dungeon[row][col];
+                    int prevSolutionElem = Math.Min(solution[row][col + 1], solution[row + 1][col]);
+                    solution[row][col] = Math.Max(prevSolutionElem - dungeonElem, 1);
+                }
+            }
 
-            return result;
+            return solution[0][0];
         }
 
-        List<Path> GeneratePaths()
+        public static T[][] MakeMatrix<T>(int rows, int cols)
         {
-            List<Path> result = new List<Path>();
-            Queue<Path> queue = new Queue<Path>();
+            T[][] result = new T[rows][];
 
-            // Add first cell as path
-            Path path0 = new Path();
-            path0.Coordinates.Add(new Coords(0, 0));
-            path0.Hp = _dungeon[0][0];
-            queue.Enqueue(path0);
-
-            // Breadth-first search
-            while (queue.Count > 0)
+            for (var index = 0; index < result.Length; index++)
             {
-                //Write($"{queue.Count}  ");
-                Path path = queue.Dequeue();
-
-                Coords lastCoords = path.Coordinates[path.Coordinates.Count - 1];
-
-                // If there's a better path to this cell, don't expand the current one.
-                if (_bestPathsWithEnding.TryGetValue(lastCoords, out Path bestPath) && bestPath.MinHp > path.MinHp)
-                {
-                    WriteLine($"Path is not good enough, skipping: {PathToString(path)}  ({bestPath.MinHp} > {path.MinHp})");
-                    WriteLine($"Best: {PathToString(bestPath)}");
-                    continue;
-                }
-
-                if (path.Coordinates.Count == _rows + _cols - 1)
-                    result.Add(path);
-
-                if (lastCoords.Col < _cols - 1)
-                {
-                    Coords newCoords = new Coords(lastCoords.Row, lastCoords.Col + 1);
-                    int dungeonValue = _dungeon[lastCoords.Row][lastCoords.Col + 1];
-                    Path newPath = new Path(path, newCoords, dungeonValue);
-                    AddToQueue(queue, newCoords, newPath);
-                }
-
-                if (lastCoords.Row < _rows - 1)
-                {
-                    Coords newCoords = new Coords(lastCoords.Row + 1, lastCoords.Col);
-                    int dungeonValue = _dungeon[lastCoords.Row + 1][lastCoords.Col];
-                    Path newPath = new Path(path, newCoords, dungeonValue);
-                    AddToQueue(queue, newCoords, newPath);
-                }
+                result[index] = new T[cols];
             }
 
             return result;
         }
 
-        private void AddToQueue(Queue<Path> queue, Coords newCoords, Path newPath)
-        {
-            if (newCoords == null) return;
-
-            // If there's a better path to this cell, don't add the current one.
-            if (_bestPathsWithEnding.TryGetValue(newCoords, out Path existingBestPath) && existingBestPath.MinHp > newPath.MinHp)
-            {
-                WriteLine($"Path doesn't beat best:\t\t\t{PathToString(newPath)}");
-                return;
-            }
-
-            WriteLine($"Path is best, adding to queue:\t{PathToString(newPath)}");
-            _bestPathsWithEnding[newCoords] = newPath;
-            queue.Enqueue(newPath);
-        }
-
-        public static List<T> CopyAndAdd<T>(List<T> sourceList, T newElement)
-        {
-            List<T> result = new List<T>(sourceList.Count + 1);
-
-            foreach (T elem in sourceList)
-            {
-                result.Add(elem);
-            }
-
-            result.Add(newElement);
-            return result;
-        }
-
-        private class Path
-        {
-            public Path()
-            {
-            }
-
-            public Path(Path other, Coords newCoords, int dungeonValue)
-            {
-                Coordinates = CopyAndAdd(other.Coordinates, newCoords);
-                MinHp = other.MinHp;
-                Hp = other.Hp + dungeonValue;
-            }
-
-            public readonly List<Coords> Coordinates = new List<Coords>();
-
-            private int _hp;
-
-            public int Hp
-            {
-                get => _hp;
-
-                set
-                {
-                    _hp = value;
-                    if (_hp < MinHp)
-                        MinHp = _hp;
-                }
-            }
-
-            public int MinHp { get; private set; } = int.MaxValue;
-
-            public override bool Equals(object obj)
-            {
-                Path otherPath = obj as Path;
-                if (otherPath == null) return false;
-                if (Coordinates.Count != otherPath.Coordinates.Count) return false;
-
-                for (int i = 0; i < Coordinates.Count; i++)
-                    if (!Coordinates[i].Equals(otherPath.Coordinates[i]))
-                        return false;
-
-                return true;
-            }
-
-            public override int GetHashCode()
-            {
-                return base.GetHashCode();
-            }
-        }
-
-        private class Coords
-        {
-            public Coords(int row, int col)
-            {
-                Row = row;
-                Col = col;
-            }
-
-            public int Row { get; }
-
-            public int Col { get; }
-
-            public override int GetHashCode()
-            {
-                return (Row << 20) + Col;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (!(obj is Coords otherCoords))
-                    return false;
-
-                return otherCoords.Col == Col && otherCoords.Row == Row;
-            }
-        }
-
-        private int[][] LoadDungeon()
+        private int[][] LoadBigDungeon()
         {
             string file = @"C:\Temp\aaaa 2.txt";
             string[] lines = File.ReadAllLines(file).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
@@ -245,25 +109,6 @@ namespace ConsoleApp1.Leet
         void WriteLine(string text)
         {
             Debug.WriteLine(text);
-        }
-
-        private void WritePath(Path path)
-        {
-            Write(PathToString(path));
-        }
-
-        private string PathToString(Path path)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (Coords coords in path.Coordinates)
-            {
-                sb.Append($"{_dungeon[coords.Row][coords.Col].ToString().PadLeft(4)} ");
-            }
-
-            sb.Append($"({path.MinHp}) ");
-
-            return sb.ToString();
         }
     }
 }

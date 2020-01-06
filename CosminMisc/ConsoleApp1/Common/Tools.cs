@@ -1,11 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ConsoleApp1.Common
 {
     public static class Tools
     {
+        public static string GetCaller([CallerMemberName] string caller = null)
+        {
+            return caller;
+        }
+
+        public static int ComputeHashCode<T>(this IEnumerable<T> list)
+        {
+            unchecked
+            {
+                int hash = 19;
+                foreach (var x in list)
+                    hash = hash * 31 + x.GetHashCode();
+                return hash;
+            }
+        }
+
         public static void PrintMatrix(int[][] matrix)
         {
             StringBuilder sb = new StringBuilder();
@@ -33,6 +50,18 @@ namespace ConsoleApp1.Common
             }
 
             result.Add(newElement);
+            return result;
+        }
+
+        public static T[][] MakeMatrix<T>(int rows, int cols)
+        {
+            T[][] result = new T[rows][];
+
+            for (var index = 0; index < result.Length; index++)
+            {
+                result[index] = new T[cols];
+            }
+
             return result;
         }
     }

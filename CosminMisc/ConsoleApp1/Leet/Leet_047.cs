@@ -1,10 +1,6 @@
-﻿using ConsoleApp1.Misc;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ConsoleApp1.Common;
 
 namespace ConsoleApp1.Leet
 {

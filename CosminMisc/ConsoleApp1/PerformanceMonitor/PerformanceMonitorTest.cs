@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using ConsoleApp1.Common;
 
 namespace ConsoleApp1.PerformanceMonitor
 {
