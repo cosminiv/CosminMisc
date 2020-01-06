@@ -23,14 +23,14 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new Leet_067().Solve();
+            new Leet_068().Solve();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();
             //Console.WriteLine($"Result: {a}");
             Console.WriteLine($"Took {duration}ms");
             //Console.ReadLine();
-            Debug.Print($"Took {duration}ms");
+            Debug.Print($"\nTook {duration}ms");
         }
 
         private static void RunTetris()
