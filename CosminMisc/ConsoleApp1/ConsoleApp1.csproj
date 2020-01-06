@@ -195,6 +195,7 @@
     <Compile Include="Leet\Leet_151.cs" />
     <Compile Include="Leet\Leet_387.cs" />
     <Compile Include="Leet\Leet_720.cs" />
+    <Compile Include="Leet\Leet_741.cs" />
     <Compile Include="LinkedLists\LinkedList.cs" />
     <Compile Include="LinkedLists\ListNode.cs" />
     <Compile Include="LinkedLists\Palindrome.cs" />
