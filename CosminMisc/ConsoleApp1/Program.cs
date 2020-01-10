@@ -1,6 +1,7 @@
 ﻿using ConsoleApp1.Leet;
 using System;
 using System.Diagnostics;
+using ConsoleApp1.Eu._051_100;
 using CosminIv.Games.Engine.Common;
 using CosminIv.Games.Engine.Common.Logging;
 using CosminIv.Games.Engine.Tetris;
@@ -23,7 +24,7 @@ namespace ConsoleApp1
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            new Leet_074().Solve();
+            new Problem_067().Solve();
 
             long duration = sw.ElapsedMilliseconds;
             Console.WriteLine();

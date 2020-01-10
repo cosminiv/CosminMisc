@@ -85,6 +85,7 @@
     <Compile Include="Eu\051_100\Problem_061.cs" />
     <Compile Include="Eu\051_100\Problem_062.cs" />
     <Compile Include="Eu\051_100\Problem_063.cs" />
+    <Compile Include="Eu\051_100\Problem_067.cs" />
     <Compile Include="Eu\051_100\Problem_077.cs" />
     <Compile Include="Eu\051_100\Problem_078.cs" />
     <Compile Include="Eu\_Common\Combination.cs" />
