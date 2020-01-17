@@ -23,6 +23,19 @@ namespace ConsoleApp1.Common
             }
         }
 
+        public static void PrintCollection<T>(IEnumerable<T> collection)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (T elem in collection)
+            {
+                sb.Append(elem);
+                sb.Append(" ");
+            }
+
+            Debug.Print(sb.ToString());
+        }
+
         public static void PrintMatrix(int[][] matrix)
         {
             StringBuilder sb = new StringBuilder();
