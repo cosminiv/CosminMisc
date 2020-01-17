@@ -31,7 +31,7 @@ namespace ConsoleApp1.Leet._051_100
             return result;
         }
 
-        IEnumerable<int[]> EnumerateIndexes(int n, int k)
+        public IEnumerable<int[]> EnumerateIndexes(int n, int k)
         {
             _indexes = Enumerable.Range(0, k).ToArray();
             yield return _indexes;
