@@ -48,34 +48,17 @@ namespace ConsoleApp1.Leet._051_100
 
         bool ExistSuffix(char[][] board, int rowIndex, int colIndex, string word, int letterIndex)
         {
-            if (letterIndex >= word.Length)
-            {
-                return true;
-            }
-
-            char wordLetter = word[letterIndex];
-            char boardLetter = board[rowIndex][colIndex];
-
-            if (boardLetter != wordLetter || _visited[rowIndex][colIndex])
-                return false;
-
-            if (letterIndex == word.Length - 1)
-                return true;
+            if (letterIndex >= word.Length) return true;
+            if (board[rowIndex][colIndex] != word[letterIndex] || _visited[rowIndex][colIndex]) return false;
+            if (letterIndex == word.Length - 1) return true;
 
             _visited[rowIndex][colIndex] = true;
-            bool existsSuffix = false;
 
             foreach (var (nextRowIndex, nextColIndex) in GetNextCell(rowIndex, colIndex))
             {
                 if (ExistSuffix(board, nextRowIndex, nextColIndex, word, letterIndex + 1))
-                {
-                    existsSuffix = true;
-                    break;
-                }
+                    return true;
             }
-
-            if (existsSuffix)
-                return true;
 
             _visited[rowIndex][colIndex] = false;
 
