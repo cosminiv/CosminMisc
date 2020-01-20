@@ -25,6 +25,11 @@ namespace ConsoleApp1.Common
 
         public static void PrintCollection<T>(IEnumerable<T> collection)
         {
+            Debug.Print(CollectionToString(collection));
+        }
+
+        public static string CollectionToString<T>(IEnumerable<T> collection)
+        {
             StringBuilder sb = new StringBuilder();
 
             foreach (T elem in collection)
@@ -33,7 +38,9 @@ namespace ConsoleApp1.Common
                 sb.Append(" ");
             }
 
-            Debug.Print(sb.ToString());
+            string result = sb.ToString();
+
+            return result;
         }
 
         public static void PrintMatrix(int[][] matrix)
@@ -76,6 +83,19 @@ namespace ConsoleApp1.Common
             }
 
             return result;
+        }
+
+        public static bool AreCollectionsEqual(int[] array1, int[] array2)
+        {
+            if (array1.Length != array2.Length) return false;
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (array1[i] != array2[i])
+                    return false;
+            }
+
+            return true;
         }
     }
 }
