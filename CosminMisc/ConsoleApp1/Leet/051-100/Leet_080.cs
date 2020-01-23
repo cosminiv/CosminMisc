@@ -19,9 +19,12 @@ namespace ConsoleApp1.Leet._051_100
                 (new[] {1, 1, 1}, new[] {1, 1}),
                 (new[] {1, 1, 2}, new[] {1, 1, 2}),
                 (new[] {1, 2, 2}, new[] {1, 2, 2}),
+                (new[] {1, 2, 3}, new[] {1, 2, 3}),
                 (new[] {1, 2, 2, 2}, new[] {1, 2, 2}),
                 (new[] {1, 2, 2, 2}, new[] {1, 2, 2}),
                 (new[] {2, 2, 2, 2}, new[] {2, 2}),
+                (new[] {1, 2, 3, 4}, new[] {1, 2, 3, 4}),
+                (new[] {1, 2, 2, 3}, new[] {1, 2, 2, 3}),
                 (new[] {2, 2, 2, 3, 3, 3}, new[] {2, 2, 3, 3}),
                 (new[] {2, 2, 2, 3, 4, 4, 4}, new[] {2, 2, 3, 4, 4}),
                 (new[] {2, 2, 2, 3, 3, 4, 4, 4}, new[] {2, 2, 3, 3, 4, 4}),
@@ -38,7 +41,8 @@ namespace ConsoleApp1.Leet._051_100
                 Debug.Assert(result == expectedNumber, Tools.CollectionToString(inputClone));
 
                 int[] resultArray = input.Take(result).ToArray();
-                Debug.Assert(Tools.AreCollectionsEqual(resultArray, expectedArray), Tools.CollectionToString(resultArray));
+                string resultArrayStr = Tools.CollectionToString(resultArray);
+                Debug.Assert(Tools.AreCollectionsEqual(resultArray, expectedArray), Tools.CollectionToString(inputClone));
             }
         }
 
@@ -59,11 +63,9 @@ namespace ConsoleApp1.Leet._051_100
                 else
                 {
                     countRead++;
-                    //if (countRead > 2)
-                    //    writeIndex++;
                 }
 
-                bool shouldWrite = countRead <= 2 && writeIndex < readIndex;
+                bool shouldWrite = countRead <= 2 && writeIndex < readIndex && writeIndex > 1;
 
                 if (shouldWrite)
                 {
@@ -73,11 +75,11 @@ namespace ConsoleApp1.Leet._051_100
 
                 readIndex++;
 
-                if (countRead <= 2)
+                if (countRead <= 2 && !shouldWrite)
                     writeIndex++;
             }
 
-            int result = Math.Min(writeIndex, nums.Length);
+            int result = Math.Min(writeIndex + 1, nums.Length);
 
             return result;
         }
